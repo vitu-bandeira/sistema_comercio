@@ -33,22 +33,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.btn_adicionar = new System.Windows.Forms.Button();
             this.sidebar_timer = new System.Windows.Forms.Timer(this.components);
             this.panelMain = new System.Windows.Forms.Panel();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.buttonAtualizar = new System.Windows.Forms.Button();
-            this.labelInserirValor = new System.Windows.Forms.Label();
-            this.labelInserirTelefone = new System.Windows.Forms.Label();
-            this.labelInsiraNome = new System.Windows.Forms.Label();
-            this.textBoxSaldo = new System.Windows.Forms.TextBox();
-            this.labelSaldo = new System.Windows.Forms.Label();
-            this.textBoxTelefone = new System.Windows.Forms.TextBox();
-            this.labelTelefone = new System.Windows.Forms.Label();
-            this.textBoxEndereco = new System.Windows.Forms.TextBox();
-            this.labelEndereco = new System.Windows.Forms.Label();
-            this.labelCliente = new System.Windows.Forms.Label();
-            this.textBoxNome = new System.Windows.Forms.TextBox();
+            this.btn_adicionar = new System.Windows.Forms.Button();
             this.Buscar = new System.Windows.Forms.Label();
             this.textBoxBuscar = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -68,7 +55,6 @@
             this.button_menu = new System.Windows.Forms.PictureBox();
             this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
             this.panelMain.SuspendLayout();
-            this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -80,22 +66,6 @@
             this.sidebar.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btn_adicionar
-            // 
-            this.btn_adicionar.BackColor = System.Drawing.Color.SlateBlue;
-            this.btn_adicionar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_adicionar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_adicionar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_adicionar.ForeColor = System.Drawing.Color.White;
-            this.btn_adicionar.Location = new System.Drawing.Point(18, 353);
-            this.btn_adicionar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btn_adicionar.Name = "btn_adicionar";
-            this.btn_adicionar.Size = new System.Drawing.Size(243, 50);
-            this.btn_adicionar.TabIndex = 87;
-            this.btn_adicionar.Text = "Adicionar";
-            this.btn_adicionar.UseVisualStyleBackColor = false;
-            this.btn_adicionar.Click += new System.EventHandler(this.btn_adicionar_Click);
-            // 
             // sidebar_timer
             // 
             this.sidebar_timer.Interval = 10;
@@ -104,7 +74,7 @@
             // panelMain
             // 
             this.panelMain.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panelMain.Controls.Add(this.panel8);
+            this.panelMain.Controls.Add(this.btn_adicionar);
             this.panelMain.Controls.Add(this.Buscar);
             this.panelMain.Controls.Add(this.textBoxBuscar);
             this.panelMain.Controls.Add(this.dataGridView1);
@@ -115,184 +85,22 @@
             this.panelMain.Size = new System.Drawing.Size(1548, 844);
             this.panelMain.TabIndex = 95;
             // 
-            // panel8
+            // btn_adicionar
             // 
-            this.panel8.BackColor = System.Drawing.Color.White;
-            this.panel8.Controls.Add(this.buttonAtualizar);
-            this.panel8.Controls.Add(this.labelInserirValor);
-            this.panel8.Controls.Add(this.labelInserirTelefone);
-            this.panel8.Controls.Add(this.labelInsiraNome);
-            this.panel8.Controls.Add(this.textBoxSaldo);
-            this.panel8.Controls.Add(this.labelSaldo);
-            this.panel8.Controls.Add(this.textBoxTelefone);
-            this.panel8.Controls.Add(this.btn_adicionar);
-            this.panel8.Controls.Add(this.labelTelefone);
-            this.panel8.Controls.Add(this.textBoxEndereco);
-            this.panel8.Controls.Add(this.labelEndereco);
-            this.panel8.Controls.Add(this.labelCliente);
-            this.panel8.Controls.Add(this.textBoxNome);
-            this.panel8.Location = new System.Drawing.Point(124, 162);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(288, 501);
-            this.panel8.TabIndex = 96;
-            // 
-            // buttonAtualizar
-            // 
-            this.buttonAtualizar.BackColor = System.Drawing.Color.DarkGreen;
-            this.buttonAtualizar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonAtualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonAtualizar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAtualizar.ForeColor = System.Drawing.Color.White;
-            this.buttonAtualizar.Location = new System.Drawing.Point(19, 411);
-            this.buttonAtualizar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.buttonAtualizar.Name = "buttonAtualizar";
-            this.buttonAtualizar.Size = new System.Drawing.Size(242, 48);
-            this.buttonAtualizar.TabIndex = 95;
-            this.buttonAtualizar.Text = "Atualizar";
-            this.buttonAtualizar.UseVisualStyleBackColor = false;
-            this.buttonAtualizar.Click += new System.EventHandler(this.buttonAtualizar_Click);
-            // 
-            // labelInserirValor
-            // 
-            this.labelInserirValor.AutoSize = true;
-            this.labelInserirValor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelInserirValor.ForeColor = System.Drawing.Color.Red;
-            this.labelInserirValor.Location = new System.Drawing.Point(24, 324);
-            this.labelInserirValor.Name = "labelInserirValor";
-            this.labelInserirValor.Size = new System.Drawing.Size(108, 20);
-            this.labelInserirValor.TabIndex = 92;
-            this.labelInserirValor.Text = "Insira o Valor";
-            this.labelInserirValor.Visible = false;
-            // 
-            // labelInserirTelefone
-            // 
-            this.labelInserirTelefone.AutoSize = true;
-            this.labelInserirTelefone.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelInserirTelefone.ForeColor = System.Drawing.Color.Red;
-            this.labelInserirTelefone.Location = new System.Drawing.Point(24, 158);
-            this.labelInserirTelefone.Name = "labelInserirTelefone";
-            this.labelInserirTelefone.Size = new System.Drawing.Size(147, 20);
-            this.labelInserirTelefone.TabIndex = 91;
-            this.labelInserirTelefone.Text = "Insira um Telefone";
-            this.labelInserirTelefone.Visible = false;
-            // 
-            // labelInsiraNome
-            // 
-            this.labelInsiraNome.AutoSize = true;
-            this.labelInsiraNome.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelInsiraNome.ForeColor = System.Drawing.Color.Red;
-            this.labelInsiraNome.Location = new System.Drawing.Point(23, 72);
-            this.labelInsiraNome.Name = "labelInsiraNome";
-            this.labelInsiraNome.Size = new System.Drawing.Size(127, 20);
-            this.labelInsiraNome.TabIndex = 90;
-            this.labelInsiraNome.Text = "Insira um Nome";
-            this.labelInsiraNome.Visible = false;
-            // 
-            // textBoxSaldo
-            // 
-            this.textBoxSaldo.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxSaldo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.2F);
-            this.textBoxSaldo.Location = new System.Drawing.Point(18, 287);
-            this.textBoxSaldo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBoxSaldo.Multiline = true;
-            this.textBoxSaldo.Name = "textBoxSaldo";
-            this.textBoxSaldo.Size = new System.Drawing.Size(243, 34);
-            this.textBoxSaldo.TabIndex = 89;
-            this.textBoxSaldo.TextChanged += new System.EventHandler(this.textBoxSaldo_TextChanged);
-            // 
-            // labelSaldo
-            // 
-            this.labelSaldo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelSaldo.AutoSize = true;
-            this.labelSaldo.BackColor = System.Drawing.Color.White;
-            this.labelSaldo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelSaldo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
-            this.labelSaldo.Location = new System.Drawing.Point(15, 256);
-            this.labelSaldo.Name = "labelSaldo";
-            this.labelSaldo.Size = new System.Drawing.Size(63, 24);
-            this.labelSaldo.TabIndex = 88;
-            this.labelSaldo.Text = "Saldo";
-            // 
-            // textBoxTelefone
-            // 
-            this.textBoxTelefone.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxTelefone.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.2F);
-            this.textBoxTelefone.Location = new System.Drawing.Point(18, 121);
-            this.textBoxTelefone.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBoxTelefone.Multiline = true;
-            this.textBoxTelefone.Name = "textBoxTelefone";
-            this.textBoxTelefone.Size = new System.Drawing.Size(243, 34);
-            this.textBoxTelefone.TabIndex = 83;
-            this.textBoxTelefone.TextChanged += new System.EventHandler(this.textBoxTelefone_TextChanged);
-            // 
-            // labelTelefone
-            // 
-            this.labelTelefone.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelTelefone.AutoSize = true;
-            this.labelTelefone.BackColor = System.Drawing.Color.White;
-            this.labelTelefone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelTelefone.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
-            this.labelTelefone.Location = new System.Drawing.Point(15, 96);
-            this.labelTelefone.Name = "labelTelefone";
-            this.labelTelefone.Size = new System.Drawing.Size(93, 24);
-            this.labelTelefone.TabIndex = 82;
-            this.labelTelefone.Text = "Telefone";
-            // 
-            // textBoxEndereco
-            // 
-            this.textBoxEndereco.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxEndereco.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.2F);
-            this.textBoxEndereco.Location = new System.Drawing.Point(18, 211);
-            this.textBoxEndereco.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBoxEndereco.Multiline = true;
-            this.textBoxEndereco.Name = "textBoxEndereco";
-            this.textBoxEndereco.Size = new System.Drawing.Size(243, 34);
-            this.textBoxEndereco.TabIndex = 81;
-            // 
-            // labelEndereco
-            // 
-            this.labelEndereco.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelEndereco.AutoSize = true;
-            this.labelEndereco.BackColor = System.Drawing.Color.White;
-            this.labelEndereco.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelEndereco.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
-            this.labelEndereco.Location = new System.Drawing.Point(15, 184);
-            this.labelEndereco.Name = "labelEndereco";
-            this.labelEndereco.Size = new System.Drawing.Size(102, 24);
-            this.labelEndereco.TabIndex = 80;
-            this.labelEndereco.Text = "Endereço";
-            // 
-            // labelCliente
-            // 
-            this.labelCliente.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelCliente.AutoSize = true;
-            this.labelCliente.BackColor = System.Drawing.Color.White;
-            this.labelCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
-            this.labelCliente.Location = new System.Drawing.Point(15, 7);
-            this.labelCliente.Name = "labelCliente";
-            this.labelCliente.Size = new System.Drawing.Size(66, 24);
-            this.labelCliente.TabIndex = 79;
-            this.labelCliente.Text = "Nome";
-            // 
-            // textBoxNome
-            // 
-            this.textBoxNome.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxNome.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.2F);
-            this.textBoxNome.Location = new System.Drawing.Point(18, 35);
-            this.textBoxNome.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBoxNome.Multiline = true;
-            this.textBoxNome.Name = "textBoxNome";
-            this.textBoxNome.Size = new System.Drawing.Size(243, 34);
-            this.textBoxNome.TabIndex = 78;
+            this.btn_adicionar.BackColor = System.Drawing.Color.LimeGreen;
+            this.btn_adicionar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_adicionar.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.btn_adicionar.FlatAppearance.BorderSize = 10;
+            this.btn_adicionar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_adicionar.ForeColor = System.Drawing.Color.White;
+            this.btn_adicionar.Location = new System.Drawing.Point(1088, 120);
+            this.btn_adicionar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btn_adicionar.Name = "btn_adicionar";
+            this.btn_adicionar.Size = new System.Drawing.Size(210, 50);
+            this.btn_adicionar.TabIndex = 95;
+            this.btn_adicionar.Text = "+  Adicionar Cliente";
+            this.btn_adicionar.UseVisualStyleBackColor = false;
+            this.btn_adicionar.Click += new System.EventHandler(this.btn_adicionar_Click);
             // 
             // Buscar
             // 
@@ -331,6 +139,7 @@
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
             this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.CausesValidation = false;
@@ -356,7 +165,7 @@
             this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.EnableHeadersVisualStyles = false;
             this.dataGridView1.GridColor = System.Drawing.SystemColors.Window;
-            this.dataGridView1.Location = new System.Drawing.Point(451, 176);
+            this.dataGridView1.Location = new System.Drawing.Point(157, 188);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
@@ -372,7 +181,7 @@
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1048, 549);
+            this.dataGridView1.Size = new System.Drawing.Size(1360, 597);
             this.dataGridView1.TabIndex = 77;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
@@ -570,8 +379,6 @@
             this.Load += new System.EventHandler(this.Form_cliente_Load);
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
-            this.panel8.ResumeLayout(false);
-            this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
@@ -587,26 +394,13 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button btn_adicionar;
         private System.Windows.Forms.Timer sidebar_timer;
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TextBox textBoxNome;
-        private System.Windows.Forms.Label labelCliente;
-        private System.Windows.Forms.TextBox textBoxEndereco;
-        private System.Windows.Forms.Label labelEndereco;
-        private System.Windows.Forms.TextBox textBoxTelefone;
-        private System.Windows.Forms.Label labelTelefone;
-        private System.Windows.Forms.TextBox textBoxSaldo;
-        private System.Windows.Forms.Label labelSaldo;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label labelInsiraNome;
-        private System.Windows.Forms.Label labelInserirValor;
-        private System.Windows.Forms.Label labelInserirTelefone;
         private System.Windows.Forms.TextBox textBoxBuscar;
         private System.Windows.Forms.Label Buscar;
-        private System.Windows.Forms.Button buttonAtualizar;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Button buttonCliente;
@@ -620,6 +414,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox button_menu;
         private System.Windows.Forms.FlowLayoutPanel sidebar;
-        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Button btn_adicionar;
     }
 }

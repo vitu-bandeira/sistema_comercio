@@ -43,84 +43,6 @@ namespace sistema_comercio
             }
         }
 
-        private bool ValidacaoCampo(Label label, string campoNome, string campoValor)
-        {
-            bool valido = true;
-            if (string.IsNullOrWhiteSpace(campoValor))
-            {
-                label.Text = campoNome + " é obrigatório!";
-                label.Visible = true;
-                valido = false;
-
-            }
-            else
-            {
-                label.Visible = false;
-            }
-            return valido;
-        }
-
-        
-        private void btn_adicionar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                bool camposValidos = true;
-                camposValidos &= ValidacaoCampo(labelInsiraNome, "Nome", textBoxNome.Text);
-                camposValidos &= ValidacaoCampo(labelInserirTelefone, "Telefone", textBoxTelefone.Text);
-                camposValidos &= ValidacaoCampo(labelInserirValor, "Saldo", textBoxSaldo.Text);
-                string telefoneLimpo = Regex.Replace(textBoxTelefone.Text, @"[^\d]", "");
-                if (telefoneLimpo.Length < 10)
-                {
-                    labelInserirTelefone.Text = "Telefone deve ter 10/11 dígitos!";
-                    labelInserirTelefone.Visible = true;
-                    camposValidos = false;
-                }
-                if (!camposValidos)
-                {
-                    MessageBox.Show($"Corrija os seguintes erros:",
-                                  "Formulário Incompleto",
-                                  MessageBoxButtons.OK,
-                                  MessageBoxIcon.Warning);
-                    return;
-                }
-                // No evento btn_adicionar_Click
-                if (DALClientes.ClienteExiste(textBoxNome.Text))
-                {
-                    MessageBox.Show("Cliente já cadastrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                Cliente_dtb cliente = new Cliente_dtb();
-                DataGridViewColumn colNome = dataGridView1.Columns["Nome"];
-                cliente.nome = textBoxNome.Text;
-                cliente.telefone = textBoxTelefone.Text;
-                cliente.endereco = textBoxEndereco.Text;
-                cliente.saldo = Convert.ToDecimal(textBoxSaldo.Text);
-                if (!decimal.TryParse(textBoxSaldo.Text, out decimal saldo))
-                {
-                    MessageBox.Show("Saldo inválido!");
-                    return;
-                }
-                cliente.saldo = saldo;
-
-                DALClientes.AddCliente(cliente);
-                MessageBox.Show("Cliente adicionado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ExibirDados();
-                textBoxNome.Clear();
-                textBoxTelefone.Clear();
-                textBoxEndereco.Clear();
-                textBoxSaldo.Clear();
-                labelInserirValor.Visible = false;
-                labelInserirTelefone.Visible = false;
-                labelInsiraNome.Visible = false;
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Algo de errado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void ConfigurarGrid()
         {
             dataGridView1.Columns.Clear();
@@ -167,6 +89,14 @@ namespace sistema_comercio
             colPreco.Width = 150;
             dataGridView1.Columns.Add(colPreco);
 
+            DataGridViewButtonColumn colAjustar = new DataGridViewButtonColumn();
+            colAjustar.Name = "Ajustar";
+            colAjustar.HeaderText = "Ajustar";
+            colAjustar.Text = "R$"; // Texto que vai aparecer no botão (curto e claro)
+            colAjustar.UseColumnTextForButtonValue = true;
+            colAjustar.Width = 85;
+            dataGridView1.Columns.Add(colAjustar);
+
             // Coluna Excluir (Botão)
             DataGridViewButtonColumn colExcluir = new DataGridViewButtonColumn();
             colExcluir.Name = "Excluir";
@@ -175,6 +105,7 @@ namespace sistema_comercio
             colExcluir.UseColumnTextForButtonValue = true;
             colExcluir.Width = 85;
             dataGridView1.Columns.Add(colExcluir);
+
 
             // Estilo do Grid
             dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 15);
@@ -242,90 +173,6 @@ namespace sistema_comercio
             sidebar_timer.Start();
         }
 
-        private void textBoxTelefone_TextChanged(object sender, EventArgs e)
-        {
-            string digits = Regex.Replace(textBoxTelefone.Text, @"[^\d]", "");
-
-
-            if (digits.Length > 11)
-                digits = digits.Substring(0, 11);
-
-
-            string formatted = digits;
-            if (digits.Length >= 2)
-            {
-                formatted = $"({digits.Substring(0, 2)}) {digits.Substring(2)}";
-                if (digits.Length > 7)
-                {
-                    formatted = $"({digits.Substring(0, 2)}) {digits.Substring(2, 5)}-{digits.Substring(7)}";
-                }
-            }
-            textBoxTelefone.TextChanged -= textBoxTelefone_TextChanged;
-            textBoxTelefone.Text = formatted;
-            textBoxTelefone.SelectionStart = formatted.Length;
-            textBoxTelefone.TextChanged += textBoxTelefone_TextChanged;
-        }
-
-        private bool _formatando = false;
-        private int _ultimoLength = 0;
-        private void textBoxSaldo_TextChanged(object sender, EventArgs e)
-        {
-            if (_formatando) return;
-            _formatando = true;
-
-            try
-            {
-                string texto = new string(textBoxSaldo.Text
-                    .Where(c => char.IsDigit(c) || c == '-')
-                    .ToArray());
-
-                bool negativo = texto.StartsWith("-");
-                texto = negativo ? texto.Substring(1) : texto;
-
-                // Mantém máximo de 2 dígitos decimais + 10 inteiros
-                texto = texto.Length > 12 ? texto.Substring(0, 12) : texto;
-
-                // Lógica de deslocamento decimal
-                if (texto.Length > _ultimoLength) // Digitando para frente
-                {
-                    if (texto.Length <= 2) // Caso 0,XX
-                    {
-                        texto = texto.PadLeft(2, '0');
-                    }
-                    else // Desloca dígitos existentes
-                    {
-                        texto = texto.Substring(0, texto.Length - 2) + "," + texto.Substring(texto.Length - 2);
-                    }
-                }
-
-                // Formatação final
-                string formatado = negativo ? "-" : "";
-                if (texto.Length == 0)
-                {
-                    formatado = "0,00";
-                }
-                else if (texto.Length <= 2)
-                {
-                    formatado += "0," + texto.PadLeft(2, '0');
-                }
-                else
-                {
-                    formatado += texto.Insert(texto.Length - 2, ",")
-                                  .TrimStart('0')
-                                  .Replace(",,", ",");
-                }
-
-                // Atualiza controles
-                textBoxSaldo.Text = formatado;
-                textBoxSaldo.SelectionStart = formatado.Length;
-                _ultimoLength = texto.Length;
-            }
-            finally
-            {
-                _formatando = false;
-            }
-        }
-
         private void textBoxBuscar_TextChanged(object sender, EventArgs e)
         {
             try
@@ -345,23 +192,30 @@ namespace sistema_comercio
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "Excluir")
+
+            if (e.RowIndex < 0) return;
+
+            // Pega a linha clicada
+            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+
+            // Salva o ID do cliente selecionado (para o botão principal "Ajustar Saldo")
+            idSelecionado = Convert.ToInt32(row.Cells["IdProduto"].Value);
+
+            // Agora, verifica se o clique foi em um BOTÃO específico
+            if (e.ColumnIndex == dataGridView1.Columns["Excluir"].Index)
             {
                 ExcluirCliente(e.RowIndex);
             }
-            else if (e.RowIndex >= 0)
+            else if (e.ColumnIndex == dataGridView1.Columns["Ajustar"].Index)
             {
-                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                // Pega o nome da linha (o ID já temos em idSelecionado)
+                string nome = row.Cells["Nome"].Value.ToString();
 
-                textBoxNome.Text = row.Cells["Nome"].Value.ToString();
-                textBoxTelefone.Text = row.Cells["Telefone"].Value.ToString();
-                textBoxEndereco.Text = row.Cells["Endereco"].Value.ToString();
-                textBoxSaldo.Text = row.Cells["Saldo"].Value.ToString();
-                idSelecionado = Convert.ToInt32(row.Cells["IdProduto"].Value);  // Armazena o ID do cliente no Tag
-
+                // Chama a nossa nova função
+                AbrirAjusteSaldo(idSelecionado, nome);
             }
         }
+    
 
 
         private void ExcluirCliente(int rowIndex)
@@ -385,60 +239,67 @@ namespace sistema_comercio
             }
         }
 
-        private void buttonAtualizar_Click(object sender, EventArgs e)
+        private void AbrirAjusteSaldo(int clienteId, string nomeCliente)
         {
-
-            try
+            // 1. Abre a nova janela (Form_AjustarSaldo)
+            using (Form_AjustarSaldo formAjuste = new Form_AjustarSaldo())
             {
-                bool camposValidos = true;
-                camposValidos &= ValidacaoCampo(labelInsiraNome, "Nome", textBoxNome.Text);
-                camposValidos &= ValidacaoCampo(labelInserirTelefone, "Telefone", textBoxTelefone.Text);
-                camposValidos &= ValidacaoCampo(labelInserirValor, "Saldo", textBoxSaldo.Text);
-                string telefoneLimpo = Regex.Replace(textBoxTelefone.Text, @"[^\d]", "");
-                if (telefoneLimpo.Length < 10)
+                formAjuste.Text = "Ajustar Saldo de: " + nomeCliente; // Define o título da janela
+
+                // 2. Mostra a janela modal
+                if (formAjuste.ShowDialog() == DialogResult.OK)
                 {
-                    labelInserirTelefone.Text = "Telefone deve ter 10/11 dígitos!";
-                    labelInserirTelefone.Visible = true;
-                    camposValidos = false;
+                    // 3. Se o usuário clicou em "Confirmar"
+                    try
+                    {
+                        decimal valorDoAjuste = formAjuste.ValorAjuste;
 
+                        // 4. Chama o método do DAL para atualizar o banco
+                        DALClientes.AjustarSaldoCliente(clienteId, valorDoAjuste);
 
+                        MessageBox.Show($"Saldo de {nomeCliente} ajustado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        ExibirDados(); // Atualiza o grid
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro ao ajustar saldo: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                if (!camposValidos)
-                {
-                    MessageBox.Show($"Corrija os seguintes erros:",
-                                  "Formulário Incompleto",
-                                  MessageBoxButtons.OK,
-                                  MessageBoxIcon.Warning);
-                    return;
-                }
-                Cliente_dtb cliente = new Cliente_dtb();
-                cliente.nome = textBoxNome.Text;
-                cliente.telefone = textBoxTelefone.Text;
-                cliente.endereco = textBoxEndereco.Text;
-                cliente.id = idSelecionado;
-                cliente.saldo = Convert.ToDecimal(textBoxSaldo.Text);
-                if (!decimal.TryParse(textBoxSaldo.Text, out decimal saldo))
-                {
-                    MessageBox.Show("Saldo inválido!");
-                    return;
-                }
-                cliente.saldo = saldo;
-
-                DALClientes.UpdateCliente(cliente);
-                MessageBox.Show("Cliente Atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ExibirDados();
-                textBoxNome.Clear();
-                textBoxTelefone.Clear();
-                textBoxEndereco.Clear();
-                textBoxSaldo.Clear();
-                labelInserirValor.Visible = false;
-                labelInserirTelefone.Visible = false;
-                labelInsiraNome.Visible = false;
-
+                // Se o usuário clicou em "Cancelar", nada acontece.
             }
-            catch (Exception ex)
+        }
+        private void btn_adicionar_Click(object sender, EventArgs e)
+        {
+            using (Form_AdicionarCliente formAdd = new Form_AdicionarCliente())
             {
-                MessageBox.Show("Algo de errado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // 2. Mostra o formulário como um "Diálogo" (trava a tela principal)
+                if (formAdd.ShowDialog() == DialogResult.OK)
+                {
+                    // 3. Se o usuário clicou em "Salvar" (DialogResult.OK)...
+                    //    Pegamos o cliente que ele preencheu:
+                    Cliente_dtb clienteParaSalvar = formAdd.NovoCliente;
+
+                    // 4. Agora sim, salvamos no banco (lógica do seu btn_adicionar_Click antigo)
+                    try
+                    {
+                        if (DALClientes.ClienteExiste(clienteParaSalvar.nome))
+                        {
+                            MessageBox.Show("Cliente já cadastrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        DALClientes.AddCliente(clienteParaSalvar);
+                        MessageBox.Show("Cliente adicionado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        ExibirDados(); // Atualiza o grid
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Algo de errado: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                // Se o usuário clicou em "Cancelar", nada acontece.
             }
         }
     }

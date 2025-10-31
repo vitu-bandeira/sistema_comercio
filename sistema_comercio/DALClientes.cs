@@ -163,6 +163,50 @@ namespace sistema_comercio
             }
 
         }
+        public static void AdicionarDebito(string nomeCliente, decimal valorDebito)
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    // Soma o novo débito ao saldo existente
+                    cmd.CommandText = @"
+                UPDATE Clientes_dtb 
+                SET saldo = saldo + @valorDebito 
+                WHERE nome = @nomeCliente";
+
+                    cmd.Parameters.AddWithValue("@valorDebito", valorDebito);
+                    cmd.Parameters.AddWithValue("@nomeCliente", nomeCliente);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao atualizar saldo do cliente", ex);
+            }
+        }
+        // Cole este método dentro da classe DALClientes
+        public static void AjustarSaldoCliente(int clienteId, decimal valorAjuste)
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    // A lógica é: saldo_novo = saldo_antigo + valor_ajuste
+                    // Se valorAjuste for -100 (dívida), ele vai somar -100.
+                    // Se valorAjuste for 100 (pagamento), ele vai somar 100.
+                    cmd.CommandText = "UPDATE Clientes_dtb SET saldo = saldo + @valorAjuste WHERE id = @id";
+
+                    cmd.Parameters.AddWithValue("@valorAjuste", valorAjuste);
+                    cmd.Parameters.AddWithValue("@id", clienteId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao ajustar saldo do cliente", ex);
+            }
+        }
     }
 }
 

@@ -38,7 +38,9 @@
             this.sidebar_timer = new System.Windows.Forms.Timer(this.components);
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.comboBoxProduto = new System.Windows.Forms.ComboBox();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.comboBoxCliente = new System.Windows.Forms.ComboBox();
             this.btnAdicionar = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
@@ -56,8 +58,6 @@
             this.buttonVenda = new System.Windows.Forms.Button();
             this.panel5 = new System.Windows.Forms.Panel();
             this.buttonCliente = new System.Windows.Forms.Button();
-            this.txtBusca = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panelMain.SuspendLayout();
             this.panel8.SuspendLayout();
@@ -155,10 +155,10 @@
             // panelMain
             // 
             this.panelMain.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panelMain.Controls.Add(this.comboBoxProduto);
             this.panelMain.Controls.Add(this.panel8);
             this.panelMain.Controls.Add(this.panel6);
             this.panelMain.Controls.Add(this.sidebar);
-            this.panelMain.Controls.Add(this.txtBusca);
             this.panelMain.Controls.Add(this.dataGridView1);
             this.panelMain.Controls.Add(this.label1);
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -166,6 +166,18 @@
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(1548, 844);
             this.panelMain.TabIndex = 95;
+            // 
+            // comboBoxProduto
+            // 
+            this.comboBoxProduto.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxProduto.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxProduto.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxProduto.FormattingEnabled = true;
+            this.comboBoxProduto.Location = new System.Drawing.Point(496, 125);
+            this.comboBoxProduto.Name = "comboBoxProduto";
+            this.comboBoxProduto.Size = new System.Drawing.Size(749, 39);
+            this.comboBoxProduto.TabIndex = 100;
+            this.comboBoxProduto.SelectedIndexChanged += new System.EventHandler(this.comboBoxProduto_SelectedIndexChanged);
             // 
             // panel8
             // 
@@ -178,6 +190,18 @@
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(305, 538);
             this.panel8.TabIndex = 99;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.SystemColors.Window;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(16, 28);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(166, 31);
+            this.label2.TabIndex = 100;
+            this.label2.Text = "Buscar Cliente";
             // 
             // comboBoxCliente
             // 
@@ -387,29 +411,6 @@
             this.buttonCliente.UseVisualStyleBackColor = true;
             this.buttonCliente.Click += new System.EventHandler(this.buttonCliente_Click_1);
             // 
-            // txtBusca
-            // 
-            this.txtBusca.BackColor = System.Drawing.Color.White;
-            this.txtBusca.Font = new System.Drawing.Font("Segoe UI", 14.2F);
-            this.txtBusca.Location = new System.Drawing.Point(496, 121);
-            this.txtBusca.Margin = new System.Windows.Forms.Padding(4);
-            this.txtBusca.Multiline = true;
-            this.txtBusca.Name = "txtBusca";
-            this.txtBusca.Size = new System.Drawing.Size(749, 41);
-            this.txtBusca.TabIndex = 97;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.SystemColors.Window;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(16, 28);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(166, 31);
-            this.label2.TabIndex = 100;
-            this.label2.Text = "Buscar Cliente";
-            // 
             // Form_venda
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -448,7 +449,6 @@
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtBusca;
         private System.Windows.Forms.Button btnAdicionar;
         private System.Windows.Forms.FlowLayoutPanel sidebar;
         private System.Windows.Forms.Panel panel1;
@@ -466,5 +466,6 @@
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.ComboBox comboBoxCliente;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboBoxProduto;
     }
 }

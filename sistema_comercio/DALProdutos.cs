@@ -215,6 +215,60 @@ namespace sistema_comercio
                     throw new Exception("Erro ao excluir produto", ex);
                 }
             }
+
+            public static DataTable GetProdutoParaVenda(string termo)
+            {
+                try
+                {
+                    using (var conn = CreateConnection())
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        
+                        cmd.CommandText = @"
+                SELECT * FROM Produtos_dtb 
+                WHERE codigoBarras = @termo 
+                OR nome LIKE @termoLike
+                LIMIT 1";
+
+                        cmd.Parameters.AddWithValue("@termo", termo);
+                        cmd.Parameters.AddWithValue("@termoLike", $"%{termo}%");
+
+                        using (SQLiteDataAdapter da = new SQLiteDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            return dt;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao buscar produto para venda", ex);
+                }
+            }
+            public static void AtualizarEstoque(int produtoId, int quantidadeVendida)
+            {
+                try
+                {
+                    using (var conn = CreateConnection())
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        // Subtrai a quantidade vendida do estoque atual
+                        cmd.CommandText = @"
+                UPDATE Produtos_dtb 
+                SET estoque = estoque - @quantidadeVendida 
+                WHERE id = @id";
+
+                        cmd.Parameters.AddWithValue("@quantidadeVendida", quantidadeVendida);
+                        cmd.Parameters.AddWithValue("@id", produtoId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao dar baixa no estoque", ex);
+                }
+            }
         }
     }
 }

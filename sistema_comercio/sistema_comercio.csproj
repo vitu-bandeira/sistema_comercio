@@ -84,6 +84,18 @@
     <Compile Include="FormProduto.Designer.cs">
       <DependentUpon>FormProduto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_AdicionarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_AdicionarCliente.Designer.cs">
+      <DependentUpon>Form_AdicionarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_AjustarSaldo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_AjustarSaldo.Designer.cs">
+      <DependentUpon>Form_AjustarSaldo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_cliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +122,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormProduto.resx">
       <DependentUpon>FormProduto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_AdicionarCliente.resx">
+      <DependentUpon>Form_AdicionarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_AjustarSaldo.resx">
+      <DependentUpon>Form_AjustarSaldo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_cliente.resx">
       <DependentUpon>Form_cliente.cs</DependentUpon>
