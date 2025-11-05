@@ -72,6 +72,7 @@
     <Compile Include="Cliente_dtb.cs" />
     <Compile Include="DALClientes.cs" />
     <Compile Include="DALProdutos.cs" />
+    <Compile Include="DALVendas.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +103,12 @@
     <Compile Include="Form_cliente.Designer.cs">
       <DependentUpon>Form_cliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_DetalheProduto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_DetalheProduto.Designer.cs">
+      <DependentUpon>Form_DetalheProduto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_historico.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,9 +121,11 @@
     <Compile Include="Form_venda.Designer.cs">
       <DependentUpon>Form_venda.cs</DependentUpon>
     </Compile>
+    <Compile Include="ItemVenda.cs" />
     <Compile Include="Produto_dtb.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Venda.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -131,6 +140,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_cliente.resx">
       <DependentUpon>Form_cliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_DetalheProduto.resx">
+      <DependentUpon>Form_DetalheProduto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_historico.resx">
+      <DependentUpon>Form_historico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_venda.resx">
       <DependentUpon>Form_venda.cs</DependentUpon>
@@ -179,6 +194,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\#e7191f %283%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-receipt-dollar-100.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-receipt-dollar-50.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -40,13 +40,7 @@ namespace sistema_comercio
 
         }
 
-        private void buttonCliente_Click(object sender, EventArgs e)
-        {
-            FormCliente formCliente = new FormCliente();
-            formCliente.Show();
-            this.Hide();
-
-        }
+       
         
         private void button_menu_Click(object sender, EventArgs e)
         {
@@ -87,10 +81,7 @@ namespace sistema_comercio
             }
         }
 
-        private void chart1_Click(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private void label7_Click(object sender, EventArgs e)
         {
@@ -105,6 +96,41 @@ namespace sistema_comercio
         private void label10_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void panel9_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel10_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel11_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel12_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void buttonHistorico_Click(object sender, EventArgs e)
+        {
+            Form_historico formhistorico = new Form_historico();
+            formhistorico.Show();
+            this.Hide();
+
+        }
+
+        private void buttonCliente_Click_1(object sender, EventArgs e)
+        {
+            FormCliente formCliente = new FormCliente();
+            formCliente.Show();
+            this.Hide();
         }
     }
 }

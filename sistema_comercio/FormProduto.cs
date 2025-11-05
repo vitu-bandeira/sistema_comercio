@@ -19,22 +19,21 @@ namespace sistema_comercio
         public FormProduto()
         {
             InitializeComponent();
-            AplicarEventos(textBox_preço_venda);
-            AplicarEventos(textBox_quantidade);
-            AplicarEventos(textBox_codigo_barra);
+
             ConfigurarGrid();
-    
+
             this.WindowState = FormWindowState.Maximized;
             this.btn_adicionar.Click += new System.EventHandler(this.btn_adicionar_Click);
-           
+
 
             dataGridView1.CellClick += dataGridView1_CellClick;
-            
+
 
         }
         private void FormProduto_Load(object sender, EventArgs e)
         {
             DALProdutos.CriarBancoSQLite();
+            // Código limpo, métodos e variáveis antigos foram removidos.
             DALProdutos.CriarTabelaProdutos();
             ExibirDados();
         }
@@ -128,6 +127,14 @@ namespace sistema_comercio
             colValidade.Width = 150;
             dataGridView1.Columns.Add(colValidade);
 
+            DataGridViewButtonColumn colEditar = new DataGridViewButtonColumn();
+            colEditar.Name = "Editar";
+            colEditar.HeaderText = "Editar";
+            colEditar.Text = "✏️"; // Emoji de lápis
+            colEditar.UseColumnTextForButtonValue = true;
+            colEditar.Width = 85;
+            dataGridView1.Columns.Add(colEditar);
+
             // Botão Excluir
             DataGridViewButtonColumn colExcluir = new DataGridViewButtonColumn();
             colExcluir.Name = "Excluir";
@@ -142,95 +149,55 @@ namespace sistema_comercio
             dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 17, FontStyle.Bold);
             dataGridView1.RowTemplate.Height = 35;
         }
-        private void btn_adicionar_Click(object sender, EventArgs e)
-        {
-            try {
-                
-                if (string.IsNullOrWhiteSpace(textBox_nome_p.Text))
-                {
-                    labelInsiraNome.Visible = true;
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(textBox_codigo_barra.Text))
-                {
-                    labelInsiraCodigo.Visible = true;
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(textBox_preço_venda.Text))
-                {
-                    MessageBox.Show("Insira um Preço no Produto");
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(textBox_quantidade.Text))
-                {
-                    labelInsiraQuantidade.Visible = true;
-                    return;
-                }
-                
-                Produto_dtb produto = new Produto_dtb();
-                produto.Nome = textBox_nome_p.Text;
-                produto.CodigoBarras = textBox_codigo_barra.Text;
-                produto.Preco = decimal.Parse(textBox_preço_venda.Text.Replace(",","."), CultureInfo.InvariantCulture);
-                produto.Estoque = int.Parse(textBox_quantidade.Text, CultureInfo.InvariantCulture);
-                produto.Validade = dateTimePicker1.Value;
-                
-                DALProdutos.AddProduto(produto);
-                MessageBox.Show("Produto adicionado com sucesso!");
-                LimparCampos();
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show("Formato inválido nos campos numéricos!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao adicionar produto: {ex.Message}");
-                
-            }
-            finally {
-                ExibirDados();
-            }
-        }
-        private void LimparCampos()
-        {
-            textBox_nome_p.Clear();
-            textBox_codigo_barra.Clear();
-            textBox_preço_venda.Clear();
-            textBox_quantidade.Clear();
-        }
+
+
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // Verifica se clicou em alguma coluna de ação
-            
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "Excluir")
+
+            if (e.RowIndex < 0) return; // Ignora clique no cabeçalho
+
+            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+            string colunaNome = dataGridView1.Columns[e.ColumnIndex].Name;
+
+            if (colunaNome == "Excluir")
             {
-                ExcluirProduto(e.RowIndex);
+                ExcluirProduto(e.RowIndex); // Sua função de excluir
             }
-            else if (e.RowIndex >= 0)
+            else if (colunaNome == "Editar")
             {
-                DataGridViewRow rows = dataGridView1.Rows[e.RowIndex];
-                textBox_nome_p.Text = rows.Cells["nome"].Value.ToString();
-                textBox_codigo_barra.Text = rows.Cells["codigoBarras"].Value.ToString();
-                textBox_preço_venda.Text = rows.Cells["preco"].Value.ToString();
-                textBox_quantidade.Text = rows.Cells["estoque"].Value.ToString();
-                if (rows.Cells["validade"].Value != DBNull.Value)
-                    dateTimePicker1.Value = Convert.ToDateTime(rows.Cells["validade"].Value);
-                else
-                    dateTimePicker1.Value = DateTime.Now;
-               
+                // 1. Pega os dados do produto da linha clicada
+                Produto_dtb produto = new Produto_dtb();
+                produto.Id = Convert.ToInt32(row.Cells["id"].Value);
+                produto.Nome = row.Cells["nome"].Value.ToString();
+                produto.CodigoBarras = row.Cells["codigoBarras"].Value.ToString();
+                produto.Preco = Convert.ToDecimal(row.Cells["preco"].Value);
+                produto.Estoque = Convert.ToInt32(row.Cells["estoque"].Value);
+                if (row.Cells["validade"].Value != DBNull.Value)
+                    produto.Validade = Convert.ToDateTime(row.Cells["validade"].Value);
+
+                // 2. Abre o pop-up (usando o Construtor 2, preenchido)
+                using (Form_DetalheProduto formEdit = new Form_DetalheProduto(produto))
+                {
+                    if (formEdit.ShowDialog() == DialogResult.OK)
+                    {
+                        // 3. Se clicou em Salvar, chama o Update
+                        try
+                        {
+                            DALProdutos.UpdateProduto(formEdit.Produto);
+                            MessageBox.Show("Produto atualizado com sucesso!");
+                            ExibirDados(); // Atualiza o grid
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao atualizar produto: " + ex.Message);
+                        }
+                    }
+                }
 
             }
+        }
 
-        }
-        private void EditarProduto(int rowIndex)
-        {
-           
-           
-        }
-        private void AtualizarProduto(int id, string nome, string codigo, decimal preco, int quantidade)
-        {
-            
-        }
         private void ExcluirProduto(int rowIndex)
         {
             try
@@ -257,7 +224,7 @@ namespace sistema_comercio
         }
 
         private bool sidebarExpanded = true;
-       
+
         private void sidebar_timer_Tick_1(object sender, EventArgs e)
         {
             if (sidebarExpanded)
@@ -293,7 +260,7 @@ namespace sistema_comercio
 
         private void label4_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button_menu_Click(object sender, EventArgs e)
@@ -310,7 +277,7 @@ namespace sistema_comercio
 
         private void buttonEstoque_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void buttonVenda_Click(object sender, EventArgs e)
@@ -351,9 +318,31 @@ namespace sistema_comercio
             }
         }
 
-        
+        private void btn_adicionar_Click(object sender, EventArgs e)
+        {
+            using (Form_DetalheProduto formAdd = new Form_DetalheProduto())
+            {
+                // 2. Trava a tela e espera o usuário clicar em Salvar ou Cancelar
+                if (formAdd.ShowDialog() == DialogResult.OK)
+                {
+                    // 3. Se clicou em Salvar, pegue o produto preenchido
+                    try
+                    {
+                        DALProdutos.AddProduto(formAdd.Produto);
+                        MessageBox.Show("Produto adicionado com sucesso!");
+                        ExibirDados(); // Atualiza o grid
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro ao adicionar produto: " + ex.Message);
+                    }
+                }
+            }
+        }
     }
 }
+    
+
 
 
 

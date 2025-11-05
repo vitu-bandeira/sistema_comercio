@@ -277,16 +277,6 @@ namespace sistema_comercio
             lblTotalVenda.Text = $"Total da venda: {totalVenda:C2}";
         }
 
-        public class ItemVenda
-        {
-            public int ProdutoId { get; set; }
-            public string CodigoBarras { get; set; }
-            public string Nome { get; set; }
-            public int Quantidade { get; set; }
-            public decimal PrecoUnitario { get; set; }
-            public decimal TotalItem => Quantidade * PrecoUnitario; // Propriedade calculada
-        }
-       
 
         private void Form_venda_Load(object sender, EventArgs e)
         {
