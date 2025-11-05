@@ -154,5 +154,10 @@ namespace sistema_comercio
         }
 
         #endregion
+
+        private void dtpInicio_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

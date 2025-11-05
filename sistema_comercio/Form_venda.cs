@@ -396,7 +396,6 @@ namespace sistema_comercio
                 return;
             }
 
-            // 2. Pede confirmação
             var confirmResult = MessageBox.Show($"Valor total: {totalVenda:C2}\n\nDeseja finalizar a venda?",
                                                 "Confirmar Venda",
                                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -408,28 +407,42 @@ namespace sistema_comercio
 
             try
             {
-                // 3. (PARA CADA ITEM) Dá baixa no estoque
+                // 2. (PARA CADA ITEM) Dá baixa no estoque
                 foreach (var item in itensVenda)
                 {
                     DALProdutos.AtualizarEstoque(item.ProdutoId, item.Quantidade);
                 }
 
+                // 3. Prepara o objeto Venda para o histórico
+                Venda novaVenda = new Venda();
+                novaVenda.DataVenda = DateTime.Now;
+                novaVenda.ValorTotal = totalVenda;
+                novaVenda.IdCliente = null; // Começa como nulo (à vista)
+
                 // 4. (SE CLIENTE SELECIONADO) Adiciona o débito (fiado)
                 if (comboBoxCliente.SelectedItem != null && !string.IsNullOrEmpty(comboBoxCliente.Text))
                 {
                     string nomeCliente = comboBoxCliente.Text;
+
+                    // Adiciona o débito no saldo do cliente
                     DALClientes.AdicionarDebito(nomeCliente, totalVenda);
+
+                    // Pega o ID do cliente para salvar no histórico
+                    novaVenda.IdCliente = DALClientes.GetClienteIdPorNome(nomeCliente);
+
                     MessageBox.Show("Venda finalizada e debitada para " + nomeCliente + "!");
                 }
                 else
                 {
-                    // 5. (SE FOR À VISTA) Apenas finaliza
                     MessageBox.Show("Venda à vista finalizada com sucesso!");
                 }
 
+                // 5. (O PASSO NOVO) Registra a venda e seus itens no histórico
+                DALVendas.RegistrarVenda(novaVenda, itensVenda.ToList());
+
                 // 6. Limpa a tela para a próxima venda
                 itensVenda.Clear();
-                CalcularTotalVenda(); // Isso vai resetar o label do total para R$ 0,00
+                CalcularTotalVenda();
                 comboBoxCliente.Text = "";
                 comboBoxProduto.Text = "";
                 comboBoxProduto.Focus();

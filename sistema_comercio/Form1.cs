@@ -16,6 +16,8 @@ namespace sistema_comercio
         public Form1()
         {
             InitializeComponent();
+
+            DALVendas.CriarTabelasVendas();
         }
 
 

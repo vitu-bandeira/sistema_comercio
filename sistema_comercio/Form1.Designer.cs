@@ -117,7 +117,7 @@
             this.sidebar.MaximumSize = new System.Drawing.Size(240, 801);
             this.sidebar.MinimumSize = new System.Drawing.Size(83, 801);
             this.sidebar.Name = "sidebar";
-            this.sidebar.Size = new System.Drawing.Size(240, 801);
+            this.sidebar.Size = new System.Drawing.Size(83, 801);
             this.sidebar.TabIndex = 98;
             // 
             // panel1

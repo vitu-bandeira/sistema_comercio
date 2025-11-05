@@ -207,6 +207,29 @@ namespace sistema_comercio
                 throw new Exception("Erro ao ajustar saldo do cliente", ex);
             }
         }
+  
+        public static int? GetClienteIdPorNome(string nome)
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    cmd.CommandText = "SELECT id FROM Clientes_dtb WHERE nome = @nome LIMIT 1";
+                    cmd.Parameters.AddWithValue("@nome", nome);
+
+                    var result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return Convert.ToInt32(result);
+                    }
+                    return null; // Retorna nulo se não encontrar o cliente
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao buscar ID do cliente", ex);
+            }
+        }
     }
 }
 
