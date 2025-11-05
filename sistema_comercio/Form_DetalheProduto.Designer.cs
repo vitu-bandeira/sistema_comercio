@@ -77,7 +77,6 @@
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(666, 341);
             this.panel8.TabIndex = 102;
-            this.panel8.Paint += new System.Windows.Forms.PaintEventHandler(this.panel8_Paint);
             // 
             // buttonCancelar
             // 
