@@ -389,7 +389,6 @@ namespace sistema_comercio
         }
         private void btnAdicionar_Click(object sender, EventArgs e)
         {
-            // 1. Verifica se o carrinho não está vazio
             if (itensVenda.Count == 0)
             {
                 MessageBox.Show("Adicione pelo menos um produto ao carrinho!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -400,36 +399,28 @@ namespace sistema_comercio
                                                 "Confirmar Venda",
                                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (confirmResult == DialogResult.No)
-            {
-                return; // Usuário cancelou
-            }
+            if (confirmResult == DialogResult.No) return;
 
             try
             {
-                // 2. (PARA CADA ITEM) Dá baixa no estoque
+                // 1. Dá baixa no estoque
                 foreach (var item in itensVenda)
                 {
                     DALProdutos.AtualizarEstoque(item.ProdutoId, item.Quantidade);
                 }
 
-                // 3. Prepara o objeto Venda para o histórico
+                // 2. Prepara a Venda para o histórico
                 Venda novaVenda = new Venda();
                 novaVenda.DataVenda = DateTime.Now;
                 novaVenda.ValorTotal = totalVenda;
-                novaVenda.IdCliente = null; // Começa como nulo (à vista)
+                novaVenda.IdCliente = null; // À vista
 
-                // 4. (SE CLIENTE SELECIONADO) Adiciona o débito (fiado)
+                // 3. Se for "Fiado", adiciona o débito
                 if (comboBoxCliente.SelectedItem != null && !string.IsNullOrEmpty(comboBoxCliente.Text))
                 {
                     string nomeCliente = comboBoxCliente.Text;
-
-                    // Adiciona o débito no saldo do cliente
                     DALClientes.AdicionarDebito(nomeCliente, totalVenda);
-
-                    // Pega o ID do cliente para salvar no histórico
                     novaVenda.IdCliente = DALClientes.GetClienteIdPorNome(nomeCliente);
-
                     MessageBox.Show("Venda finalizada e debitada para " + nomeCliente + "!");
                 }
                 else
@@ -437,10 +428,11 @@ namespace sistema_comercio
                     MessageBox.Show("Venda à vista finalizada com sucesso!");
                 }
 
-                // 5. (O PASSO NOVO) Registra a venda e seus itens no histórico
+                // 4. REGISTRA A VENDA no histórico
+            
                 DALVendas.RegistrarVenda(novaVenda, itensVenda.ToList());
 
-                // 6. Limpa a tela para a próxima venda
+                // 5. Limpa a tela
                 itensVenda.Clear();
                 CalcularTotalVenda();
                 comboBoxCliente.Text = "";

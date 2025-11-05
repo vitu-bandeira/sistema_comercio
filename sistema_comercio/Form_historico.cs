@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Substitua TUDO no seu Form_historico.cs por isto:
+using System;
 using System.Data;
 using System.Drawing;
 using System.Text;
@@ -11,77 +12,74 @@ namespace sistema_comercio
         public Form_historico()
         {
             InitializeComponent();
+            // Importante: Faça os controles ficarem responsivos
+            // Use as propriedades Dock e Anchor no Designer!
         }
 
         private void Form_historico_Load(object sender, EventArgs e)
         {
-            // Configura os grids para terem um visual profissional
             ConfigurarGridVendas();
             ConfigurarGridItens();
 
-            // Adiciona os eventos de clique aos botões
-            btnHoje.Click += btnHoje_Click;
-            btnSemana.Click += btnSemana_Click;
-            btnMes.Click += btnMes_Click;
-            btnFiltrar.Click += btnFiltrar_Click;
+            // LIGUE SEUS BOTÕES NO DESIGNER
+            // (Dê dois cliques em cada botão no Designer para criar estes eventos)
+            
 
-            // Simula o clique no botão "Hoje" para carregar os dados do dia
+            // Carrega os dados de hoje
             btnHoje_Click(sender, e);
+          
         }
 
         #region Configuração dos Grids
-
         private void ConfigurarGridVendas()
         {
             dgvVendas.Columns.Clear();
             dgvVendas.AutoGenerateColumns = false;
             dgvVendas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvVendas.MultiSelect = false;
-
-            // Adiciona as colunas
             dgvVendas.Columns.Add(new DataGridViewTextBoxColumn { Name = "IdVenda", DataPropertyName = "IdVenda", HeaderText = "Recibo" });
-            dgvVendas.Columns.Add(new DataGridViewTextBoxColumn { Name = "DataVenda", DataPropertyName = "DataVenda", HeaderText = "Data/Hora", Width = 150, DefaultCellStyle = { Format = "g" } });
-            dgvVendas.Columns.Add(new DataGridViewTextBoxColumn { Name = "Cliente", DataPropertyName = "Cliente", HeaderText = "Cliente", Width = 200 });
+            dgvVendas.Columns.Add(new DataGridViewTextBoxColumn { Name = "DataVenda", DataPropertyName = "DataVenda", HeaderText = "Data/Hora", Width = 450, DefaultCellStyle = { Format = "g" } });
+            dgvVendas.Columns.Add(new DataGridViewTextBoxColumn { Name = "Cliente", DataPropertyName = "Cliente", HeaderText = "Cliente", Width = 400 });
             dgvVendas.Columns.Add(new DataGridViewTextBoxColumn { Name = "ValorTotal", DataPropertyName = "ValorTotal", HeaderText = "Valor", DefaultCellStyle = { Format = "C2" } });
+            dgvVendas.DefaultCellStyle.Font = new Font("Segoe UI", 14); // Fonte das linhas
+            dgvVendas.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 16, FontStyle.Bold); // Fonte do cabeçalho
+            dgvVendas.RowTemplate.Height = 35;
 
-            dgvVendas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvVendas.DefaultCellStyle.Font = new Font("Segoe UI", 11);
-            dgvVendas.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
-
-            // Evento que carrega os detalhes quando uma venda é selecionada
             dgvVendas.SelectionChanged += dgvVendas_SelectionChanged;
+           
         }
 
         private void ConfigurarGridItens()
         {
             dgvItens.Columns.Clear();
             dgvItens.AutoGenerateColumns = false;
-
-            dgvItens.Columns.Add(new DataGridViewTextBoxColumn { Name = "NomeProduto", DataPropertyName = "NomeProduto", HeaderText = "Produto", Width = 250 });
+            dgvItens.Columns.Add(new DataGridViewTextBoxColumn { Name = "NomeProduto", DataPropertyName = "NomeProduto", HeaderText = "Produto", Width = 550 });
             dgvItens.Columns.Add(new DataGridViewTextBoxColumn { Name = "Quantidade", DataPropertyName = "Quantidade", HeaderText = "Qtd." });
             dgvItens.Columns.Add(new DataGridViewTextBoxColumn { Name = "PrecoUnitario", DataPropertyName = "PrecoUnitario", HeaderText = "Preço Unit.", DefaultCellStyle = { Format = "C2" } });
             dgvItens.Columns.Add(new DataGridViewTextBoxColumn { Name = "TotalItem", DataPropertyName = "TotalItem", HeaderText = "Total Item", DefaultCellStyle = { Format = "C2" } });
-
+            dgvItens.DefaultCellStyle.Font = new Font("Segoe UI", 17);
+            dgvItens.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 17, FontStyle.Bold);
+            dgvItens.RowTemplate.Height = 35;
             dgvItens.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+           
         }
-
         #endregion
 
         #region Lógica dos Filtros
-
-        // O cérebro principal: busca os dados e atualiza a tela
         private void FiltrarDados()
         {
             try
             {
-                // 1. Pega as Vendas com os filtros aplicados
+                // 1. Limpa o grid de itens ANTES de recarregar o grid principal
+                dgvItens.DataSource = null;
+
+                // 2. Pega as Vendas com os filtros aplicados
                 DataTable dtVendas = DALVendas.GetVendas(dtpInicio.Value, dtpFim.Value, txtFiltroCliente.Text);
                 dgvVendas.DataSource = dtVendas;
 
-                // 2. Calcula os resumos financeiros
+                // 3. Calcula os resumos financeiros
                 decimal totalFaturado = 0;
                 decimal totalDebito = 0;
-
                 foreach (DataRow row in dtVendas.Rows)
                 {
                     totalFaturado += Convert.ToDecimal(row["ValorTotal"]);
@@ -90,14 +88,22 @@ namespace sistema_comercio
                         totalDebito += Convert.ToDecimal(row["ValorTotal"]);
                     }
                 }
-
-                // 3. Mostra os resumos nos Labels
                 lblTotalFaturado.Text = totalFaturado.ToString("C2");
                 lblTotalDebito.Text = totalDebito.ToString("C2");
 
-                // Limpa os detalhes se não houver vendas
-                if (dtVendas.Rows.Count == 0)
+                // --- ESTA É A NOVA PARTE ---
+                // 4. Se encontrou vendas, carrega os itens da primeira venda
+                if (dtVendas.Rows.Count > 0)
                 {
+                    // Pega o ID da primeira linha (índice 0)
+                    int idPrimeiraVenda = Convert.ToInt32(dtVendas.Rows[0]["IdVenda"]);
+
+                    // Chama o DALVendas e preenche o grid de itens
+                    dgvItens.DataSource = DALVendas.GetItensPorVenda(idPrimeiraVenda);
+                }
+                else
+                {
+                    // Se não houver vendas, garante que o grid de itens esteja vazio
                     dgvItens.DataSource = null;
                 }
             }
@@ -107,11 +113,9 @@ namespace sistema_comercio
             }
         }
 
-        // Quando o usuário clica em uma venda, mostra os itens dela
         private void dgvVendas_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvVendas.CurrentRow == null) return;
-
             try
             {
                 int idVenda = Convert.ToInt32(dgvVendas.CurrentRow.Cells["IdVenda"].Value);
@@ -123,28 +127,15 @@ namespace sistema_comercio
             }
         }
 
-        // --- Eventos dos Botões de Filtro ---
-        private void btnFiltrar_Click(object sender, EventArgs e)
-        {
-            FiltrarDados();
-        }
-
+        // CRIE OS EVENTOS DE CLIQUE PARA SEUS BOTÕES NO DESIGNER
+        private void btnFiltrar_Click(object sender, EventArgs e) {  }
         private void btnHoje_Click(object sender, EventArgs e)
         {
-            dtpInicio.Value = DateTime.Today;
-            dtpFim.Value = DateTime.Today;
-            txtFiltroCliente.Clear();
-            FiltrarDados();
         }
-
         private void btnSemana_Click(object sender, EventArgs e)
         {
-            dtpInicio.Value = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-            dtpFim.Value = DateTime.Today;
-            txtFiltroCliente.Clear();
-            FiltrarDados();
+          
         }
-
         private void btnMes_Click(object sender, EventArgs e)
         {
             dtpInicio.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
@@ -152,10 +143,39 @@ namespace sistema_comercio
             txtFiltroCliente.Clear();
             FiltrarDados();
         }
-
         #endregion
 
-        private void dtpInicio_ValueChanged(object sender, EventArgs e)
+        private void btnHoje_Click_1(object sender, EventArgs e)
+        {
+
+            dtpInicio.Value = DateTime.Today;
+            dtpFim.Value = DateTime.Today;
+            txtFiltroCliente.Clear();
+            FiltrarDados();
+        }
+
+        private void btnSemana_Click_1(object sender, EventArgs e)
+        {
+            dtpInicio.Value = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+            dtpFim.Value = DateTime.Today;
+            txtFiltroCliente.Clear();
+            FiltrarDados();
+        }
+
+        private void btnMes_Click_1(object sender, EventArgs e)
+        {
+            dtpInicio.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            dtpFim.Value = DateTime.Today;
+            txtFiltroCliente.Clear();
+            FiltrarDados();
+        }
+
+        private void btnFiltrar_Click_1(object sender, EventArgs e)
+        {
+            FiltrarDados();
+        }
+
+        private void dgvItens_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

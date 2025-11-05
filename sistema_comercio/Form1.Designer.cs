@@ -34,13 +34,20 @@
             this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
+            this.button_menu = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.buttonHome = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.buttonEstoque = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.buttonVenda = new System.Windows.Forms.Button();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.buttonCliente = new System.Windows.Forms.Button();
             this.panel13 = new System.Windows.Forms.Panel();
+            this.buttonHistorico = new System.Windows.Forms.Button();
             this.panel14 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel9 = new System.Windows.Forms.Panel();
@@ -59,16 +66,10 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.button_menu = new System.Windows.Forms.PictureBox();
-            this.buttonHome = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.buttonEstoque = new System.Windows.Forms.Button();
-            this.buttonVenda = new System.Windows.Forms.Button();
-            this.buttonCliente = new System.Windows.Forms.Button();
-            this.buttonHistorico = new System.Windows.Forms.Button();
             this.panel6.SuspendLayout();
             this.sidebar.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -78,7 +79,6 @@
             this.panel10.SuspendLayout();
             this.panel11.SuspendLayout();
             this.panel12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).BeginInit();
             this.SuspendLayout();
             // 
             // panel6
@@ -140,6 +140,18 @@
             this.label5.TabIndex = 36;
             this.label5.Text = "Menu";
             // 
+            // button_menu
+            // 
+            this.button_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button_menu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_menu.Image = global::sistema_comercio.Properties.Resources.icons8_menu_50;
+            this.button_menu.Location = new System.Drawing.Point(10, 12);
+            this.button_menu.Name = "button_menu";
+            this.button_menu.Size = new System.Drawing.Size(52, 52);
+            this.button_menu.TabIndex = 0;
+            this.button_menu.TabStop = false;
+            this.button_menu.Click += new System.EventHandler(this.button_menu_Click);
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.panel8);
@@ -158,6 +170,38 @@
             this.panel8.Size = new System.Drawing.Size(10, 90);
             this.panel8.TabIndex = 81;
             // 
+            // buttonHome
+            // 
+            this.buttonHome.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonHome.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonHome.ForeColor = System.Drawing.Color.White;
+            this.buttonHome.Image = global::sistema_comercio.Properties.Resources.icons8_home_50__1_;
+            this.buttonHome.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonHome.Location = new System.Drawing.Point(-6, -8);
+            this.buttonHome.Name = "buttonHome";
+            this.buttonHome.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonHome.Size = new System.Drawing.Size(283, 90);
+            this.buttonHome.TabIndex = 35;
+            this.buttonHome.Text = "                 Inicio";
+            this.buttonHome.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonHome.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Image = global::sistema_comercio.Properties.Resources.icons8_home_50__1_;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(-5, -9);
+            this.button1.Name = "button1";
+            this.button1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.button1.Size = new System.Drawing.Size(283, 90);
+            this.button1.TabIndex = 36;
+            this.button1.Text = "                 Inicio";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.buttonEstoque);
@@ -166,6 +210,23 @@
             this.panel3.Size = new System.Drawing.Size(273, 73);
             this.panel3.TabIndex = 2;
             // 
+            // buttonEstoque
+            // 
+            this.buttonEstoque.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonEstoque.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEstoque.ForeColor = System.Drawing.Color.White;
+            this.buttonEstoque.Image = global::sistema_comercio.Properties.Resources.icons8_products_50;
+            this.buttonEstoque.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonEstoque.Location = new System.Drawing.Point(-6, -8);
+            this.buttonEstoque.Name = "buttonEstoque";
+            this.buttonEstoque.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonEstoque.Size = new System.Drawing.Size(283, 90);
+            this.buttonEstoque.TabIndex = 35;
+            this.buttonEstoque.Text = "                 Produtos";
+            this.buttonEstoque.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonEstoque.UseVisualStyleBackColor = true;
+            this.buttonEstoque.Click += new System.EventHandler(this.buttonEstoque_Click);
+            // 
             // panel4
             // 
             this.panel4.Controls.Add(this.buttonVenda);
@@ -173,6 +234,23 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(273, 73);
             this.panel4.TabIndex = 3;
+            // 
+            // buttonVenda
+            // 
+            this.buttonVenda.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonVenda.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonVenda.ForeColor = System.Drawing.Color.White;
+            this.buttonVenda.Image = global::sistema_comercio.Properties.Resources.icons8_products_64;
+            this.buttonVenda.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonVenda.Location = new System.Drawing.Point(-8, -8);
+            this.buttonVenda.Name = "buttonVenda";
+            this.buttonVenda.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonVenda.Size = new System.Drawing.Size(283, 90);
+            this.buttonVenda.TabIndex = 35;
+            this.buttonVenda.Text = "                 Caixa";
+            this.buttonVenda.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonVenda.UseVisualStyleBackColor = true;
+            this.buttonVenda.Click += new System.EventHandler(this.buttonVenda_Click);
             // 
             // panel5
             // 
@@ -191,6 +269,23 @@
             this.panel7.Size = new System.Drawing.Size(10, 90);
             this.panel7.TabIndex = 80;
             // 
+            // buttonCliente
+            // 
+            this.buttonCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCliente.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCliente.ForeColor = System.Drawing.Color.White;
+            this.buttonCliente.Image = global::sistema_comercio.Properties.Resources.icons8_user_50;
+            this.buttonCliente.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonCliente.Location = new System.Drawing.Point(-5, -2);
+            this.buttonCliente.Name = "buttonCliente";
+            this.buttonCliente.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonCliente.Size = new System.Drawing.Size(283, 90);
+            this.buttonCliente.TabIndex = 81;
+            this.buttonCliente.Text = "                 Clientes";
+            this.buttonCliente.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonCliente.UseVisualStyleBackColor = true;
+            this.buttonCliente.Click += new System.EventHandler(this.buttonCliente_Click_1);
+            // 
             // panel13
             // 
             this.panel13.Controls.Add(this.buttonHistorico);
@@ -199,6 +294,23 @@
             this.panel13.Name = "panel13";
             this.panel13.Size = new System.Drawing.Size(273, 73);
             this.panel13.TabIndex = 5;
+            // 
+            // buttonHistorico
+            // 
+            this.buttonHistorico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonHistorico.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonHistorico.ForeColor = System.Drawing.Color.White;
+            this.buttonHistorico.Image = global::sistema_comercio.Properties.Resources.icons8_receipt_dollar_50;
+            this.buttonHistorico.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonHistorico.Location = new System.Drawing.Point(-5, -2);
+            this.buttonHistorico.Name = "buttonHistorico";
+            this.buttonHistorico.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonHistorico.Size = new System.Drawing.Size(283, 90);
+            this.buttonHistorico.TabIndex = 82;
+            this.buttonHistorico.Text = "                 Historico";
+            this.buttonHistorico.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonHistorico.UseVisualStyleBackColor = true;
+            this.buttonHistorico.Click += new System.EventHandler(this.buttonHistorico_Click);
             // 
             // panel14
             // 
@@ -403,118 +515,6 @@
             this.label12.TabIndex = 7;
             this.label12.Text = "0,00";
             // 
-            // button_menu
-            // 
-            this.button_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button_menu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button_menu.Image = global::sistema_comercio.Properties.Resources.icons8_menu_50;
-            this.button_menu.Location = new System.Drawing.Point(10, 12);
-            this.button_menu.Name = "button_menu";
-            this.button_menu.Size = new System.Drawing.Size(52, 52);
-            this.button_menu.TabIndex = 0;
-            this.button_menu.TabStop = false;
-            this.button_menu.Click += new System.EventHandler(this.button_menu_Click);
-            // 
-            // buttonHome
-            // 
-            this.buttonHome.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonHome.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonHome.ForeColor = System.Drawing.Color.White;
-            this.buttonHome.Image = global::sistema_comercio.Properties.Resources.icons8_home_50__1_;
-            this.buttonHome.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonHome.Location = new System.Drawing.Point(-6, -8);
-            this.buttonHome.Name = "buttonHome";
-            this.buttonHome.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonHome.Size = new System.Drawing.Size(283, 90);
-            this.buttonHome.TabIndex = 35;
-            this.buttonHome.Text = "                 Inicio";
-            this.buttonHome.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonHome.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = global::sistema_comercio.Properties.Resources.icons8_home_50__1_;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(-5, -9);
-            this.button1.Name = "button1";
-            this.button1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.button1.Size = new System.Drawing.Size(283, 90);
-            this.button1.TabIndex = 36;
-            this.button1.Text = "                 Inicio";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // buttonEstoque
-            // 
-            this.buttonEstoque.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonEstoque.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEstoque.ForeColor = System.Drawing.Color.White;
-            this.buttonEstoque.Image = global::sistema_comercio.Properties.Resources.icons8_products_50;
-            this.buttonEstoque.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonEstoque.Location = new System.Drawing.Point(-6, -8);
-            this.buttonEstoque.Name = "buttonEstoque";
-            this.buttonEstoque.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonEstoque.Size = new System.Drawing.Size(283, 90);
-            this.buttonEstoque.TabIndex = 35;
-            this.buttonEstoque.Text = "                 Produtos";
-            this.buttonEstoque.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonEstoque.UseVisualStyleBackColor = true;
-            this.buttonEstoque.Click += new System.EventHandler(this.buttonEstoque_Click);
-            // 
-            // buttonVenda
-            // 
-            this.buttonVenda.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonVenda.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonVenda.ForeColor = System.Drawing.Color.White;
-            this.buttonVenda.Image = global::sistema_comercio.Properties.Resources.icons8_products_64;
-            this.buttonVenda.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonVenda.Location = new System.Drawing.Point(-8, -8);
-            this.buttonVenda.Name = "buttonVenda";
-            this.buttonVenda.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonVenda.Size = new System.Drawing.Size(283, 90);
-            this.buttonVenda.TabIndex = 35;
-            this.buttonVenda.Text = "                 Caixa";
-            this.buttonVenda.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonVenda.UseVisualStyleBackColor = true;
-            this.buttonVenda.Click += new System.EventHandler(this.buttonVenda_Click);
-            // 
-            // buttonCliente
-            // 
-            this.buttonCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCliente.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonCliente.ForeColor = System.Drawing.Color.White;
-            this.buttonCliente.Image = global::sistema_comercio.Properties.Resources.icons8_user_50;
-            this.buttonCliente.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonCliente.Location = new System.Drawing.Point(-13, -2);
-            this.buttonCliente.Name = "buttonCliente";
-            this.buttonCliente.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonCliente.Size = new System.Drawing.Size(283, 90);
-            this.buttonCliente.TabIndex = 81;
-            this.buttonCliente.Text = "                 Clientes";
-            this.buttonCliente.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonCliente.UseVisualStyleBackColor = true;
-            this.buttonCliente.Click += new System.EventHandler(this.buttonCliente_Click_1);
-            // 
-            // buttonHistorico
-            // 
-            this.buttonHistorico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonHistorico.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonHistorico.ForeColor = System.Drawing.Color.White;
-            this.buttonHistorico.Image = global::sistema_comercio.Properties.Resources.icons8_receipt_dollar_50;
-            this.buttonHistorico.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonHistorico.Location = new System.Drawing.Point(-10, -2);
-            this.buttonHistorico.Name = "buttonHistorico";
-            this.buttonHistorico.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonHistorico.Size = new System.Drawing.Size(283, 90);
-            this.buttonHistorico.TabIndex = 82;
-            this.buttonHistorico.Text = "                 Historico";
-            this.buttonHistorico.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonHistorico.UseVisualStyleBackColor = true;
-            this.buttonHistorico.Click += new System.EventHandler(this.buttonHistorico_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -538,6 +538,7 @@
             this.panel6.PerformLayout();
             this.sidebar.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -551,7 +552,6 @@
             this.panel11.PerformLayout();
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).EndInit();
             this.ResumeLayout(false);
 
         }

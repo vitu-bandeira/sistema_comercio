@@ -17,13 +17,13 @@ namespace sistema_comercio
         {
             InitializeComponent();
 
-            DALVendas.CriarTabelasVendas();
         }
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+           
+            DALVendas.CriarTabelasVendas();
         }
 
         private void buttonEstoque_Click(object sender, EventArgs e)
