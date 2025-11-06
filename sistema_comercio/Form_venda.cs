@@ -130,7 +130,7 @@ namespace sistema_comercio
             dataGridView1.DataSource = itensVenda;      // Vincula à lista de itens
 
        
-            dataGridView1.AutoGenerateColumns = false;
+           
 
             // Coluna ID (oculta)
             DataGridViewTextBoxColumn colID = new DataGridViewTextBoxColumn();

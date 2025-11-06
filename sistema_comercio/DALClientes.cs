@@ -172,7 +172,7 @@ namespace sistema_comercio
                     // Soma o novo débito ao saldo existente
                     cmd.CommandText = @"
                 UPDATE Clientes_dtb 
-                SET saldo = saldo + @valorDebito 
+                SET saldo = saldo - @valorDebito 
                 WHERE nome = @nomeCliente";
 
                     cmd.Parameters.AddWithValue("@valorDebito", valorDebito);
