@@ -93,7 +93,7 @@
             this.Controls.Add(this.btnConfirmar);
             this.Controls.Add(this.txtValorAjuste);
             this.Controls.Add(this.labelAjuste);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form_AjustarSaldo";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

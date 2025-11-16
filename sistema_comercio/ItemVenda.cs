@@ -13,6 +13,7 @@ namespace sistema_comercio
         public decimal PrecoUnitario { get; set; }
 
         // Propriedade calculada (não vai ao banco, mas é útil)
+        public int EstoqueDisponivel { get; set; } // Guarda o estoque máximo
         public decimal TotalItem => Quantidade * PrecoUnitario;
     }
 }

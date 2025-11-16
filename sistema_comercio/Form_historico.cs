@@ -263,5 +263,38 @@ namespace sistema_comercio
             newCliente.Show();
             this.Close();
         }
+        private void button_menu_Click(object sender, EventArgs e)
+        {
+            sidebar_timer.Start();
+        }
+        bool sidebarExpanded = true;
+
+        private void sidebar_timer_Tick_1(object sender, EventArgs e)
+        {
+            if (sidebarExpanded)
+            {
+                if (sidebar.Width > sidebar.MinimumSize.Width) sidebar.Width -= 10;
+                else { sidebarExpanded = false; sidebar_timer.Stop(); }
+            }
+            else
+            {
+                if (sidebar.Width < sidebar.MaximumSize.Width) sidebar.Width += 10;
+                else { sidebarExpanded = true; sidebar_timer.Stop(); }
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Deseja realmente fechar o sistema?",
+                                     "Confirmar Saída",
+                                     MessageBoxButtons.YesNo,
+                                     MessageBoxIcon.Question);
+
+            // Se o usuário clicar em "Sim", o aplicativo fecha.
+            if (confirmResult == DialogResult.Yes)
+            {
+                Application.Exit(); // Este comando fecha o programa INTEIRO.
+            }
+        }
     }
 }

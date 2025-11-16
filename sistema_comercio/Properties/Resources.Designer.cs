@@ -83,6 +83,16 @@ namespace sistema_comercio.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_export_50 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-export-50", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_home_50__1_ {
             get {
                 object obj = ResourceManager.GetObject("icons8-home-50 (1)", resourceCulture);

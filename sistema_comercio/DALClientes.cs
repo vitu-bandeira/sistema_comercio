@@ -230,6 +230,50 @@ namespace sistema_comercio
                 throw new Exception("Erro ao buscar ID do cliente", ex);
             }
         }
+        // Cole isto dentro da classe DALClientes
+        public static decimal GetTotalSaldosDevedores()
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    // Soma apenas saldos negativos (dívidas)
+                    cmd.CommandText = "SELECT SUM(saldo) FROM Clientes_dtb WHERE saldo < 0";
+
+                    var result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return Convert.ToDecimal(result);
+                    }
+                    return 0; // Retorna 0 se não houver dívidas
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao calcular saldo devedor total", ex);
+            }
+        }
+
+        public static DataTable GetTop5Devedores()
+        {
+            SQLiteDataAdapter da = null;
+            DataTable dt = new DataTable();
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    // Ordena do menor saldo (mais negativo) para o maior
+                    cmd.CommandText = "SELECT nome, saldo FROM Clientes_dtb WHERE saldo < 0 ORDER BY saldo ASC LIMIT 5";
+                    da = new SQLiteDataAdapter(cmd.CommandText, DBconnection());
+                    da.Fill(dt);
+                    return dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
 

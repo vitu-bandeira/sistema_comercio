@@ -339,6 +339,29 @@ namespace sistema_comercio
                 }
             }
         }
+
+      
+
+        private void buttonHistorico_Click_1(object sender, EventArgs e)
+        {
+            Form_historico historico = new Form_historico();
+            historico.Show();
+            this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Deseja realmente fechar o sistema?",
+                                     "Confirmar Saída",
+                                     MessageBoxButtons.YesNo,
+                                     MessageBoxIcon.Question);
+
+            // Se o usuário clicar em "Sim", o aplicativo fecha.
+            if (confirmResult == DialogResult.Yes)
+            {
+                Application.Exit(); // Este comando fecha o programa INTEIRO.
+            }
+        }
     }
 }
     

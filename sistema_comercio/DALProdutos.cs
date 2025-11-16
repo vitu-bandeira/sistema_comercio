@@ -269,6 +269,27 @@ namespace sistema_comercio
                     throw new Exception("Erro ao dar baixa no estoque", ex);
                 }
             }
+            // Cole isto dentro da classe DALProdutos
+            public static int GetContagemEstoqueBaixo(int limite)
+            {
+                try
+                {
+                    using (var conn = CreateConnection())
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT COUNT(id) FROM Produtos_dtb WHERE estoque <= @limite";
+                        cmd.Parameters.AddWithValue("@limite", limite);
+
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        return count;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao contar estoque baixo", ex);
+                }
+            }
         }
+
     }
 }
