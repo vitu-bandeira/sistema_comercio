@@ -36,6 +36,22 @@ namespace sistema_comercio
             // Código limpo, métodos e variáveis antigos foram removidos.
             DALProdutos.CriarTabelaProdutos();
             ExibirDados();
+            CarregarCards();
+        }
+        private void CarregarCards()
+        {
+            try
+            {
+                lblValorTotal.Text = DALProdutos.GetValorTotalEstoque().ToString("C2");
+                lblValorTotal.ForeColor = Color.Green;
+
+                int baixo = DALProdutos.GetContagemEstoqueBaixo(10);
+                lblEstoqueBaixo.Text = baixo.ToString();
+                lblEstoqueBaixo.ForeColor = baixo > 0 ? Color.Red : Color.Gray;
+
+                lblQtdProdutos.Text = DALProdutos.GetTotalProdutosCadastrados().ToString();
+            }
+            catch { }
         }
         private void ExibirDados()
         {
@@ -71,7 +87,6 @@ namespace sistema_comercio
                     e.Handled = true;
             }
         }
-
 
         private void ConfigurarGrid()
         {
@@ -145,11 +160,10 @@ namespace sistema_comercio
             dataGridView1.Columns.Add(colExcluir);
 
             // Estilo
-            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 17);
-            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 17, FontStyle.Bold);
+            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 12);
+            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
             dataGridView1.RowTemplate.Height = 35;
         }
-
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -258,52 +272,6 @@ namespace sistema_comercio
             }
         }
 
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button_menu_Click(object sender, EventArgs e)
-        {
-            sidebar_timer.Start();
-        }
-
-        private void buttonHome_Click(object sender, EventArgs e)
-        {
-            Form1 newF = new Form1();
-            newF.Show();
-            this.Close();
-        }
-
-        private void buttonEstoque_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonVenda_Click(object sender, EventArgs e)
-        {
-            Form_venda newEstoque = new Form_venda();
-            newEstoque.Show();
-            this.Close();
-        }
-
-        private void buttonCliente_Click(object sender, EventArgs e)
-        {
-            FormCliente newCliente = new FormCliente();
-            newCliente.Show();
-            this.Close();
-        }
-
-        private void dateTimePicker3_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelInsiraNome_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void textBoxBuscar_TextChanged(object sender, EventArgs e)
         {
             try
@@ -362,6 +330,64 @@ namespace sistema_comercio
                 Application.Exit(); // Este comando fecha o programa INTEIRO.
             }
         }
+
+        private void buttonHome_Click_1(object sender, EventArgs e)
+        {
+            Form1 newF = new Form1();
+            newF.Show();
+            this.Close();
+        }
+
+        private void buttonVenda_Click_1(object sender, EventArgs e)
+        {
+            Form_venda newEstoque = new Form_venda();
+            newEstoque.Show();
+            this.Close();
+        }
+
+        private void buttonCliente_Click_1(object sender, EventArgs e)
+        {
+            FormCliente newCliente = new FormCliente();
+            newCliente.Show();
+            this.Close();
+        }
+
+        private void buttonHistorico_Click(object sender, EventArgs e)
+        {
+            Form_historico historico = new Form_historico();
+            historico.Show();
+            this.Close();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Deseja realmente fechar o sistema?",
+                                     "Confirmar Saída",
+                                     MessageBoxButtons.YesNo,
+                                     MessageBoxIcon.Question);
+
+            // Se o usuário clicar em "Sim", o aplicativo fecha.
+            if (confirmResult == DialogResult.Yes)
+            {
+                Application.Exit(); // Este comando fecha o programa INTEIRO.
+            }
+        }
+
+        private void button_menu_Click_1(object sender, EventArgs e)
+        {
+            sidebar_timer.Start();
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_adicionar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
     

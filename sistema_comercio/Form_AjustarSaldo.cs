@@ -43,5 +43,6 @@ namespace sistema_comercio
             this.DialogResult = DialogResult.Cancel; // Informa que foi cancelado
             this.Close();
         }
+
     }
 }

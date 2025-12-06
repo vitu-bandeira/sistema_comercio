@@ -24,11 +24,28 @@ namespace sistema_comercio
         {
             DALClientes.CriarBancoSQLite();
             DALClientes.CriarTabelaClientes();
+            DALClientes.CriarTabelaHistorico();
             ConfigurarGrid();
             ExibirDados();
+            CarregarCards();
 
         }
+        private void CarregarCards()
+        {
+            try
+            {
+                // Math.Abs tira o sinal de negativo para ficar bonito no card (ex: R$ 100,00 a receber)
+                lblTotal.Text = Math.Abs(DALClientes.GetTotalSaldosDevedores()).ToString("C2");
+                lblTotal.ForeColor = Color.Red;
 
+                int devedores = DALClientes.GetTotalClientesDevedores();
+                lblQtdDevedores.Text = devedores.ToString();
+                lblQtdDevedores.ForeColor = devedores > 0 ? Color.OrangeRed : Color.Gray;
+
+                lblTotalClientes.Text = DALClientes.GetTotalClientesCadastrados().ToString();
+            }
+            catch { }
+        }
         private void ExibirDados()
         {
             try
@@ -97,6 +114,14 @@ namespace sistema_comercio
             colAjustar.Width = 85;
             dataGridView1.Columns.Add(colAjustar);
 
+            DataGridViewButtonColumn colExtrato = new DataGridViewButtonColumn();
+            colExtrato.Name = "Extrato";
+            colExtrato.HeaderText = "Ver";
+            colExtrato.Text = "📄"; // Emoji de papel/documento
+            colExtrato.UseColumnTextForButtonValue = true;
+            colExtrato.Width = 50;
+            dataGridView1.Columns.Add(colExtrato);
+
             // Coluna Excluir (Botão)
             DataGridViewButtonColumn colExcluir = new DataGridViewButtonColumn();
             colExcluir.Name = "Excluir";
@@ -108,31 +133,12 @@ namespace sistema_comercio
 
 
             // Estilo do Grid
-            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 15);
-            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 17, FontStyle.Bold);
+            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 12);
+            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
             dataGridView1.RowTemplate.Height = 35;
 
         }
-        private void buttonHome_Click(object sender, EventArgs e)
-        {
-            Form1 form1 = new Form1();
-            form1.Show();
-            this.Close();
-        }
-
-        private void buttonEstoque_Click_1(object sender, EventArgs e)
-        {
-            FormProduto formProduto = new FormProduto();
-            formProduto.Show();
-            this.Close();
-        }
-
-        private void buttonVenda_Click_1(object sender, EventArgs e)
-        {
-            Form_venda formVenda = new Form_venda();
-            formVenda.Show();
-            this.Close();
-        }
+        
         bool sidebarExpanded = true;
 
         private void sidebar_timer_Tick_1(object sender, EventArgs e)
@@ -168,10 +174,7 @@ namespace sistema_comercio
             }
 
         }
-        private void button_menu_Click_1(object sender, EventArgs e)
-        {
-            sidebar_timer.Start();
-        }
+      
 
         private void textBoxBuscar_TextChanged(object sender, EventArgs e)
         {
@@ -195,24 +198,28 @@ namespace sistema_comercio
 
             if (e.RowIndex < 0) return;
 
-            // Pega a linha clicada
             DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-
-            // Salva o ID do cliente selecionado (para o botão principal "Ajustar Saldo")
             idSelecionado = Convert.ToInt32(row.Cells["IdProduto"].Value);
+            string nome = row.Cells["Nome"].Value.ToString();
+            string nomeColuna = dataGridView1.Columns[e.ColumnIndex].Name;
 
-            // Agora, verifica se o clique foi em um BOTÃO específico
-            if (e.ColumnIndex == dataGridView1.Columns["Excluir"].Index)
+            if (nomeColuna == "Excluir")
             {
                 ExcluirCliente(e.RowIndex);
             }
-            else if (e.ColumnIndex == dataGridView1.Columns["Ajustar"].Index)
+            else if (nomeColuna == "Ajustar")
             {
-                // Pega o nome da linha (o ID já temos em idSelecionado)
-                string nome = row.Cells["Nome"].Value.ToString();
-
-                // Chama a nossa nova função
                 AbrirAjusteSaldo(idSelecionado, nome);
+            }
+            else if (nomeColuna == "Extrato")
+            {
+                // Abre o extrato (Certifique-se de ter criado o Form_Extrato)
+                try
+                {
+                    Form_Extrato formExtrato = new Form_Extrato(idSelecionado, nome);
+                    formExtrato.ShowDialog();
+                }
+                catch { MessageBox.Show("Formulário de Extrato não encontrado."); }
             }
         }
     
@@ -241,34 +248,35 @@ namespace sistema_comercio
 
         private void AbrirAjusteSaldo(int clienteId, string nomeCliente)
         {
-            // 1. Abre a nova janela (Form_AjustarSaldo)
             using (Form_AjustarSaldo formAjuste = new Form_AjustarSaldo())
             {
-                formAjuste.Text = "Ajustar Saldo de: " + nomeCliente; // Define o título da janela
+                formAjuste.Text = "Ajustar Saldo de: " + nomeCliente;
 
-                // 2. Mostra a janela modal
                 if (formAjuste.ShowDialog() == DialogResult.OK)
                 {
-                    // 3. Se o usuário clicou em "Confirmar"
                     try
                     {
                         decimal valorDoAjuste = formAjuste.ValorAjuste;
 
-                        // 4. Chama o método do DAL para atualizar o banco
+                        // 1. Atualiza o Saldo (Como já fazia)
                         DALClientes.AjustarSaldoCliente(clienteId, valorDoAjuste);
 
-                        MessageBox.Show($"Saldo de {nomeCliente} ajustado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // 2. NOVO: Grava no Histórico!
+                        string descricao = valorDoAjuste > 0 ? "Pagamento / Depósito" : "Cobrança / Ajuste";
+                        DALClientes.RegistrarMovimentacao(clienteId, valorDoAjuste, descricao);
 
-                        ExibirDados(); // Atualiza o grid
+                        MessageBox.Show($"Saldo ajustado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ExibirDados();
+                        CarregarCards();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Erro ao ajustar saldo: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Erro: " + ex.Message);
                     }
                 }
-                // Se o usuário clicou em "Cancelar", nada acontece.
             }
-        }
+        
+    }
         private void btn_adicionar_Click(object sender, EventArgs e)
         {
             using (Form_AdicionarCliente formAdd = new Form_AdicionarCliente())
@@ -302,20 +310,45 @@ namespace sistema_comercio
                 // Se o usuário clicou em "Cancelar", nada acontece.
             }
         }
+        private void button_menu_Click(object sender, EventArgs e)
+        {
+            sidebar_timer.Start();
+        }
 
-        private void buttonHistorico_Click(object sender, EventArgs e)
+        private void buttonHome_Click_1(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Close();       
+        }
+
+        private void buttonEstoque_Click(object sender, EventArgs e)
+        {
+            FormProduto formProduto = new FormProduto();
+            formProduto.Show();
+            this.Close();
+        }
+
+        private void buttonVenda_Click(object sender, EventArgs e)
+        {
+            Form_venda formVenda = new Form_venda();
+            formVenda.Show();
+            this.Close();
+        }
+
+        private void buttonHistorico_Click_1(object sender, EventArgs e)
         {
             Form_historico historico = new Form_historico();
             historico.Show();
             this.Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             var confirmResult = MessageBox.Show("Deseja realmente fechar o sistema?",
-                                     "Confirmar Saída",
-                                     MessageBoxButtons.YesNo,
-                                     MessageBoxIcon.Question);
+                                    "Confirmar Saída",
+                                    MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Question);
 
             // Se o usuário clicar em "Sim", o aplicativo fecha.
             if (confirmResult == DialogResult.Yes)

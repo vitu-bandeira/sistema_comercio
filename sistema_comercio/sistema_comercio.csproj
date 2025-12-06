@@ -64,12 +64,20 @@
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.7.0.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.7.0\lib\net40\QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -96,6 +104,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cliente_dtb.cs" />
@@ -139,6 +148,12 @@
     <Compile Include="Form_DetalheProduto.Designer.cs">
       <DependentUpon>Form_DetalheProduto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Extrato.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Extrato.Designer.cs">
+      <DependentUpon>Form_Extrato.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_historico.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,6 +166,7 @@
     <Compile Include="Form_vendacs.Designer.cs">
       <DependentUpon>Form_vendacs.cs</DependentUpon>
     </Compile>
+    <Compile Include="GeradorPix.cs" />
     <Compile Include="ItemVenda.cs" />
     <Compile Include="Produto_dtb.cs" />
     <Compile Include="Program.cs" />
@@ -174,6 +190,9 @@
     <EmbeddedResource Include="Form_DetalheProduto.resx">
       <DependentUpon>Form_DetalheProduto.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Extrato.resx">
+      <DependentUpon>Form_Extrato.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_historico.resx">
       <DependentUpon>Form_historico.cs</DependentUpon>
     </EmbeddedResource>
@@ -185,6 +204,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

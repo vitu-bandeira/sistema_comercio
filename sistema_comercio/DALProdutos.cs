@@ -289,6 +289,36 @@ namespace sistema_comercio
                     throw new Exception("Erro ao contar estoque baixo", ex);
                 }
             }
+         
+            public static decimal GetValorTotalEstoque()
+            {
+                try
+                {
+                    using (var conn = CreateConnection())
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT SUM(preco * estoque) FROM Produtos_dtb";
+                        var result = cmd.ExecuteScalar();
+                        return result != DBNull.Value ? Convert.ToDecimal(result) : 0;
+                    }
+                }
+                catch { return 0; }
+            }
+
+           
+            public static int GetTotalProdutosCadastrados()
+            {
+                try
+                {
+                    using (var conn = CreateConnection())
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT COUNT(id) FROM Produtos_dtb";
+                        return Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                }
+                catch { return 0; }
+            }
         }
 
     }

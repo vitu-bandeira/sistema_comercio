@@ -13,7 +13,12 @@ namespace sistema_comercio
     {
         public static string path = Directory.GetCurrentDirectory() + "\\banco.sqlite";
         private static SQLiteConnection sqliteConnection;
-
+        private static SQLiteConnection CreateConnection()
+        {
+            var connection = new SQLiteConnection("Data Source=" + path);
+            connection.Open();
+            return connection;
+        }
         private static SQLiteConnection DBconnection()
         {
             sqliteConnection = new SQLiteConnection("Data Source=" + path);
@@ -51,7 +56,64 @@ namespace sistema_comercio
                 throw ex;
             }
         }
+        // --- NOVO: SISTEMA DE EXTRATO ---
 
+        public static void CriarTabelaHistorico()
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        CREATE TABLE IF NOT EXISTS Historico_dtb (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            id_cliente INTEGER,
+                            data DATETIME,
+                            valor DECIMAL(10,2),
+                            descricao VARCHAR(100),
+                            FOREIGN KEY(id_cliente) REFERENCES Clientes_dtb(id)
+                        )";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        public static void RegistrarMovimentacao(int idCliente, decimal valor, string descricao)
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    cmd.CommandText = "INSERT INTO Historico_dtb (id_cliente, data, valor, descricao) VALUES (@id_cliente, @data, @valor, @descricao)";
+                    cmd.Parameters.AddWithValue("@id_cliente", idCliente);
+                    cmd.Parameters.AddWithValue("@data", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@valor", valor);
+                    cmd.Parameters.AddWithValue("@descricao", descricao);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        public static DataTable GetHistoricoPorCliente(int idCliente)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    cmd.CommandText = "SELECT data, descricao, valor FROM Historico_dtb WHERE id_cliente = @id_cliente ORDER BY data DESC";
+                    cmd.Parameters.AddWithValue("@id_cliente", idCliente);
+                    using (SQLiteDataAdapter da = new SQLiteDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
         public static DataTable GetClientes()
         {
             SQLiteDataAdapter da = null;
@@ -273,6 +335,35 @@ namespace sistema_comercio
             {
                 throw ex;
             }
+        }
+
+
+        public static int GetTotalClientesDevedores()
+        {
+            try
+            {
+                using (var conn = CreateConnection())
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT COUNT(id) FROM Clientes_dtb WHERE saldo < 0";
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+            catch { return 0; }
+        }
+
+        public static int GetTotalClientesCadastrados()
+        {
+            try
+            {
+                using (var conn = CreateConnection())
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT COUNT(id) FROM Clientes_dtb";
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+            catch { return 0; }
         }
     }
 }
