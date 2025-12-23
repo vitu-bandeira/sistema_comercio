@@ -288,24 +288,7 @@ namespace sistema_comercio
 
         private void btn_adicionar_Click(object sender, EventArgs e)
         {
-            using (Form_DetalheProduto formAdd = new Form_DetalheProduto())
-            {
-                // 2. Trava a tela e espera o usuário clicar em Salvar ou Cancelar
-                if (formAdd.ShowDialog() == DialogResult.OK)
-                {
-                    // 3. Se clicou em Salvar, pegue o produto preenchido
-                    try
-                    {
-                        DALProdutos.AddProduto(formAdd.Produto);
-                        MessageBox.Show("Produto adicionado com sucesso!");
-                        ExibirDados(); // Atualiza o grid
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Erro ao adicionar produto: " + ex.Message);
-                    }
-                }
-            }
+
         }
 
       
