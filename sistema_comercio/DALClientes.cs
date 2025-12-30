@@ -13,12 +13,14 @@ namespace sistema_comercio
     {
         public static string path = Directory.GetCurrentDirectory() + "\\banco.sqlite";
         private static SQLiteConnection sqliteConnection;
+
         private static SQLiteConnection CreateConnection()
         {
             var connection = new SQLiteConnection("Data Source=" + path);
             connection.Open();
             return connection;
         }
+
         private static SQLiteConnection DBconnection()
         {
             sqliteConnection = new SQLiteConnection("Data Source=" + path);
@@ -35,28 +37,59 @@ namespace sistema_comercio
                     SQLiteConnection.CreateFile(path);
                 }
             }
-            catch
-            {
-                throw;
-            }
+            catch { throw; }
         }
 
+        // --- CORREÇÃO 1: Adicionar colunas novas na criação da tabela (para bancos novos) ---
         public static void CriarTabelaClientes()
         {
             try
             {
                 using (var cmd = DBconnection().CreateCommand())
                 {
-                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Clientes_dtb (id INTEGER PRIMARY KEY AUTOINCREMENT,nome varchar(50),telefone varchar(50),endereco varchar(50),saldo decimal(10,2))";
+                    cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Clientes_dtb (
+                                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                        nome varchar(50),
+                                        cpf varchar(50),
+                                        telefone varchar(50),
+                                        endereco varchar(50),
+                                        saldo decimal(10,2),
+                                        bloqueado INTEGER DEFAULT 0,
+                                        limite decimal(10,2) DEFAULT 0)";
                     cmd.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            catch (Exception ex) { throw ex; }
         }
-        // --- NOVO: SISTEMA DE EXTRATO ---
+
+        // --- NOVO MÉTODO ESSENCIAL: Atualiza bancos antigos ---
+        // Chame isso no Load do seu Form1 ou FormCliente para garantir que as colunas existam
+        public static void AtualizarEstruturaTabela()
+        {
+            try
+            {
+                using (var conn = CreateConnection())
+                using (var cmd = conn.CreateCommand())
+                {
+                    // Tenta criar a coluna 'bloqueado'. Se já existir, o try/catch ignora o erro.
+                    try
+                    {
+                        cmd.CommandText = "ALTER TABLE Clientes_dtb ADD COLUMN bloqueado INTEGER DEFAULT 0";
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch { }
+
+                    // Tenta criar a coluna 'limite'.
+                    try
+                    {
+                        cmd.CommandText = "ALTER TABLE Clientes_dtb ADD COLUMN limite DECIMAL(10,2) DEFAULT 0";
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch { }
+                }
+            }
+            catch { }
+        }
 
         public static void CriarTabelaHistorico()
         {
@@ -64,19 +97,222 @@ namespace sistema_comercio
             {
                 using (var cmd = DBconnection().CreateCommand())
                 {
-                    cmd.CommandText = @"
-                        CREATE TABLE IF NOT EXISTS Historico_dtb (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            id_cliente INTEGER,
-                            data DATETIME,
-                            valor DECIMAL(10,2),
-                            descricao VARCHAR(100),
-                            FOREIGN KEY(id_cliente) REFERENCES Clientes_dtb(id)
-                        )";
+                    cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Historico_dtb (
+                                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                            id_cliente INTEGER,
+                                            data DATETIME,
+                                            valor DECIMAL(10,2),
+                                            descricao VARCHAR(100),
+                                            FOREIGN KEY(id_cliente) REFERENCES Clientes_dtb(id))";
                     cmd.ExecuteNonQuery();
                 }
             }
             catch (Exception ex) { throw ex; }
+        }
+
+        // --- BUSCAS E LEITURAS ---
+
+        public static DataTable GetClientes()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    cmd.CommandText = "SELECT * FROM Clientes_dtb";
+                    using (SQLiteDataAdapter da = new SQLiteDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        // --- CORREÇÃO 2: Busca Inteligente (Ignora maiúsculas e espaços) ---
+        public static int? GetClienteIdPorNome(string nome)
+        {
+            try
+            {
+                using (var conn = CreateConnection())
+                using (var cmd = conn.CreateCommand())
+                {
+                    // COLLATE NOCASE = Ignora se é maiúscula ou minúscula
+                    // TRIM = Ignora espaços antes ou depois
+                    cmd.CommandText = "SELECT id FROM Clientes_dtb WHERE TRIM(nome) = @nome COLLATE NOCASE";
+                    cmd.Parameters.AddWithValue("@nome", nome.Trim());
+
+                    object result = cmd.ExecuteScalar();
+                    if (result != null) return Convert.ToInt32(result);
+                }
+                return null;
+            }
+            catch { return null; }
+        }
+
+        public static DataTable GetCliente(string nome)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    cmd.CommandText = "SELECT * FROM Clientes_dtb where nome like @nome";
+                    cmd.Parameters.AddWithValue("@nome", "%" + nome + "%");
+                    using (SQLiteDataAdapter da = new SQLiteDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        public static Cliente_dtb GetClientePorId(int id)
+        {
+            try
+            {
+                using (var conn = CreateConnection())
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT * FROM Clientes_dtb WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Cliente_dtb cliente = new Cliente_dtb();
+                            cliente.id = Convert.ToInt32(reader["id"]);
+                            cliente.nome = reader["nome"].ToString();
+                            cliente.cpf = reader["cpf"].ToString();
+                            cliente.endereco = reader["endereco"].ToString();
+                            cliente.telefone = reader["telefone"].ToString();
+                            cliente.saldo = Convert.ToDecimal(reader["saldo"]);
+
+                            // Lê Limite e Bloqueio com segurança (caso coluna não exista, usa padrão)
+                            try { cliente.limite = Convert.ToDecimal(reader["limite"]); } catch { cliente.limite = 0; }
+                            try { cliente.bloqueado = Convert.ToInt32(reader["bloqueado"]) == 1; } catch { cliente.bloqueado = false; }
+
+                            return cliente;
+                        }
+                    }
+                }
+                return null;
+            }
+            catch { return null; }
+        }
+
+        public static bool ClienteExiste(string nome)
+        {
+            using (var cmd = DBconnection().CreateCommand())
+            {
+                cmd.CommandText = "SELECT COUNT(1) FROM Clientes_dtb WHERE nome = @nome COLLATE NOCASE";
+                cmd.Parameters.AddWithValue("@nome", nome.Trim());
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
+        // --- GRAVAÇÃO E ATUALIZAÇÃO ---
+
+        public static void AddCliente(Cliente_dtb cliente)
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Clientes_dtb(nome, cpf, telefone , endereco, saldo, bloqueado, limite) 
+                                        VALUES (@nome, @cpf, @telefone , @endereco, @saldo, @bloqueado, @limite)";
+
+                    cmd.Parameters.AddWithValue("@nome", cliente.nome);
+                    cmd.Parameters.AddWithValue("@cpf", cliente.cpf ?? "");
+                    cmd.Parameters.AddWithValue("@telefone", cliente.telefone);
+                    cmd.Parameters.AddWithValue("@endereco", cliente.endereco);
+                    cmd.Parameters.AddWithValue("@saldo", cliente.saldo);
+                    cmd.Parameters.AddWithValue("@bloqueado", cliente.bloqueado ? 1 : 0);
+                    cmd.Parameters.AddWithValue("@limite", cliente.limite);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        // --- CORREÇÃO 3: SQL de Update corrigido (Faltava SET bloqueado e limite) ---
+        public static void UpdateCliente(Cliente_dtb cliente)
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    // Agora sim estamos salvando o bloqueio e o limite!
+                    cmd.CommandText = @"UPDATE Clientes_dtb 
+                                        SET nome=@nome, cpf=@cpf, telefone=@telefone, endereco=@endereco, 
+                                            saldo=@saldo, bloqueado=@bloqueado, limite=@limite 
+                                        WHERE id=@id";
+
+                    cmd.Parameters.AddWithValue("@nome", cliente.nome);
+                    cmd.Parameters.AddWithValue("@cpf", cliente.cpf ?? "");
+                    cmd.Parameters.AddWithValue("@telefone", cliente.telefone);
+                    cmd.Parameters.AddWithValue("@endereco", cliente.endereco);
+                    cmd.Parameters.AddWithValue("@saldo", cliente.saldo);
+                    cmd.Parameters.AddWithValue("@bloqueado", cliente.bloqueado ? 1 : 0);
+                    cmd.Parameters.AddWithValue("@limite", cliente.limite);
+                    cmd.Parameters.AddWithValue("@id", cliente.id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        public static void DeleteCliente(int id)
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM Clientes_dtb WHERE id=@id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        // --- SALDOS E EXTRATOS ---
+
+        public static void AdicionarDebito(string nomeCliente, decimal valorDebito)
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    // Atualiza saldo pelo nome (ignorando maiúsculas)
+                    cmd.CommandText = "UPDATE Clientes_dtb SET saldo = saldo - @valorDebito WHERE nome = @nomeCliente COLLATE NOCASE";
+                    cmd.Parameters.AddWithValue("@valorDebito", valorDebito);
+                    cmd.Parameters.AddWithValue("@nomeCliente", nomeCliente.Trim());
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) { throw new Exception("Erro ao atualizar saldo", ex); }
+        }
+
+        public static void AjustarSaldoCliente(int clienteId, decimal valorAjuste)
+        {
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    cmd.CommandText = "UPDATE Clientes_dtb SET saldo = saldo + @valorAjuste WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@valorAjuste", valorAjuste);
+                    cmd.Parameters.AddWithValue("@id", clienteId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) { throw new Exception("Erro ao ajustar saldo", ex); }
         }
 
         public static void RegistrarMovimentacao(int idCliente, decimal valor, string descricao)
@@ -114,236 +350,26 @@ namespace sistema_comercio
             }
             catch (Exception ex) { throw ex; }
         }
-        public static DataTable GetClientes()
-        {
-            SQLiteDataAdapter da = null;
-            DataTable dt = new DataTable();
-            try
-            {
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    cmd.CommandText = "SELECT * FROM Clientes_dtb";
-                    da = new SQLiteDataAdapter(cmd.CommandText, DBconnection());
-                    da.Fill(dt);
-                    return dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public static DataTable GetCliente(string nome)
-        {
-            SQLiteDataAdapter da = null;
-            DataTable dt = new DataTable();
-            try
-            {
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    cmd.CommandText = "SELECT * FROM Clientes_dtb where nome like '%" + nome + "%'";
-                    da = new SQLiteDataAdapter(cmd.CommandText, DBconnection());
-                    da.Fill(dt);
-                    return dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
 
-        public static void AddCliente(Cliente_dtb cliente)
-        {
-            try
-            {
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    cmd.CommandText = "INSERT INTO Clientes_dtb(nome, telefone , endereco, saldo) values (@nome, @telefone , @endereco, @saldo)";
-                    cmd.Parameters.AddWithValue("@id", cliente.id);
-                    cmd.Parameters.AddWithValue("@nome", cliente.nome);
-                    cmd.Parameters.AddWithValue("@telefone", cliente.telefone);
-                    cmd.Parameters.AddWithValue("@endereco", cliente.endereco);
-                    cmd.Parameters.AddWithValue("@saldo", cliente.saldo);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public static void UpdateCliente(Cliente_dtb cliente)
-        {
-            try
-            {
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    cmd.CommandText = "UPDATE Clientes_dtb SET nome=@nome, telefone=@telefone, endereco=@endereco, saldo=@saldo WHERE id=@id";
-
-                    cmd.Parameters.AddWithValue("@nome", cliente.nome);
-                    cmd.Parameters.AddWithValue("@telefone", cliente.telefone);
-                    cmd.Parameters.AddWithValue("@endereco", cliente.endereco);
-                    cmd.Parameters.AddWithValue("@saldo", cliente.saldo);
-                    cmd.Parameters.AddWithValue("@id", cliente.id);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-
-            }
-
-        }
-        public static bool ClienteExiste(string nome)
-        {
-            using (var cmd = DBconnection().CreateCommand())
-            {
-                cmd.CommandText = "SELECT COUNT(1) FROM Clientes_dtb WHERE nome = @nome";
-                cmd.Parameters.AddWithValue("@nome", nome);
-
-                int count = Convert.ToInt32(cmd.ExecuteScalar());
-                return count > 0;
-            }
-        }
-        public static void DeleteCliente(int id)
-        {
-            try
-            {
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    cmd.CommandText = "DELETE FROM Clientes_dtb WHERE id=@id";
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-        }
-        public static void AdicionarDebito(string nomeCliente, decimal valorDebito)
-        {
-            try
-            {
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    // Soma o novo débito ao saldo existente
-                    cmd.CommandText = @"
-                UPDATE Clientes_dtb 
-                SET saldo = saldo - @valorDebito 
-                WHERE nome = @nomeCliente";
-
-                    cmd.Parameters.AddWithValue("@valorDebito", valorDebito);
-                    cmd.Parameters.AddWithValue("@nomeCliente", nomeCliente);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao atualizar saldo do cliente", ex);
-            }
-        }
-        // Cole este método dentro da classe DALClientes
-        public static void AjustarSaldoCliente(int clienteId, decimal valorAjuste)
-        {
-            try
-            {
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    // A lógica é: saldo_novo = saldo_antigo + valor_ajuste
-                    // Se valorAjuste for -100 (dívida), ele vai somar -100.
-                    // Se valorAjuste for 100 (pagamento), ele vai somar 100.
-                    cmd.CommandText = "UPDATE Clientes_dtb SET saldo = saldo + @valorAjuste WHERE id = @id";
-
-                    cmd.Parameters.AddWithValue("@valorAjuste", valorAjuste);
-                    cmd.Parameters.AddWithValue("@id", clienteId);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao ajustar saldo do cliente", ex);
-            }
-        }
-  
-        public static int? GetClienteIdPorNome(string nome)
-        {
-            try
-            {
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    cmd.CommandText = "SELECT id FROM Clientes_dtb WHERE nome = @nome LIMIT 1";
-                    cmd.Parameters.AddWithValue("@nome", nome);
-
-                    var result = cmd.ExecuteScalar();
-                    if (result != null && result != DBNull.Value)
-                    {
-                        return Convert.ToInt32(result);
-                    }
-                    return null; // Retorna nulo se não encontrar o cliente
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao buscar ID do cliente", ex);
-            }
-        }
-        // Cole isto dentro da classe DALClientes
         public static decimal GetTotalSaldosDevedores()
         {
             try
             {
                 using (var cmd = DBconnection().CreateCommand())
                 {
-                    // Soma apenas saldos negativos (dívidas)
                     cmd.CommandText = "SELECT SUM(saldo) FROM Clientes_dtb WHERE saldo < 0";
-
                     var result = cmd.ExecuteScalar();
-                    if (result != null && result != DBNull.Value)
-                    {
-                        return Convert.ToDecimal(result);
-                    }
-                    return 0; // Retorna 0 se não houver dívidas
+                    return (result != null && result != DBNull.Value) ? Convert.ToDecimal(result) : 0;
                 }
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao calcular saldo devedor total", ex);
-            }
+            catch { return 0; }
         }
-
-        public static DataTable GetTop5Devedores()
-        {
-            SQLiteDataAdapter da = null;
-            DataTable dt = new DataTable();
-            try
-            {
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    // Ordena do menor saldo (mais negativo) para o maior
-                    cmd.CommandText = "SELECT nome, saldo FROM Clientes_dtb WHERE saldo < 0 ORDER BY saldo ASC LIMIT 5";
-                    da = new SQLiteDataAdapter(cmd.CommandText, DBconnection());
-                    da.Fill(dt);
-                    return dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
 
         public static int GetTotalClientesDevedores()
         {
             try
             {
-                using (var conn = CreateConnection())
-                using (var cmd = conn.CreateCommand())
+                using (var cmd = DBconnection().CreateCommand())
                 {
                     cmd.CommandText = "SELECT COUNT(id) FROM Clientes_dtb WHERE saldo < 0";
                     return Convert.ToInt32(cmd.ExecuteScalar());
@@ -356,8 +382,7 @@ namespace sistema_comercio
         {
             try
             {
-                using (var conn = CreateConnection())
-                using (var cmd = conn.CreateCommand())
+                using (var cmd = DBconnection().CreateCommand())
                 {
                     cmd.CommandText = "SELECT COUNT(id) FROM Clientes_dtb";
                     return Convert.ToInt32(cmd.ExecuteScalar());
@@ -365,7 +390,27 @@ namespace sistema_comercio
             }
             catch { return 0; }
         }
+        public static DataTable GetTop5Devedores()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (var cmd = DBconnection().CreateCommand())
+                {
+                    // Ordena do menor saldo (mais negativo) para o maior, pegando os 5 primeiros
+                    cmd.CommandText = "SELECT nome, saldo FROM Clientes_dtb WHERE saldo < 0 ORDER BY saldo ASC LIMIT 5";
+
+                    using (SQLiteDataAdapter da = new SQLiteDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
-
-     

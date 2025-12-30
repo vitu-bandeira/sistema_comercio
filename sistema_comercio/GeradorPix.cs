@@ -6,29 +6,28 @@ namespace sistema_comercio
     public static class GeradorPix
     {
         
-        private const string CHAVE_PIX = "+5599992012092";
+        private const string CHAVE_PIX = "+5599988212858";
         private const string NOME_COMERCIANTE = "COMERCIAL GALDINO"; 
         private const string CIDADE_COMERCIANTE = "CAXIAS-MA"; 
 
         public static string GerarCopiaCola(decimal valor)
         {
             string valorString = valor.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture);
-
-            // Montagem do Payload (Padrão EMV QRCPS)
+            
             string payload =
                 "000201" +
-                "26" + (14 + CHAVE_PIX.Length + 4 + 4).ToString("00") + // Tamanho do campo 26
+                "26" + (14 + CHAVE_PIX.Length + 4 + 4).ToString("00") + 
                     "0014BR.GOV.BCB.PIX" +
                     "01" + CHAVE_PIX.Length.ToString("00") + CHAVE_PIX +
-                "52040000" + // Categoria do Comerciante
-                "5303986" +  // Moeda (BRL)
+                "52040000" + 
+                "5303986" +  
                 "54" + valorString.Length.ToString("00") + valorString +
-                "5802BR" +   // País
+                "5802BR" +   
                 "59" + NOME_COMERCIANTE.Length.ToString("00") + NOME_COMERCIANTE +
                 "60" + CIDADE_COMERCIANTE.Length.ToString("00") + CIDADE_COMERCIANTE +
-                "6207" +     // Campo Adicional (TxID)
+                "6207" +     
                     "0503***" +
-                "6304";      // CRC16 (Calculado abaixo)
+                "6304";      
 
             string crc = CalcularCRC16(payload);
             return payload + crc;

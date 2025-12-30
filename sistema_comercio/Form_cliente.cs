@@ -1,40 +1,310 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace sistema_comercio
 {
     public partial class FormCliente : Form
     {
+        // Variáveis para saber quem foi clicado
+        private int _idSelecionado = 0;
+        private string _nomeSelecionado = "";
+
         public FormCliente()
         {
             InitializeComponent();
+            ConfigurarGrid();
+
+            // Garante que o evento de formatação esteja ligado
+            dataGridView1.CellFormatting += DataGridView1_CellFormatting;
+            dataGridView1.CellClick += dataGridView1_CellClick;
         }
 
         private void Form_cliente_Load(object sender, EventArgs e)
         {
-            DALClientes.CriarBancoSQLite();
-            DALClientes.CriarTabelaClientes();
-            DALClientes.CriarTabelaHistorico();
-            ConfigurarGrid();
-            ExibirDados();
-            CarregarCards();
+            try
+            {
+                DALClientes.CriarBancoSQLite();
+                DALClientes.CriarTabelaClientes();
+                DALClientes.CriarTabelaHistorico();
 
+
+                ExibirDados();
+                CarregarCards();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar: " + ex.Message);
+            }
         }
+
+        // --- 1. CONFIGURAÇÃO DA GRADE (LIMPANDO OS BOTÕES ANTIGOS) ---
+        private void ConfigurarGrid()
+        {
+            dataGridView1.Columns.Clear();
+            dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.White;
+            dataGridView1.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
+
+        // ID (Oculto)
+        dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "id",
+                DataPropertyName = "id",
+                HeaderText = "ID",
+                Visible = false
+            });
+
+            // CPF
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "cpf",
+                DataPropertyName = "cpf",
+                HeaderText = "CPF",
+                Width = 140
+            });
+
+            // Nome
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "nome",
+                DataPropertyName = "nome",
+                HeaderText = "Nome",
+                Width = 250
+            });
+
+            // Endereço
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "endereco",
+                DataPropertyName = "endereco",
+                HeaderText = "Endereço",
+                Width = 300
+            });
+
+            // Telefone
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "telefone",
+                DataPropertyName = "telefone",
+                HeaderText = "Telefone",
+                Width = 150
+            });
+
+            // Saldo
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Saldo",
+                DataPropertyName = "saldo",
+                HeaderText = "Saldo",
+                Width = 120,
+                DefaultCellStyle = { Format = "C2" }
+            });
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Limite",
+                DataPropertyName = "limite",
+                HeaderText = "Limite",
+                Width = 120,
+                DefaultCellStyle = { Format = "C2" }
+            });
+
+
+            DataGridViewButtonColumn colMenu = new DataGridViewButtonColumn();
+            colMenu.Name = "Menu";
+            colMenu.HeaderText = "Ações";
+            colMenu.Text = "⋮"; // 3 pontinhos
+            colMenu.UseColumnTextForButtonValue = true;
+            colMenu.Width = 60;
+            colMenu.FlatStyle = FlatStyle.System; // Visual mais limpo
+
+            dataGridView1.Columns.Add(colMenu);
+
+            // Estilos Gerais
+            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 11);
+            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            dataGridView1.RowTemplate.Height = 35;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        }
+
+        // --- 2. EVENTOS DA GRADE (CLIQUE E COR) ---
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            // Se clicou na coluna de Menu (Três pontinhos)
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "Menu")
+            {
+                // Guarda os dados da linha clicada
+                _idSelecionado = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["id"].Value);
+                _nomeSelecionado = dataGridView1.Rows[e.RowIndex].Cells["nome"].Value.ToString();
+
+                // Mostra o menu onde o mouse está
+                if (menuOpcoes != null)
+                {
+                    menuOpcoes.Show(Cursor.Position);
+                }
+                else
+                {
+                    MessageBox.Show("Você precisa adicionar um ContextMenuStrip no Designer e chamar de 'menuOpcoes'");
+                }
+            }
+        }
+
+        private void DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "Saldo" && e.Value != null)
+            {
+                if (decimal.TryParse(e.Value.ToString(), out decimal valor))
+                {
+                    if (valor < 0)
+                    {
+                        e.CellStyle.ForeColor = Color.Red;
+                        e.CellStyle.SelectionForeColor = Color.Red;
+                        e.Value = "R$ -" + Math.Abs(valor).ToString("N2");
+                    }
+                    else
+                    {
+                        e.CellStyle.ForeColor = Color.Green;
+                        e.Value = "R$ " + valor.ToString("N2");
+                    }
+                    e.FormattingApplied = true;
+                }
+            }
+        }
+
+        // --- 3. AÇÕES DO MENU (EDITAR, EXCLUIR, AJUSTAR) ---
+        // IMPORTANTE: Dê dois cliques em cada item do seu MenuStrip no Designer para vincular a estes métodos
+
+        private void itemAjustarSaldo_Click(object sender, EventArgs e)
+        {
+            if (_idSelecionado > 0)
+                AbrirAjusteSaldo(_idSelecionado, _nomeSelecionado);
+        }
+
+        private void itemExcluir_Click(object sender, EventArgs e)
+        {
+            if (_idSelecionado > 0)
+                ExcluirCliente(_idSelecionado, _nomeSelecionado);
+        }
+
+        private void itemHistorico_Click(object sender, EventArgs e)
+        {
+            if (_idSelecionado == 0) return;
+
+
+            using (Form_Extrato extrato = new Form_Extrato(_idSelecionado, _nomeSelecionado))
+            {
+                extrato.ShowDialog(); // Abre ele
+            }
+        }
+
+        private void itemEditar_Click(object sender, EventArgs e)
+        {
+            // Aqui você implementará a lógica de editar chamando o Form_AdicionarCliente com o ID
+            if (_idSelecionado == 0) return;
+
+            try
+            {
+                // 1. Busca os dados ATUAIS e COMPLETOS do banco (inclusive Limite e Bloqueio)
+                Cliente_dtb clienteParaEditar = DALClientes.GetClientePorId(_idSelecionado);
+
+                if (clienteParaEditar == null)
+                {
+                    MessageBox.Show("Erro ao buscar dados do cliente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // 2. Abre o formulário passando o cliente
+                using (Form_AdicionarCliente formEdit = new Form_AdicionarCliente(clienteParaEditar))
+                {
+                    // Trava a tela e espera o usuário clicar em Salvar ou Cancelar
+                    if (formEdit.ShowDialog() == DialogResult.OK)
+                    {
+                        // 3. Se clicou em Salvar, manda as alterações para o Banco
+                        DALClientes.UpdateCliente(formEdit.NovoCliente);
+
+                        MessageBox.Show("Dados do cliente atualizados com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // 4. Atualiza a tabela na tela
+                        ExibirDados();
+                        CarregarCards(); // Se você tiver os cards de totais lá em cima
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao tentar editar: " + ex.Message);
+            }
+        }
+
+        private void ExcluirCliente(int id, string nome)
+        {
+            try
+            {
+                var resultado = MessageBox.Show($"Deseja realmente excluir {nome}?", "Excluir", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (resultado == DialogResult.Yes)
+                {
+                    DALClientes.DeleteCliente(id);
+                    MessageBox.Show("Cliente excluído!");
+                    ExibirDados();
+                    CarregarCards();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao excluir: " + ex.Message);
+            }
+        }
+
+        private void AbrirAjusteSaldo(int clienteId, string nomeCliente)
+        {
+            using (Form_AjustarSaldo formAjuste = new Form_AjustarSaldo())
+            {
+                formAjuste.Text = "Ajustar Saldo: " + nomeCliente;
+
+                if (formAjuste.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        decimal valor = formAjuste.ValorAjuste;
+                        DALClientes.AjustarSaldoCliente(clienteId, valor);
+
+                        string descricao = valor > 0 ? "Pagamento/Crédito" : "Cobrança/Débito";
+                        DALClientes.RegistrarMovimentacao(clienteId, valor, descricao);
+
+                        MessageBox.Show("Saldo atualizado!");
+                        ExibirDados();
+                        CarregarCards();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        private void ExibirDados()
+        {
+            try
+            {
+                string busca = textBoxBuscar.Text.Trim();
+                DataTable dt = string.IsNullOrEmpty(busca) ? DALClientes.GetClientes() : DALClientes.GetCliente(busca);
+                dataGridView1.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar dados: " + ex.Message);
+            }
+        }
+
         private void CarregarCards()
         {
             try
             {
-                // Math.Abs tira o sinal de negativo para ficar bonito no card (ex: R$ 100,00 a receber)
                 lblTotal.Text = Math.Abs(DALClientes.GetTotalSaldosDevedores()).ToString("C2");
                 lblTotal.ForeColor = Color.Red;
 
@@ -46,226 +316,22 @@ namespace sistema_comercio
             }
             catch { }
         }
-        private void ExibirDados()
+
+        private void btn_adicionar_Click(object sender, EventArgs e)
         {
-            try
+            using (Form_AdicionarCliente formAdd = new Form_AdicionarCliente())
             {
-                DataTable dt = new DataTable();
-                dt = DALClientes.GetClientes();
-                dataGridView1.DataSource = dt;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao exibir os dados: " + ex.Message);
-            }
-        }
-
-        private void ConfigurarGrid()
-        {
-            dataGridView1.Columns.Clear();
-            dataGridView1.AutoGenerateColumns = false;
-
-            // Coluna ID (oculta)
-            DataGridViewTextBoxColumn colID = new DataGridViewTextBoxColumn();
-            colID.Name = "IdProduto"; // Nome explícito
-            colID.DataPropertyName = "id";
-            colID.HeaderText = "ID";
-            colID.Visible = false;
-            dataGridView1.Columns.Add(colID);
-
-            // Coluna Nome
-            DataGridViewTextBoxColumn colNome = new DataGridViewTextBoxColumn();
-            colNome.Name = "Nome"; // Nome explícito
-            colNome.DataPropertyName = "nome";
-            colNome.HeaderText = "Nome";
-            colNome.Width = 250;
-            dataGridView1.Columns.Add(colNome);
-
-            DataGridViewTextBoxColumn colEndereco = new DataGridViewTextBoxColumn();
-            colEndereco.Name = "Endereco"; // Nome explícito
-            colEndereco.DataPropertyName = "endereco";
-            colEndereco.HeaderText = "Endereço";
-            colEndereco.Width = 310;
-            
-            dataGridView1.Columns.Add(colEndereco);
-
-            // Coluna Código de Barras
-            DataGridViewTextBoxColumn colCodigo = new DataGridViewTextBoxColumn();
-            colCodigo.Name = "Telefone"; // Nome explícito
-            colCodigo.DataPropertyName = "telefone";
-            colCodigo.HeaderText = "Telefone";
-            colCodigo.Width = 200;
-            dataGridView1.Columns.Add(colCodigo);
-
-            // Coluna Preço
-            DataGridViewTextBoxColumn colPreco = new DataGridViewTextBoxColumn();
-            colPreco.Name = "Saldo"; // Nome explícito
-            colPreco.DataPropertyName = "saldo";
-            colPreco.HeaderText = "Saldo";
-            colPreco.DefaultCellStyle.Format = "C2";
-            colPreco.Width = 150;
-            dataGridView1.Columns.Add(colPreco);
-
-            DataGridViewButtonColumn colAjustar = new DataGridViewButtonColumn();
-            colAjustar.Name = "Ajustar";
-            colAjustar.HeaderText = "Ajustar";
-            colAjustar.Text = "R$"; // Texto que vai aparecer no botão (curto e claro)
-            colAjustar.UseColumnTextForButtonValue = true;
-            colAjustar.Width = 85;
-            dataGridView1.Columns.Add(colAjustar);
-
-            DataGridViewButtonColumn colExtrato = new DataGridViewButtonColumn();
-            colExtrato.Name = "Extrato";
-            colExtrato.HeaderText = "Ver";
-            colExtrato.Text = "📄"; // Emoji de papel/documento
-            colExtrato.UseColumnTextForButtonValue = true;
-            colExtrato.Width = 50;
-            dataGridView1.Columns.Add(colExtrato);
-
-            // Coluna Excluir (Botão)
-            DataGridViewButtonColumn colExcluir = new DataGridViewButtonColumn();
-            colExcluir.Name = "Excluir";
-            colExcluir.HeaderText = "Excluir";
-            colExcluir.Text = "🗑";
-            colExcluir.UseColumnTextForButtonValue = true;
-            colExcluir.Width = 85;
-            dataGridView1.Columns.Add(colExcluir);
-
-
-            // Estilo do Grid
-            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 12);
-            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
-            dataGridView1.RowTemplate.Height = 35;
-
-        }
-        
-        bool sidebarExpanded = true;
-
-        private void sidebar_timer_Tick_1(object sender, EventArgs e)
-        {
-            if (sidebarExpanded)
-            {
-                // FECHAR o sidebar (ir para o mínimo)
-                if (sidebar.Width > sidebar.MinimumSize.Width)
-                {
-                    sidebar.Width -= 10;
-
-                }
-                else
-                {
-                    sidebarExpanded = false;
-                    sidebar_timer.Stop();
-
-                }
-            }
-            else
-            {
-                // ABRIR o sidebar (ir para o máximo)
-                if (sidebar.Width < sidebar.MaximumSize.Width)
-                {
-                    sidebar.Width += 10;
-
-                }
-                else
-                {
-                    sidebarExpanded = true;
-                    sidebar_timer.Stop();
-                }
-            }
-
-        }
-      
-
-        private void textBoxBuscar_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                DataTable dt = new DataTable();
-
-                string busca = textBoxBuscar.Text;
-                dt = DALClientes.GetCliente(busca);
-                dataGridView1.DataSource = dt;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao buscar os dados: " + ex.Message);
-            }
-        }
-        private int idSelecionado;
-
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-            if (e.RowIndex < 0) return;
-
-            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-            idSelecionado = Convert.ToInt32(row.Cells["IdProduto"].Value);
-            string nome = row.Cells["Nome"].Value.ToString();
-            string nomeColuna = dataGridView1.Columns[e.ColumnIndex].Name;
-
-            if (nomeColuna == "Excluir")
-            {
-                ExcluirCliente(e.RowIndex);
-            }
-            else if (nomeColuna == "Ajustar")
-            {
-                AbrirAjusteSaldo(idSelecionado, nome);
-            }
-            else if (nomeColuna == "Extrato")
-            {
-                // Abre o extrato (Certifique-se de ter criado o Form_Extrato)
-                try
-                {
-                    Form_Extrato formExtrato = new Form_Extrato(idSelecionado, nome);
-                    formExtrato.ShowDialog();
-                }
-                catch { MessageBox.Show("Formulário de Extrato não encontrado."); }
-            }
-        }
-    
-
-
-        private void ExcluirCliente(int rowIndex)
-        {
-            try
-            {
-                int id = Convert.ToInt32(dataGridView1.Rows[rowIndex].Cells["IdProduto"].Value);
-                string nome = dataGridView1.Rows[rowIndex].Cells["Nome"].Value.ToString();
-                DialogResult resultado = MessageBox.Show($"Deseja realmente excluir o cliente {nome}?", "Excluir Cliente", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (resultado == DialogResult.Yes)
-                {
-                    DALClientes.DeleteCliente(id);
-                    MessageBox.Show("Cliente excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ExibirDados();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao Excluir os dados: " + ex.Message);
-            }
-        }
-
-        private void AbrirAjusteSaldo(int clienteId, string nomeCliente)
-        {
-            using (Form_AjustarSaldo formAjuste = new Form_AjustarSaldo())
-            {
-                formAjuste.Text = "Ajustar Saldo de: " + nomeCliente;
-
-                if (formAjuste.ShowDialog() == DialogResult.OK)
+                if (formAdd.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
-                        decimal valorDoAjuste = formAjuste.ValorAjuste;
-
-                        // 1. Atualiza o Saldo (Como já fazia)
-                        DALClientes.AjustarSaldoCliente(clienteId, valorDoAjuste);
-
-                        // 2. NOVO: Grava no Histórico!
-                        string descricao = valorDoAjuste > 0 ? "Pagamento / Depósito" : "Cobrança / Ajuste";
-                        DALClientes.RegistrarMovimentacao(clienteId, valorDoAjuste, descricao);
-
-                        MessageBox.Show($"Saldo ajustado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        if (DALClientes.ClienteExiste(formAdd.NovoCliente.nome))
+                        {
+                            MessageBox.Show("Cliente já cadastrado!");
+                            return;
+                        }
+                        DALClientes.AddCliente(formAdd.NovoCliente);
+                        MessageBox.Show("Cliente adicionado!");
                         ExibirDados();
                         CarregarCards();
                     }
@@ -275,85 +341,108 @@ namespace sistema_comercio
                     }
                 }
             }
-        
-    }
-        private void btn_adicionar_Click(object sender, EventArgs e)
+        }
+
+        private void textBoxBuscar_TextChanged(object sender, EventArgs e)
         {
-            using (Form_AdicionarCliente formAdd = new Form_AdicionarCliente())
+            ExibirDados();
+        }
+
+        // --- 5. NAVEGAÇÃO E SIDEBAR ---
+
+        bool sidebarExpanded = true;
+        private void sidebar_timer_Tick_1(object sender, EventArgs e)
+        {
+            if (sidebarExpanded)
             {
-                // 2. Mostra o formulário como um "Diálogo" (trava a tela principal)
-                if (formAdd.ShowDialog() == DialogResult.OK)
+                sidebar.Width -= 20;
+                if (sidebar.Width <= sidebar.MinimumSize.Width)
                 {
-                    // 3. Se o usuário clicou em "Salvar" (DialogResult.OK)...
-                    //    Pegamos o cliente que ele preencheu:
-                    Cliente_dtb clienteParaSalvar = formAdd.NovoCliente;
-
-                    // 4. Agora sim, salvamos no banco (lógica do seu btn_adicionar_Click antigo)
-                    try
-                    {
-                        if (DALClientes.ClienteExiste(clienteParaSalvar.nome))
-                        {
-                            MessageBox.Show("Cliente já cadastrado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                        DALClientes.AddCliente(clienteParaSalvar);
-                        MessageBox.Show("Cliente adicionado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                        ExibirDados(); // Atualiza o grid
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Algo de errado: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    sidebarExpanded = false;
+                    sidebar_timer.Stop();
                 }
-                // Se o usuário clicou em "Cancelar", nada acontece.
+            }
+            else
+            {
+                sidebar.Width += 60;
+                if (sidebar.Width >= sidebar.MaximumSize.Width)
+                {
+                    sidebarExpanded = true;
+                    sidebar_timer.Stop();
+                }
             }
         }
-        private void button_menu_Click(object sender, EventArgs e)
+
+        private void button_menu_Click(object sender, EventArgs e) => sidebar_timer.Start();
+
+        private void buttonHome_Click_1(object sender, EventArgs e) { new Form1().Show(); this.Close(); }
+        private void buttonEstoque_Click(object sender, EventArgs e) { new FormProduto().Show(); this.Close(); }
+        private void buttonVenda_Click(object sender, EventArgs e) { new Form_venda().Show(); this.Close(); }
+        private void buttonHistorico_Click_1(object sender, EventArgs e) { new Form_historico().Show(); this.Close(); }
+
+        private void buttonSair_Click(object sender, EventArgs e)
         {
-            sidebar_timer.Start();
+            if (MessageBox.Show("Sair do sistema?", "Sair", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                Application.Exit();
         }
 
-        private void buttonHome_Click_1(object sender, EventArgs e)
+        private void dataGridView1_CellFormatting_1(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            Form1 form1 = new Form1();
-            form1.Show();
-            this.Close();       
-        }
-
-        private void buttonEstoque_Click(object sender, EventArgs e)
-        {
-            FormProduto formProduto = new FormProduto();
-            formProduto.Show();
-            this.Close();
-        }
-
-        private void buttonVenda_Click(object sender, EventArgs e)
-        {
-            Form_venda formVenda = new Form_venda();
-            formVenda.Show();
-            this.Close();
-        }
-
-        private void buttonHistorico_Click_1(object sender, EventArgs e)
-        {
-            Form_historico historico = new Form_historico();
-            historico.Show();
-            this.Close();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var confirmResult = MessageBox.Show("Deseja realmente fechar o sistema?",
-                                    "Confirmar Saída",
-                                    MessageBoxButtons.YesNo,
-                                    MessageBoxIcon.Question);
-
-            // Se o usuário clicar em "Sim", o aplicativo fecha.
-            if (confirmResult == DialogResult.Yes)
+            if (e.RowIndex >= 0)
             {
-                Application.Exit(); // Este comando fecha o programa INTEIRO.
+                var row = dataGridView1.Rows[e.RowIndex];
+
+                // Tenta pegar os dados
+                if (row.DataBoundItem is System.Data.DataRowView drv)
+                {
+                    if (drv.Row.Table.Columns.Contains("saldo") && drv.Row.Table.Columns.Contains("limite"))
+                    {
+                        decimal saldo = drv["saldo"] != DBNull.Value ? Convert.ToDecimal(drv["saldo"]) : 0;
+                        decimal limite = drv["limite"] != DBNull.Value ? Convert.ToDecimal(drv["limite"]) : 0;
+
+                        bool bloqueado = drv.Row.Table.Columns.Contains("bloqueado") &&
+                                         drv["bloqueado"] != DBNull.Value &&
+                                         Convert.ToBoolean(drv["bloqueado"]);
+
+                        // Definição das Cores
+                        Color corFundo;
+                        Color corTexto;
+
+                        // CASO 1: Bloqueado Manualmente
+                        if (bloqueado)
+                        {
+                            corFundo = Color.FromArgb(255, 200, 200); // Vermelho Claro
+                            corTexto = Color.DarkRed;      // Texto Vermelho Escuro
+                        }
+                        // CASO 2: Estourou o Limite
+                        else if (saldo < 0 && Math.Abs(saldo) > limite && limite > 0)
+                        {
+                            corFundo = Color.MistyRose;    // Rosa Alerta
+                            corTexto = Color.Red;          // Texto Vermelho
+                        }
+                        // CASO 3: Normal
+                        else
+                        {
+                            corFundo = Color.White;
+                            corTexto = Color.Black;
+                        }
+
+                        // --- APLICAÇÃO DO TRUQUE "SEM SELEÇÃO" ---
+
+                        // 1. Aplica a cor normal
+                        e.CellStyle.BackColor = corFundo;
+                        e.CellStyle.ForeColor = corTexto;
+
+                        // 2. FORÇA a seleção a ser IGUAL à normal (Invisível)
+                        e.CellStyle.SelectionBackColor = corFundo; // O segredo está aqui!
+                        e.CellStyle.SelectionForeColor = corTexto; // E aqui!
+
+                        // Aplica na linha toda também por garantia
+                        row.DefaultCellStyle.BackColor = corFundo;
+                        row.DefaultCellStyle.SelectionBackColor = corFundo;
+                        row.DefaultCellStyle.SelectionForeColor = corTexto;
+                    }
+                }
             }
         }
     }

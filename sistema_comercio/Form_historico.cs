@@ -11,6 +11,8 @@ namespace sistema_comercio
         public Form_historico()
         {
             InitializeComponent();
+            sidebar.MinimumSize = new Size(0, 0);
+            sidebar.MaximumSize = new Size(185, 0);
 
             // 1. Configurações Visuais
             ConfigurarGridVendas();
@@ -50,7 +52,6 @@ namespace sistema_comercio
 
             // Eventos de Grid e Timer
             this.dgvVendas.CellClick += new DataGridViewCellEventHandler(this.dgvVendas_CellContentClick);
-            this.sidebar_timer.Tick += new EventHandler(this.sidebar_timer_Tick_1);
         }
 
         #region Configuração dos Grids
@@ -293,13 +294,21 @@ namespace sistema_comercio
         {
             if (sidebarExpanded)
             {
-                if (sidebar.Width > sidebar.MinimumSize.Width) sidebar.Width -= 10;
-                else { sidebarExpanded = false; sidebar_timer.Stop(); }
+                sidebar.Width -= 20;
+                if (sidebar.Width <= sidebar.MinimumSize.Width)
+                {
+                    sidebarExpanded = false;
+                    sidebar_timer.Stop();
+                }
             }
             else
             {
-                if (sidebar.Width < sidebar.MaximumSize.Width) sidebar.Width += 10;
-                else { sidebarExpanded = true; sidebar_timer.Stop(); }
+                sidebar.Width += 60;
+                if (sidebar.Width >= sidebar.MaximumSize.Width)
+                {
+                    sidebarExpanded = true;
+                    sidebar_timer.Stop();
+                }
             }
         }
 

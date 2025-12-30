@@ -89,7 +89,7 @@
             this.buttonCancelar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonCancelar.Name = "buttonCancelar";
             this.buttonCancelar.Size = new System.Drawing.Size(173, 51);
-            this.buttonCancelar.TabIndex = 99;
+            this.buttonCancelar.TabIndex = 7;
             this.buttonCancelar.Text = "Cancelar";
             this.buttonCancelar.UseVisualStyleBackColor = false;
             // 
@@ -106,7 +106,7 @@
             this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(173, 50);
-            this.button1.TabIndex = 98;
+            this.button1.TabIndex = 8;
             this.button1.Text = "Adicionar";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -131,7 +131,7 @@
             this.textBoxPrecoBase.Multiline = true;
             this.textBoxPrecoBase.Name = "textBoxPrecoBase";
             this.textBoxPrecoBase.Size = new System.Drawing.Size(96, 33);
-            this.textBoxPrecoBase.TabIndex = 96;
+            this.textBoxPrecoBase.TabIndex = 3;
             this.textBoxPrecoBase.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label5
@@ -154,7 +154,7 @@
             this.textBoxPorcentagem.Multiline = true;
             this.textBoxPorcentagem.Name = "textBoxPorcentagem";
             this.textBoxPorcentagem.Size = new System.Drawing.Size(49, 33);
-            this.textBoxPorcentagem.TabIndex = 94;
+            this.textBoxPorcentagem.TabIndex = 4;
             this.textBoxPorcentagem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // labelInsiraQuantidade
@@ -189,7 +189,7 @@
             this.textBox_nome_p.Multiline = true;
             this.textBox_nome_p.Name = "textBox_nome_p";
             this.textBox_nome_p.Size = new System.Drawing.Size(296, 33);
-            this.textBox_nome_p.TabIndex = 2;
+            this.textBox_nome_p.TabIndex = 1;
             // 
             // labelInsiraNome
             // 
@@ -248,7 +248,7 @@
             this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(207, 37);
-            this.dateTimePicker1.TabIndex = 5;
+            this.dateTimePicker1.TabIndex = 6;
             // 
             // label1
             // 
@@ -287,7 +287,7 @@
             this.textBox_codigo_barra.Multiline = true;
             this.textBox_codigo_barra.Name = "textBox_codigo_barra";
             this.textBox_codigo_barra.Size = new System.Drawing.Size(289, 33);
-            this.textBox_codigo_barra.TabIndex = 1;
+            this.textBox_codigo_barra.TabIndex = 0;
             // 
             // textBox_quantidade
             // 
@@ -297,7 +297,7 @@
             this.textBox_quantidade.Multiline = true;
             this.textBox_quantidade.Name = "textBox_quantidade";
             this.textBox_quantidade.Size = new System.Drawing.Size(111, 33);
-            this.textBox_quantidade.TabIndex = 3;
+            this.textBox_quantidade.TabIndex = 2;
             this.textBox_quantidade.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox_quantidade.WordWrap = false;
             // 
@@ -309,7 +309,7 @@
             this.textBox_preço_venda.Multiline = true;
             this.textBox_preço_venda.Name = "textBox_preço_venda";
             this.textBox_preço_venda.Size = new System.Drawing.Size(107, 33);
-            this.textBox_preço_venda.TabIndex = 4;
+            this.textBox_preço_venda.TabIndex = 5;
             this.textBox_preço_venda.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Form_DetalheProduto
@@ -323,6 +323,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form_DetalheProduto";
+            this.Load += new System.EventHandler(this.Form_DetalheProduto_Load);
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             this.ResumeLayout(false);

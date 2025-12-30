@@ -1,16 +1,8 @@
-﻿using sistema_comercio.sistema_comercio;
-using System;
+﻿using System;
 using System.Data;
-using System.Data.SQLite;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ExplorerBar;
-
+using sistema_comercio.sistema_comercio; // Garante que ache o DAL
 
 namespace sistema_comercio
 {
@@ -19,25 +11,45 @@ namespace sistema_comercio
         public FormProduto()
         {
             InitializeComponent();
-
             ConfigurarGrid();
-
             this.WindowState = FormWindowState.Maximized;
-            this.btn_adicionar.Click += new System.EventHandler(this.btn_adicionar_Click);
 
-
+            // Associação de eventos manuais (se não estiverem no Designer)
+            // Se já estiverem ligados no raiozinho do Designer, essas linhas são opcionais
+            this.btn_adicionar.Click += new EventHandler(this.btn_adicionar_Click);
             dataGridView1.CellClick += dataGridView1_CellClick;
-
-
         }
+
         private void FormProduto_Load(object sender, EventArgs e)
         {
-            DALProdutos.CriarBancoSQLite();
-            // Código limpo, métodos e variáveis antigos foram removidos.
-            DALProdutos.CriarTabelaProdutos();
-            ExibirDados();
-            CarregarCards();
+            try
+            {
+                DALProdutos.CriarBancoSQLite();
+                DALProdutos.CriarTabelaProdutos();
+                ExibirDados();
+                CarregarCards();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar sistema: " + ex.Message);
+            }
         }
+
+        // --- MÉTODOS DE DADOS ---
+
+        private void ExibirDados()
+        {
+            try
+            {
+                DataTable dt = DALProdutos.GetProdutos();
+                dataGridView1.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao exibir os dados: " + ex.Message);
+            }
+        }
+
         private void CarregarCards()
         {
             try
@@ -53,40 +65,22 @@ namespace sistema_comercio
             }
             catch { }
         }
-        private void ExibirDados()
+
+        private void textBoxBuscar_TextChanged(object sender, EventArgs e)
         {
             try
             {
-                DataTable dt = new DataTable();
-                dt = DALProdutos.GetProdutos();
+                string busca = textBoxBuscar.Text.Trim();
+                DataTable dt = DALProdutos.GetProduto(busca);
                 dataGridView1.DataSource = dt;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao exibir os dados: " + ex.Message);
+                MessageBox.Show("Erro ao buscar: " + ex.Message);
             }
         }
 
-
-        private void AplicarEventos(System.Windows.Forms.TextBox txt)
-        {
-
-            txt.KeyPress += ApenasValorNumerico;
-        }
-
-        private void ApenasValorNumerico(object sender, KeyPressEventArgs e)
-        {
-            System.Windows.Forms.TextBox txt = (System.Windows.Forms.TextBox)sender;
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != Convert.ToChar(Keys.Back))
-            {
-                if (e.KeyChar == ',')
-                {
-                    e.Handled = (txt.Text.Contains(','));
-                }
-                else
-                    e.Handled = true;
-            }
-        }
+        // --- AÇÕES DO GRID (EDITAR / EXCLUIR) ---
 
         private void ConfigurarGrid()
         {
@@ -94,70 +88,78 @@ namespace sistema_comercio
             dataGridView1.AutoGenerateColumns = false;
 
             // Coluna ID (oculta)
-            DataGridViewTextBoxColumn colID = new DataGridViewTextBoxColumn();
-            colID.Name = "id";
-            colID.DataPropertyName = "id"; // banco
-            colID.HeaderText = "ID";
-            colID.Visible = false;
-            dataGridView1.Columns.Add(colID);
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "id",
+                DataPropertyName = "id",
+                HeaderText = "ID",
+                Visible = false
+            });
 
             // Nome
-            DataGridViewTextBoxColumn colNome = new DataGridViewTextBoxColumn();
-            colNome.Name = "nome";
-            colNome.DataPropertyName = "nome";
-            colNome.HeaderText = "Produto";
-            colNome.Width = 300;
-            dataGridView1.Columns.Add(colNome);
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "nome",
+                DataPropertyName = "nome",
+                HeaderText = "Produto",
+                Width = 300
+            });
 
-            // Código de Barras
-            DataGridViewTextBoxColumn colCodigo = new DataGridViewTextBoxColumn();
-            colCodigo.Name = "codigoBarras";
-            colCodigo.DataPropertyName = "codigoBarras";
-            colCodigo.HeaderText = "Código";
-            colCodigo.Width = 245;
-            dataGridView1.Columns.Add(colCodigo);
+            // Código
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "codigoBarras",
+                DataPropertyName = "codigoBarras",
+                HeaderText = "Código",
+                Width = 200
+            });
 
             // Preço
-            DataGridViewTextBoxColumn colPreco = new DataGridViewTextBoxColumn();
-            colPreco.Name = "preco";
-            colPreco.DataPropertyName = "preco";
-            colPreco.HeaderText = "Preço";
-            colPreco.DefaultCellStyle.Format = "C2";
-            colPreco.Width = 130;
-            dataGridView1.Columns.Add(colPreco);
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "preco",
+                DataPropertyName = "preco",
+                HeaderText = "Preço",
+                Width = 130,
+                DefaultCellStyle = { Format = "C2" }
+            });
 
-            // Quantidade (estoque)
-            DataGridViewTextBoxColumn colEstoque = new DataGridViewTextBoxColumn();
-            colEstoque.Name = "estoque";
-            colEstoque.DataPropertyName = "estoque";
-            colEstoque.HeaderText = "Estoque";
-            colEstoque.Width = 120;
-            dataGridView1.Columns.Add(colEstoque);
+            // Estoque
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "estoque",
+                DataPropertyName = "estoque",
+                HeaderText = "Estoque",
+                Width = 120
+            });
 
             // Validade
-            DataGridViewTextBoxColumn colValidade = new DataGridViewTextBoxColumn();
-            colValidade.Name = "validade";
-            colValidade.DataPropertyName = "validade";
-            colValidade.HeaderText = "Validade";
-            colValidade.Width = 150;
-            dataGridView1.Columns.Add(colValidade);
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "validade",
+                DataPropertyName = "validade",
+                HeaderText = "Validade",
+                Width = 150
+            });
 
-            DataGridViewButtonColumn colEditar = new DataGridViewButtonColumn();
-            colEditar.Name = "Editar";
-            colEditar.HeaderText = "Editar";
-            colEditar.Text = "✏️"; // Emoji de lápis
-            colEditar.UseColumnTextForButtonValue = true;
-            colEditar.Width = 85;
-            dataGridView1.Columns.Add(colEditar);
+            // Botões
+            dataGridView1.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "Editar",
+                HeaderText = "Editar",
+                Text = "✏️",
+                UseColumnTextForButtonValue = true,
+                Width = 80
+            });
 
-            // Botão Excluir
-            DataGridViewButtonColumn colExcluir = new DataGridViewButtonColumn();
-            colExcluir.Name = "Excluir";
-            colExcluir.HeaderText = "Excluir";
-            colExcluir.Text = "🗑";
-            colExcluir.UseColumnTextForButtonValue = true;
-            colExcluir.Width = 100;
-            dataGridView1.Columns.Add(colExcluir);
+            dataGridView1.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "Excluir",
+                HeaderText = "Excluir",
+                Text = "🗑",
+                UseColumnTextForButtonValue = true,
+                Width = 80
+            });
 
             // Estilo
             dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 12);
@@ -167,48 +169,46 @@ namespace sistema_comercio
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Verifica se clicou em alguma coluna de ação
-
-            if (e.RowIndex < 0) return; // Ignora clique no cabeçalho
+            if (e.RowIndex < 0) return;
 
             DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
             string colunaNome = dataGridView1.Columns[e.ColumnIndex].Name;
 
             if (colunaNome == "Excluir")
             {
-                ExcluirProduto(e.RowIndex); // Sua função de excluir
+                ExcluirProduto(e.RowIndex);
             }
             else if (colunaNome == "Editar")
             {
-                // 1. Pega os dados do produto da linha clicada
+                // Preenche o objeto com os dados da linha
                 Produto_dtb produto = new Produto_dtb();
                 produto.Id = Convert.ToInt32(row.Cells["id"].Value);
                 produto.Nome = row.Cells["nome"].Value.ToString();
                 produto.CodigoBarras = row.Cells["codigoBarras"].Value.ToString();
                 produto.Preco = Convert.ToDecimal(row.Cells["preco"].Value);
                 produto.Estoque = Convert.ToInt32(row.Cells["estoque"].Value);
+
                 if (row.Cells["validade"].Value != DBNull.Value)
                     produto.Validade = Convert.ToDateTime(row.Cells["validade"].Value);
 
-                // 2. Abre o pop-up (usando o Construtor 2, preenchido)
+                // Abre o form de detalhes passando o produto
                 using (Form_DetalheProduto formEdit = new Form_DetalheProduto(produto))
                 {
                     if (formEdit.ShowDialog() == DialogResult.OK)
                     {
-                        // 3. Se clicou em Salvar, chama o Update
                         try
                         {
                             DALProdutos.UpdateProduto(formEdit.Produto);
-                            MessageBox.Show("Produto atualizado com sucesso!");
-                            ExibirDados(); // Atualiza o grid
+                            MessageBox.Show("Produto atualizado!");
+                            ExibirDados();
+                            CarregarCards();
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Erro ao atualizar produto: " + ex.Message);
+                            MessageBox.Show("Erro ao atualizar: " + ex.Message);
                         }
                     }
                 }
-
             }
         }
 
@@ -216,20 +216,16 @@ namespace sistema_comercio
         {
             try
             {
-                if (rowIndex < 0 || rowIndex >= dataGridView1.Rows.Count)
-                    return;
+                int id = Convert.ToInt32(dataGridView1.Rows[rowIndex].Cells["id"].Value);
+                var confirm = MessageBox.Show("Deseja excluir este produto?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-                DataGridViewRow row = dataGridView1.Rows[rowIndex];
-                int id = Convert.ToInt32(row.Cells["id"].Value);
-
-                var confirmResult = MessageBox.Show("Tem certeza que deseja excluir este produto?", "Confirmação", MessageBoxButtons.YesNo);
-                if (confirmResult == DialogResult.Yes)
+                if (confirm == DialogResult.Yes)
                 {
                     DALProdutos.DeleteProduto(id);
-                    MessageBox.Show("Produto excluído com sucesso!, Sucesso, MessageBoxButtons.OK, MessageBoxIcon.Information");
+                    MessageBox.Show("Produto excluído!");
                     ExibirDados();
+                    CarregarCards();
                 }
-
             }
             catch (Exception ex)
             {
@@ -237,122 +233,52 @@ namespace sistema_comercio
             }
         }
 
-        private bool sidebarExpanded = true;
+        // --- BOTÃO ADICIONAR (ESTAVA VAZIO) ---
+        private void btn_adicionar_Click(object sender, EventArgs e)
+        {
+            // Abre o formulário passando NULL ou um Produto vazio para indicar "Novo Cadastro"
+            // Certifique-se que o construtor do Form_DetalheProduto aceita isso
+            using (Form_DetalheProduto formAdd = new Form_DetalheProduto(null))
+            {
+                if (formAdd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        DALProdutos.AddProduto(formAdd.Produto);
+                        MessageBox.Show("Produto adicionado com sucesso!");
+                        ExibirDados(); // Atualiza o grid
+                        CarregarCards();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro ao salvar: " + ex.Message);
+                    }
+                }
+            }
+        }
 
+        // --- MENU E NAVEGAÇÃO ---
+
+        bool sidebarExpanded = true;
         private void sidebar_timer_Tick_1(object sender, EventArgs e)
         {
             if (sidebarExpanded)
             {
-                // FECHAR o sidebar (ir para o mínimo)
-                if (sidebar.Width > sidebar.MinimumSize.Width)
-                {
-                    sidebar.Width -= 10;
-
-                }
-                else
+                sidebar.Width -= 20;
+                if (sidebar.Width <= sidebar.MinimumSize.Width)
                 {
                     sidebarExpanded = false;
                     sidebar_timer.Stop();
-
                 }
             }
             else
             {
-                // ABRIR o sidebar (ir para o máximo)
-                if (sidebar.Width < sidebar.MaximumSize.Width)
-                {
-                    sidebar.Width += 10;
-
-                }
-                else
+                sidebar.Width += 60;
+                if (sidebar.Width >= sidebar.MaximumSize.Width)
                 {
                     sidebarExpanded = true;
                     sidebar_timer.Stop();
                 }
-            }
-        }
-
-        private void textBoxBuscar_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                string busca = textBoxBuscar.Text.Trim(); // remove espaços
-                DataTable dt = DALProdutos.GetProduto(busca);
-                dataGridView1.DataSource = dt;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao buscar os dados: " + ex.Message);
-            }
-        }
-
-        private void btn_adicionar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-      
-
-        private void buttonHistorico_Click_1(object sender, EventArgs e)
-        {
-            Form_historico historico = new Form_historico();
-            historico.Show();
-            this.Close();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            var confirmResult = MessageBox.Show("Deseja realmente fechar o sistema?",
-                                     "Confirmar Saída",
-                                     MessageBoxButtons.YesNo,
-                                     MessageBoxIcon.Question);
-
-            // Se o usuário clicar em "Sim", o aplicativo fecha.
-            if (confirmResult == DialogResult.Yes)
-            {
-                Application.Exit(); // Este comando fecha o programa INTEIRO.
-            }
-        }
-
-        private void buttonHome_Click_1(object sender, EventArgs e)
-        {
-            Form1 newF = new Form1();
-            newF.Show();
-            this.Close();
-        }
-
-        private void buttonVenda_Click_1(object sender, EventArgs e)
-        {
-            Form_venda newEstoque = new Form_venda();
-            newEstoque.Show();
-            this.Close();
-        }
-
-        private void buttonCliente_Click_1(object sender, EventArgs e)
-        {
-            FormCliente newCliente = new FormCliente();
-            newCliente.Show();
-            this.Close();
-        }
-
-        private void buttonHistorico_Click(object sender, EventArgs e)
-        {
-            Form_historico historico = new Form_historico();
-            historico.Show();
-            this.Close();
-        }
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            var confirmResult = MessageBox.Show("Deseja realmente fechar o sistema?",
-                                     "Confirmar Saída",
-                                     MessageBoxButtons.YesNo,
-                                     MessageBoxIcon.Question);
-
-            // Se o usuário clicar em "Sim", o aplicativo fecha.
-            if (confirmResult == DialogResult.Yes)
-            {
-                Application.Exit(); // Este comando fecha o programa INTEIRO.
             }
         }
 
@@ -361,23 +287,40 @@ namespace sistema_comercio
             sidebar_timer.Start();
         }
 
-        private void label10_Click(object sender, EventArgs e)
+        private void buttonHome_Click_1(object sender, EventArgs e)
         {
-
+            AbrirForm(new Form1());
         }
 
-        private void btn_adicionar_Click_1(object sender, EventArgs e)
+        private void buttonVenda_Click_1(object sender, EventArgs e)
         {
-
+            AbrirForm(new Form_venda());
         }
 
+        private void buttonCliente_Click_1(object sender, EventArgs e)
+        {
+            AbrirForm(new FormCliente());
+        }
+
+        private void buttonHistorico_Click(object sender, EventArgs e)
+        {
+            AbrirForm(new Form_historico());
+        }
+
+        // Método auxiliar para não repetir código de fechar e abrir
+        private void AbrirForm(Form form)
+        {
+            form.Show();
+            this.Close();
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Deseja realmente sair?", "Sair", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
     }
 }
-    
-
-
-
-
-
-
-

@@ -28,44 +28,68 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelAjuste = new System.Windows.Forms.Label();
+            this.panelBorda = new System.Windows.Forms.Panel();
+            this.labelTitulo = new System.Windows.Forms.Label();
             this.txtValorAjuste = new System.Windows.Forms.TextBox();
             this.btnConfirmar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
+            this.panelBorda.SuspendLayout();
             this.SuspendLayout();
             // 
-            // labelAjuste
+            // panelBorda
             // 
-            this.labelAjuste.AutoSize = true;
-            this.labelAjuste.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelAjuste.Location = new System.Drawing.Point(12, 9);
-            this.labelAjuste.Name = "labelAjuste";
-            this.labelAjuste.Size = new System.Drawing.Size(177, 31);
-            this.labelAjuste.TabIndex = 0;
-            this.labelAjuste.Text = "Valor do Ajuste";
+            this.panelBorda.BackColor = System.Drawing.Color.White;
+            this.panelBorda.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelBorda.Controls.Add(this.labelTitulo);
+            this.panelBorda.Controls.Add(this.txtValorAjuste);
+            this.panelBorda.Controls.Add(this.btnConfirmar);
+            this.panelBorda.Controls.Add(this.btnCancelar);
+            this.panelBorda.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelBorda.Location = new System.Drawing.Point(0, 0);
+            this.panelBorda.Name = "panelBorda";
+            this.panelBorda.Size = new System.Drawing.Size(400, 280);
+            this.panelBorda.TabIndex = 0;
+            // 
+            // labelTitulo
+            // 
+            this.labelTitulo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelTitulo.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.labelTitulo.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.labelTitulo.Location = new System.Drawing.Point(0, 0);
+            this.labelTitulo.Name = "labelTitulo";
+            this.labelTitulo.Padding = new System.Windows.Forms.Padding(0, 20, 0, 0);
+            this.labelTitulo.Size = new System.Drawing.Size(398, 68);
+            this.labelTitulo.TabIndex = 0;
+            this.labelTitulo.Text = "AJUSTAR SALDO";
+            this.labelTitulo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // txtValorAjuste
             // 
-            this.txtValorAjuste.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtValorAjuste.Location = new System.Drawing.Point(18, 43);
+            this.txtValorAjuste.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtValorAjuste.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtValorAjuste.Font = new System.Drawing.Font("Segoe UI", 28F, System.Drawing.FontStyle.Bold);
+            this.txtValorAjuste.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.txtValorAjuste.Location = new System.Drawing.Point(39, 90);
+            this.txtValorAjuste.Margin = new System.Windows.Forms.Padding(10);
             this.txtValorAjuste.Name = "txtValorAjuste";
-            this.txtValorAjuste.Size = new System.Drawing.Size(114, 38);
+            this.txtValorAjuste.Size = new System.Drawing.Size(320, 63);
             this.txtValorAjuste.TabIndex = 1;
+            this.txtValorAjuste.Text = "0,00";
+            this.txtValorAjuste.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnConfirmar
             // 
             this.btnConfirmar.BackColor = System.Drawing.Color.LimeGreen;
             this.btnConfirmar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConfirmar.FlatAppearance.BorderColor = System.Drawing.Color.Red;
-            this.btnConfirmar.FlatAppearance.BorderSize = 10;
-            this.btnConfirmar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConfirmar.FlatAppearance.BorderSize = 0;
+            this.btnConfirmar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConfirmar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnConfirmar.ForeColor = System.Drawing.Color.White;
-            this.btnConfirmar.Location = new System.Drawing.Point(152, 104);
-            this.btnConfirmar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnConfirmar.Location = new System.Drawing.Point(39, 180);
             this.btnConfirmar.Name = "btnConfirmar";
-            this.btnConfirmar.Size = new System.Drawing.Size(120, 40);
-            this.btnConfirmar.TabIndex = 88;
-            this.btnConfirmar.Text = "Confirma";
+            this.btnConfirmar.Size = new System.Drawing.Size(320, 50);
+            this.btnConfirmar.TabIndex = 2;
+            this.btnConfirmar.Text = "CONFIRMAR";
             this.btnConfirmar.UseVisualStyleBackColor = false;
             this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
             // 
@@ -73,14 +97,15 @@
             // 
             this.btnCancelar.BackColor = System.Drawing.Color.Transparent;
             this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancelar.ForeColor = System.Drawing.Color.Black;
-            this.btnCancelar.Location = new System.Drawing.Point(12, 102);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnCancelar.FlatAppearance.BorderSize = 0;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCancelar.ForeColor = System.Drawing.Color.Gray;
+            this.btnCancelar.Location = new System.Drawing.Point(39, 236);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(120, 40);
-            this.btnCancelar.TabIndex = 96;
-            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(320, 35);
+            this.btnCancelar.TabIndex = 3;
+            this.btnCancelar.Text = "Cancelar (ESC)";
             this.btnCancelar.UseVisualStyleBackColor = false;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
@@ -88,24 +113,23 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 153);
-            this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.btnConfirmar);
-            this.Controls.Add(this.txtValorAjuste);
-            this.Controls.Add(this.labelAjuste);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(400, 280);
+            this.Controls.Add(this.panelBorda);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form_AjustarSaldo";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Form_AjustarSaldo";
+            this.panelBorda.ResumeLayout(false);
+            this.panelBorda.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label labelAjuste;
+        private System.Windows.Forms.Panel panelBorda;
+        private System.Windows.Forms.Label labelTitulo;
         private System.Windows.Forms.TextBox txtValorAjuste;
         private System.Windows.Forms.Button btnConfirmar;
         private System.Windows.Forms.Button btnCancelar;

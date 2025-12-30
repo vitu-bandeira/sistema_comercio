@@ -289,7 +289,7 @@ namespace sistema_comercio
                     throw new Exception("Erro ao contar estoque baixo", ex);
                 }
             }
-         
+          
             public static decimal GetValorTotalEstoque()
             {
                 try

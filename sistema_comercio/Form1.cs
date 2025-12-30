@@ -23,7 +23,7 @@ namespace sistema_comercio
             DALVendas.CriarTabelasVendas();
             DALClientes.CriarTabelaClientes();
             DALProdutos.CriarTabelaProdutos();
-
+            DALClientes.AtualizarEstruturaTabela();
             // Carrega todos os dados do dashboard
             CarregarDashboard();
         }
@@ -214,12 +214,12 @@ namespace sistema_comercio
         {
             if (sidebarExpanded)
             {
-                if (sidebar.Width > sidebar.MinimumSize.Width) sidebar.Width -= 10;
+                if (sidebar.Width > sidebar.MinimumSize.Width) sidebar.Width -= 20;
                 else { sidebarExpanded = false; sidebar_timer.Stop(); }
             }
             else
             {
-                if (sidebar.Width < sidebar.MaximumSize.Width) sidebar.Width += 10;
+                if (sidebar.Width < sidebar.MaximumSize.Width) sidebar.Width += 60;
                 else { sidebarExpanded = true; sidebar_timer.Stop(); }
             }
         }

@@ -37,13 +37,36 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_historico));
             this.label7 = new System.Windows.Forms.Label();
             this.panel12 = new System.Windows.Forms.Panel();
-            this.sidebar_timer = new System.Windows.Forms.Timer(this.components);
-            this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
             this.button_menu = new System.Windows.Forms.PictureBox();
+            this.sidebar_timer = new System.Windows.Forms.Timer(this.components);
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblTotalDebito = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lblTotalFaturado = new System.Windows.Forms.Label();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnHoje = new System.Windows.Forms.Button();
+            this.btnSemana = new System.Windows.Forms.Button();
+            this.btnMes = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtFiltroCliente = new System.Windows.Forms.TextBox();
+            this.btnFiltrar = new System.Windows.Forms.Button();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dtpInicio = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.dtpFim = new System.Windows.Forms.DateTimePicker();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvItens = new System.Windows.Forms.DataGridView();
+            this.dgvVendas = new System.Windows.Forms.DataGridView();
+            this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonHome = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -60,41 +83,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.panel9 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.lblTotalDebito = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.lblTotalFaturado = new System.Windows.Forms.Label();
-            this.txtFiltroCliente = new System.Windows.Forms.TextBox();
-            this.btnFiltrar = new System.Windows.Forms.Button();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnHoje = new System.Windows.Forms.Button();
-            this.btnSemana = new System.Windows.Forms.Button();
-            this.btnMes = new System.Windows.Forms.Button();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dtpInicio = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dtpFim = new System.Windows.Forms.DateTimePicker();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvItens = new System.Windows.Forms.DataGridView();
-            this.dgvVendas = new System.Windows.Forms.DataGridView();
-            this.label3 = new System.Windows.Forms.Label();
             this.panel12.SuspendLayout();
-            this.sidebar.SuspendLayout();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.button_menu)).BeginInit();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel13.SuspendLayout();
-            this.panel8.SuspendLayout();
-            this.panel9.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -103,6 +93,14 @@
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItens)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVendas)).BeginInit();
+            this.sidebar.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel13.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel9.SuspendLayout();
             this.SuspendLayout();
             // 
             // label7
@@ -123,253 +121,28 @@
             // 
             this.panel12.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.panel12.Controls.Add(this.label7);
+            this.panel12.Controls.Add(this.button_menu);
             this.panel12.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel12.Location = new System.Drawing.Point(0, 0);
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(1528, 61);
             this.panel12.TabIndex = 117;
             // 
-            // sidebar_timer
-            // 
-            this.sidebar_timer.Interval = 10;
-            this.sidebar_timer.Tick += new System.EventHandler(this.sidebar_timer_Tick_1);
-            // 
-            // sidebar
-            // 
-            this.sidebar.BackColor = System.Drawing.Color.SlateBlue;
-            this.sidebar.Controls.Add(this.panel1);
-            this.sidebar.Controls.Add(this.panel2);
-            this.sidebar.Controls.Add(this.panel3);
-            this.sidebar.Controls.Add(this.panel4);
-            this.sidebar.Controls.Add(this.panel5);
-            this.sidebar.Controls.Add(this.panel13);
-            this.sidebar.Controls.Add(this.panel8);
-            this.sidebar.Dock = System.Windows.Forms.DockStyle.Left;
-            this.sidebar.Location = new System.Drawing.Point(0, 61);
-            this.sidebar.MaximumSize = new System.Drawing.Size(240, 0);
-            this.sidebar.MinimumSize = new System.Drawing.Size(75, 0);
-            this.sidebar.Name = "sidebar";
-            this.sidebar.Size = new System.Drawing.Size(75, 740);
-            this.sidebar.TabIndex = 122;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.button_menu);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(273, 90);
-            this.panel1.TabIndex = 0;
-            // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(85, 27);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(66, 28);
-            this.label5.TabIndex = 36;
-            this.label5.Text = "Menu";
-            // 
             // button_menu
             // 
             this.button_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.button_menu.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_menu.Image = global::sistema_comercio.Properties.Resources.icons8_menu_50;
-            this.button_menu.Location = new System.Drawing.Point(9, 17);
+            this.button_menu.Location = new System.Drawing.Point(12, 6);
             this.button_menu.Name = "button_menu";
             this.button_menu.Size = new System.Drawing.Size(52, 52);
             this.button_menu.TabIndex = 0;
             this.button_menu.TabStop = false;
             // 
-            // panel2
+            // sidebar_timer
             // 
-            this.panel2.Controls.Add(this.buttonHome);
-            this.panel2.Location = new System.Drawing.Point(3, 99);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(273, 73);
-            this.panel2.TabIndex = 1;
-            // 
-            // buttonHome
-            // 
-            this.buttonHome.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonHome.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonHome.ForeColor = System.Drawing.Color.White;
-            this.buttonHome.Image = global::sistema_comercio.Properties.Resources.icons8_home_50__1_;
-            this.buttonHome.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonHome.Location = new System.Drawing.Point(-6, -8);
-            this.buttonHome.Name = "buttonHome";
-            this.buttonHome.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonHome.Size = new System.Drawing.Size(283, 90);
-            this.buttonHome.TabIndex = 35;
-            this.buttonHome.Text = "                 Inicio";
-            this.buttonHome.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonHome.UseVisualStyleBackColor = true;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.buttonEstoque);
-            this.panel3.Location = new System.Drawing.Point(3, 178);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(273, 73);
-            this.panel3.TabIndex = 2;
-            // 
-            // buttonEstoque
-            // 
-            this.buttonEstoque.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonEstoque.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEstoque.ForeColor = System.Drawing.Color.White;
-            this.buttonEstoque.Image = global::sistema_comercio.Properties.Resources.icons8_products_50;
-            this.buttonEstoque.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonEstoque.Location = new System.Drawing.Point(-6, -8);
-            this.buttonEstoque.Name = "buttonEstoque";
-            this.buttonEstoque.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonEstoque.Size = new System.Drawing.Size(283, 90);
-            this.buttonEstoque.TabIndex = 35;
-            this.buttonEstoque.Text = "                 Produtos";
-            this.buttonEstoque.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonEstoque.UseVisualStyleBackColor = true;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.buttonVenda);
-            this.panel4.Location = new System.Drawing.Point(3, 257);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(273, 73);
-            this.panel4.TabIndex = 3;
-            // 
-            // buttonVenda
-            // 
-            this.buttonVenda.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonVenda.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonVenda.ForeColor = System.Drawing.Color.White;
-            this.buttonVenda.Image = global::sistema_comercio.Properties.Resources.icons8_products_64;
-            this.buttonVenda.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonVenda.Location = new System.Drawing.Point(-8, -8);
-            this.buttonVenda.Name = "buttonVenda";
-            this.buttonVenda.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonVenda.Size = new System.Drawing.Size(283, 90);
-            this.buttonVenda.TabIndex = 35;
-            this.buttonVenda.Text = "                 Caixa";
-            this.buttonVenda.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonVenda.UseVisualStyleBackColor = true;
-            // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.buttonCliente);
-            this.panel5.Location = new System.Drawing.Point(3, 336);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(273, 73);
-            this.panel5.TabIndex = 4;
-            // 
-            // buttonCliente
-            // 
-            this.buttonCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCliente.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonCliente.ForeColor = System.Drawing.Color.White;
-            this.buttonCliente.Image = global::sistema_comercio.Properties.Resources.icons8_user_50;
-            this.buttonCliente.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonCliente.Location = new System.Drawing.Point(-6, -8);
-            this.buttonCliente.Name = "buttonCliente";
-            this.buttonCliente.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonCliente.Size = new System.Drawing.Size(283, 90);
-            this.buttonCliente.TabIndex = 35;
-            this.buttonCliente.Text = "                 Clientes";
-            this.buttonCliente.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonCliente.UseVisualStyleBackColor = true;
-            // 
-            // panel13
-            // 
-            this.panel13.Controls.Add(this.panel7);
-            this.panel13.Controls.Add(this.buttonHistorico);
-            this.panel13.Controls.Add(this.panel14);
-            this.panel13.Location = new System.Drawing.Point(3, 415);
-            this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(273, 73);
-            this.panel13.TabIndex = 6;
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.GhostWhite;
-            this.panel7.Location = new System.Drawing.Point(-1, -9);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(10, 90);
-            this.panel7.TabIndex = 83;
-            // 
-            // buttonHistorico
-            // 
-            this.buttonHistorico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonHistorico.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonHistorico.ForeColor = System.Drawing.Color.White;
-            this.buttonHistorico.Image = global::sistema_comercio.Properties.Resources.icons8_receipt_dollar_50;
-            this.buttonHistorico.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonHistorico.Location = new System.Drawing.Point(-5, -6);
-            this.buttonHistorico.Name = "buttonHistorico";
-            this.buttonHistorico.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.buttonHistorico.Size = new System.Drawing.Size(283, 90);
-            this.buttonHistorico.TabIndex = 82;
-            this.buttonHistorico.Text = "                 Historico";
-            this.buttonHistorico.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonHistorico.UseVisualStyleBackColor = true;
-            // 
-            // panel14
-            // 
-            this.panel14.BackColor = System.Drawing.Color.GhostWhite;
-            this.panel14.Location = new System.Drawing.Point(3, 405);
-            this.panel14.Name = "panel14";
-            this.panel14.Size = new System.Drawing.Size(10, 90);
-            this.panel14.TabIndex = 80;
-            // 
-            // panel8
-            // 
-            this.panel8.Controls.Add(this.button1);
-            this.panel8.Controls.Add(this.panel9);
-            this.panel8.Location = new System.Drawing.Point(3, 494);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(273, 73);
-            this.panel8.TabIndex = 7;
-            // 
-            // button1
-            // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = global::sistema_comercio.Properties.Resources.icons8_export_50;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(-3, -14);
-            this.button1.Name = "button1";
-            this.button1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.button1.Size = new System.Drawing.Size(278, 100);
-            this.button1.TabIndex = 83;
-            this.button1.Text = "                 Sair";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // panel9
-            // 
-            this.panel9.BackColor = System.Drawing.Color.GhostWhite;
-            this.panel9.Controls.Add(this.button2);
-            this.panel9.Location = new System.Drawing.Point(3, 405);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(10, 90);
-            this.panel9.TabIndex = 80;
-            // 
-            // button2
-            // 
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Image = global::sistema_comercio.Properties.Resources.icons8_export_50;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(-134, -5);
-            this.button2.Name = "button2";
-            this.button2.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.button2.Size = new System.Drawing.Size(278, 100);
-            this.button2.TabIndex = 83;
-            this.button2.Text = "                 Sair";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.UseVisualStyleBackColor = true;
+            this.sidebar_timer.Interval = 20;
+            this.sidebar_timer.Tick += new System.EventHandler(this.sidebar_timer_Tick_1);
             // 
             // tableLayoutPanel1
             // 
@@ -378,12 +151,12 @@
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel3, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel6, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(75, 61);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 61);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 73.22404F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.77596F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1453, 183);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1528, 183);
             this.tableLayoutPanel1.TabIndex = 123;
             // 
             // flowLayoutPanel3
@@ -397,7 +170,7 @@
             this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 136);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(1447, 43);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(1522, 43);
             this.flowLayoutPanel3.TabIndex = 117;
             // 
             // label11
@@ -470,31 +243,6 @@
             this.lblTotalFaturado.TabIndex = 107;
             this.lblTotalFaturado.Text = "0,00";
             // 
-            // txtFiltroCliente
-            // 
-            this.txtFiltroCliente.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFiltroCliente.Location = new System.Drawing.Point(413, 4);
-            this.txtFiltroCliente.Margin = new System.Windows.Forms.Padding(4);
-            this.txtFiltroCliente.Name = "txtFiltroCliente";
-            this.txtFiltroCliente.Size = new System.Drawing.Size(321, 34);
-            this.txtFiltroCliente.TabIndex = 103;
-            // 
-            // btnFiltrar
-            // 
-            this.btnFiltrar.BackColor = System.Drawing.Color.LimeGreen;
-            this.btnFiltrar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFiltrar.FlatAppearance.BorderColor = System.Drawing.Color.Red;
-            this.btnFiltrar.FlatAppearance.BorderSize = 10;
-            this.btnFiltrar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFiltrar.ForeColor = System.Drawing.Color.White;
-            this.btnFiltrar.Location = new System.Drawing.Point(742, 5);
-            this.btnFiltrar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnFiltrar.Name = "btnFiltrar";
-            this.btnFiltrar.Size = new System.Drawing.Size(82, 33);
-            this.btnFiltrar.TabIndex = 104;
-            this.btnFiltrar.Text = "Filtrar";
-            this.btnFiltrar.UseVisualStyleBackColor = false;
-            // 
             // panel6
             // 
             this.panel6.Controls.Add(this.flowLayoutPanel1);
@@ -502,7 +250,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(3, 3);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1447, 127);
+            this.panel6.Size = new System.Drawing.Size(1522, 127);
             this.panel6.TabIndex = 119;
             // 
             // flowLayoutPanel1
@@ -516,7 +264,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 55);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1447, 62);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1522, 62);
             this.flowLayoutPanel1.TabIndex = 107;
             // 
             // btnHoje
@@ -567,6 +315,44 @@
             this.btnMes.Text = " Mes";
             this.btnMes.UseVisualStyleBackColor = false;
             // 
+            // label3
+            // 
+            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(295, 0);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.label3.Size = new System.Drawing.Size(110, 36);
+            this.label3.TabIndex = 105;
+            this.label3.Text = " Ciente:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // txtFiltroCliente
+            // 
+            this.txtFiltroCliente.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFiltroCliente.Location = new System.Drawing.Point(413, 4);
+            this.txtFiltroCliente.Margin = new System.Windows.Forms.Padding(4);
+            this.txtFiltroCliente.Name = "txtFiltroCliente";
+            this.txtFiltroCliente.Size = new System.Drawing.Size(321, 34);
+            this.txtFiltroCliente.TabIndex = 103;
+            // 
+            // btnFiltrar
+            // 
+            this.btnFiltrar.BackColor = System.Drawing.Color.LimeGreen;
+            this.btnFiltrar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFiltrar.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.btnFiltrar.FlatAppearance.BorderSize = 10;
+            this.btnFiltrar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFiltrar.ForeColor = System.Drawing.Color.White;
+            this.btnFiltrar.Location = new System.Drawing.Point(742, 5);
+            this.btnFiltrar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnFiltrar.Name = "btnFiltrar";
+            this.btnFiltrar.Size = new System.Drawing.Size(82, 33);
+            this.btnFiltrar.TabIndex = 104;
+            this.btnFiltrar.Text = "Filtrar";
+            this.btnFiltrar.UseVisualStyleBackColor = false;
+            // 
             // flowLayoutPanel4
             // 
             this.flowLayoutPanel4.Controls.Add(this.label1);
@@ -576,7 +362,7 @@
             this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(1447, 55);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(1522, 55);
             this.flowLayoutPanel4.TabIndex = 106;
             this.flowLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel4_Paint);
             // 
@@ -632,18 +418,19 @@
             // 
             // tableLayoutPanel3
             // 
+            this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.05882F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.94118F));
             this.tableLayoutPanel3.Controls.Add(this.dgvItens, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.dgvVendas, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(75, 244);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 244);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1453, 557);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 557F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1528, 557);
             this.tableLayoutPanel3.TabIndex = 124;
             // 
             // dgvItens
@@ -683,7 +470,7 @@
             this.dgvItens.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvItens.EnableHeadersVisualStyles = false;
             this.dgvItens.GridColor = System.Drawing.SystemColors.Window;
-            this.dgvItens.Location = new System.Drawing.Point(688, 5);
+            this.dgvItens.Location = new System.Drawing.Point(724, 5);
             this.dgvItens.Margin = new System.Windows.Forms.Padding(5);
             this.dgvItens.MultiSelect = false;
             this.dgvItens.Name = "dgvItens";
@@ -699,7 +486,7 @@
             this.dgvItens.RowHeadersWidth = 51;
             this.dgvItens.RowTemplate.Height = 24;
             this.dgvItens.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvItens.Size = new System.Drawing.Size(760, 547);
+            this.dgvItens.Size = new System.Drawing.Size(799, 547);
             this.dgvItens.TabIndex = 112;
             this.dgvItens.TabStop = false;
             // 
@@ -756,21 +543,212 @@
             this.dgvVendas.RowHeadersWidth = 51;
             this.dgvVendas.RowTemplate.Height = 24;
             this.dgvVendas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvVendas.Size = new System.Drawing.Size(677, 549);
+            this.dgvVendas.Size = new System.Drawing.Size(713, 549);
             this.dgvVendas.TabIndex = 113;
             // 
-            // label3
+            // sidebar
             // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(295, 0);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.label3.Size = new System.Drawing.Size(110, 36);
-            this.label3.TabIndex = 105;
-            this.label3.Text = " Ciente:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.sidebar.BackColor = System.Drawing.Color.SlateBlue;
+            this.sidebar.Controls.Add(this.panel2);
+            this.sidebar.Controls.Add(this.panel3);
+            this.sidebar.Controls.Add(this.panel4);
+            this.sidebar.Controls.Add(this.panel5);
+            this.sidebar.Controls.Add(this.panel13);
+            this.sidebar.Controls.Add(this.panel8);
+            this.sidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.sidebar.Location = new System.Drawing.Point(0, 61);
+            this.sidebar.MaximumSize = new System.Drawing.Size(185, 0);
+            this.sidebar.Name = "sidebar";
+            this.sidebar.Size = new System.Drawing.Size(0, 740);
+            this.sidebar.TabIndex = 125;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.buttonHome);
+            this.panel2.Location = new System.Drawing.Point(3, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(273, 73);
+            this.panel2.TabIndex = 1;
+            // 
+            // buttonHome
+            // 
+            this.buttonHome.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonHome.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonHome.ForeColor = System.Drawing.Color.White;
+            this.buttonHome.Image = ((System.Drawing.Image)(resources.GetObject("buttonHome.Image")));
+            this.buttonHome.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonHome.Location = new System.Drawing.Point(-6, -8);
+            this.buttonHome.Name = "buttonHome";
+            this.buttonHome.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonHome.Size = new System.Drawing.Size(283, 90);
+            this.buttonHome.TabIndex = 35;
+            this.buttonHome.Text = "                 Inicio";
+            this.buttonHome.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonHome.UseVisualStyleBackColor = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.buttonEstoque);
+            this.panel3.Location = new System.Drawing.Point(3, 82);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(273, 73);
+            this.panel3.TabIndex = 2;
+            // 
+            // buttonEstoque
+            // 
+            this.buttonEstoque.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonEstoque.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEstoque.ForeColor = System.Drawing.Color.White;
+            this.buttonEstoque.Image = ((System.Drawing.Image)(resources.GetObject("buttonEstoque.Image")));
+            this.buttonEstoque.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonEstoque.Location = new System.Drawing.Point(-6, -8);
+            this.buttonEstoque.Name = "buttonEstoque";
+            this.buttonEstoque.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonEstoque.Size = new System.Drawing.Size(283, 90);
+            this.buttonEstoque.TabIndex = 35;
+            this.buttonEstoque.Text = "                 Produtos";
+            this.buttonEstoque.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonEstoque.UseVisualStyleBackColor = true;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.buttonVenda);
+            this.panel4.Location = new System.Drawing.Point(3, 161);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(273, 73);
+            this.panel4.TabIndex = 3;
+            // 
+            // buttonVenda
+            // 
+            this.buttonVenda.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonVenda.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonVenda.ForeColor = System.Drawing.Color.White;
+            this.buttonVenda.Image = ((System.Drawing.Image)(resources.GetObject("buttonVenda.Image")));
+            this.buttonVenda.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonVenda.Location = new System.Drawing.Point(-8, -8);
+            this.buttonVenda.Name = "buttonVenda";
+            this.buttonVenda.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonVenda.Size = new System.Drawing.Size(283, 90);
+            this.buttonVenda.TabIndex = 35;
+            this.buttonVenda.Text = "                 Caixa";
+            this.buttonVenda.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonVenda.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.buttonCliente);
+            this.panel5.Location = new System.Drawing.Point(3, 240);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(273, 73);
+            this.panel5.TabIndex = 4;
+            // 
+            // buttonCliente
+            // 
+            this.buttonCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCliente.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCliente.ForeColor = System.Drawing.Color.White;
+            this.buttonCliente.Image = ((System.Drawing.Image)(resources.GetObject("buttonCliente.Image")));
+            this.buttonCliente.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonCliente.Location = new System.Drawing.Point(-6, -8);
+            this.buttonCliente.Name = "buttonCliente";
+            this.buttonCliente.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonCliente.Size = new System.Drawing.Size(283, 90);
+            this.buttonCliente.TabIndex = 35;
+            this.buttonCliente.Text = "                 Clientes";
+            this.buttonCliente.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonCliente.UseVisualStyleBackColor = true;
+            // 
+            // panel13
+            // 
+            this.panel13.Controls.Add(this.panel7);
+            this.panel13.Controls.Add(this.buttonHistorico);
+            this.panel13.Controls.Add(this.panel14);
+            this.panel13.Location = new System.Drawing.Point(3, 319);
+            this.panel13.Name = "panel13";
+            this.panel13.Size = new System.Drawing.Size(273, 73);
+            this.panel13.TabIndex = 6;
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.GhostWhite;
+            this.panel7.Location = new System.Drawing.Point(-1, -9);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(10, 90);
+            this.panel7.TabIndex = 83;
+            // 
+            // buttonHistorico
+            // 
+            this.buttonHistorico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonHistorico.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonHistorico.ForeColor = System.Drawing.Color.White;
+            this.buttonHistorico.Image = ((System.Drawing.Image)(resources.GetObject("buttonHistorico.Image")));
+            this.buttonHistorico.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonHistorico.Location = new System.Drawing.Point(-5, -6);
+            this.buttonHistorico.Name = "buttonHistorico";
+            this.buttonHistorico.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonHistorico.Size = new System.Drawing.Size(283, 90);
+            this.buttonHistorico.TabIndex = 82;
+            this.buttonHistorico.Text = "                 Historico";
+            this.buttonHistorico.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonHistorico.UseVisualStyleBackColor = true;
+            // 
+            // panel14
+            // 
+            this.panel14.BackColor = System.Drawing.Color.GhostWhite;
+            this.panel14.Location = new System.Drawing.Point(3, 405);
+            this.panel14.Name = "panel14";
+            this.panel14.Size = new System.Drawing.Size(10, 90);
+            this.panel14.TabIndex = 80;
+            // 
+            // panel8
+            // 
+            this.panel8.Controls.Add(this.button1);
+            this.panel8.Controls.Add(this.panel9);
+            this.panel8.Location = new System.Drawing.Point(3, 398);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(273, 73);
+            this.panel8.TabIndex = 7;
+            // 
+            // button1
+            // 
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(-3, -14);
+            this.button1.Name = "button1";
+            this.button1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.button1.Size = new System.Drawing.Size(278, 100);
+            this.button1.TabIndex = 83;
+            this.button1.Text = "                 Sair";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // panel9
+            // 
+            this.panel9.BackColor = System.Drawing.Color.GhostWhite;
+            this.panel9.Controls.Add(this.button2);
+            this.panel9.Location = new System.Drawing.Point(3, 405);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(10, 90);
+            this.panel9.TabIndex = 80;
+            // 
+            // button2
+            // 
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
+            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button2.Location = new System.Drawing.Point(-134, -5);
+            this.button2.Name = "button2";
+            this.button2.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.button2.Size = new System.Drawing.Size(278, 100);
+            this.button2.TabIndex = 83;
+            this.button2.Text = "                 Sair";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // Form_historico
             // 
@@ -791,16 +769,7 @@
             this.Load += new System.EventHandler(this.Form_historico_Load);
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
-            this.sidebar.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.button_menu)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel5.ResumeLayout(false);
-            this.panel13.ResumeLayout(false);
-            this.panel8.ResumeLayout(false);
-            this.panel9.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
@@ -812,6 +781,14 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvItens)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVendas)).EndInit();
+            this.sidebar.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            this.panel13.ResumeLayout(false);
+            this.panel8.ResumeLayout(false);
+            this.panel9.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -820,25 +797,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel12;
         private System.Windows.Forms.Timer sidebar_timer;
-        private System.Windows.Forms.FlowLayoutPanel sidebar;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox button_menu;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button buttonHome;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button buttonEstoque;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Button buttonVenda;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Button buttonCliente;
-        private System.Windows.Forms.Panel panel13;
-        private System.Windows.Forms.Button buttonHistorico;
-        private System.Windows.Forms.Panel panel14;
-        private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Label label11;
@@ -860,9 +819,25 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.DataGridView dgvItens;
         private System.Windows.Forms.DataGridView dgvVendas;
-        private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.FlowLayoutPanel sidebar;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button buttonHome;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button buttonEstoque;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Button buttonVenda;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button buttonCliente;
+        private System.Windows.Forms.Panel panel13;
+        private System.Windows.Forms.Button buttonHistorico;
+        private System.Windows.Forms.Panel panel14;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Panel panel7;
     }
 }

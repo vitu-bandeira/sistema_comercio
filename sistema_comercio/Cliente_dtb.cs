@@ -10,9 +10,11 @@ namespace sistema_comercio
     {
         public int id { get; set; }
         public string nome { get; set; }
+        public string cpf { get; set; }
         public decimal saldo { get; set; }
         public string telefone { get; set; }
-
         public string endereco { get; set; }
+        public bool bloqueado { get; set; }
+        public decimal limite { get; set; }
     }
 }

@@ -29,15 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCliente));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.sidebar_timer = new System.Windows.Forms.Timer(this.components);
             this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.button_menu = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonHome = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -51,14 +49,15 @@
             this.buttonHistorico = new System.Windows.Forms.Button();
             this.panel14 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonSair = new System.Windows.Forms.Button();
             this.panel9 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.button_menu = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.btn_adicionar = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.Buscar = new System.Windows.Forms.Label();
             this.textBoxBuscar = new System.Windows.Forms.TextBox();
+            this.btn_adicionar = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -73,9 +72,12 @@
             this.lblTotal = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.menuOpcoes = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ajustaSaldoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.historicoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.excluirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sidebar.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -83,6 +85,7 @@
             this.panel13.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -92,6 +95,7 @@
             this.panelEstoqueBaixo.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.menuOpcoes.SuspendLayout();
             this.SuspendLayout();
             // 
             // sidebar_timer
@@ -102,7 +106,6 @@
             // sidebar
             // 
             this.sidebar.BackColor = System.Drawing.Color.SlateBlue;
-            this.sidebar.Controls.Add(this.panel1);
             this.sidebar.Controls.Add(this.panel2);
             this.sidebar.Controls.Add(this.panel3);
             this.sidebar.Controls.Add(this.panel4);
@@ -111,48 +114,15 @@
             this.sidebar.Controls.Add(this.panel8);
             this.sidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.sidebar.Location = new System.Drawing.Point(0, 61);
-            this.sidebar.MaximumSize = new System.Drawing.Size(240, 0);
-            this.sidebar.MinimumSize = new System.Drawing.Size(83, 0);
+            this.sidebar.MaximumSize = new System.Drawing.Size(185, 0);
             this.sidebar.Name = "sidebar";
-            this.sidebar.Size = new System.Drawing.Size(83, 783);
+            this.sidebar.Size = new System.Drawing.Size(0, 783);
             this.sidebar.TabIndex = 100;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.button_menu);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(273, 90);
-            this.panel1.TabIndex = 0;
-            // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(85, 27);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(66, 28);
-            this.label5.TabIndex = 36;
-            this.label5.Text = "Menu";
-            // 
-            // button_menu
-            // 
-            this.button_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button_menu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button_menu.Image = global::sistema_comercio.Properties.Resources.icons8_menu_50;
-            this.button_menu.Location = new System.Drawing.Point(9, 17);
-            this.button_menu.Name = "button_menu";
-            this.button_menu.Size = new System.Drawing.Size(52, 52);
-            this.button_menu.TabIndex = 0;
-            this.button_menu.TabStop = false;
-            this.button_menu.Click += new System.EventHandler(this.button_menu_Click);
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.buttonHome);
-            this.panel2.Location = new System.Drawing.Point(3, 99);
+            this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(273, 73);
             this.panel2.TabIndex = 1;
@@ -162,7 +132,7 @@
             this.buttonHome.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonHome.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonHome.ForeColor = System.Drawing.Color.White;
-            this.buttonHome.Image = global::sistema_comercio.Properties.Resources.icons8_home_50__1_;
+            this.buttonHome.Image = ((System.Drawing.Image)(resources.GetObject("buttonHome.Image")));
             this.buttonHome.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonHome.Location = new System.Drawing.Point(-6, -8);
             this.buttonHome.Name = "buttonHome";
@@ -177,7 +147,7 @@
             // panel3
             // 
             this.panel3.Controls.Add(this.buttonEstoque);
-            this.panel3.Location = new System.Drawing.Point(3, 178);
+            this.panel3.Location = new System.Drawing.Point(3, 82);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(273, 73);
             this.panel3.TabIndex = 2;
@@ -187,7 +157,7 @@
             this.buttonEstoque.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonEstoque.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonEstoque.ForeColor = System.Drawing.Color.White;
-            this.buttonEstoque.Image = global::sistema_comercio.Properties.Resources.icons8_products_50;
+            this.buttonEstoque.Image = ((System.Drawing.Image)(resources.GetObject("buttonEstoque.Image")));
             this.buttonEstoque.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonEstoque.Location = new System.Drawing.Point(-6, -8);
             this.buttonEstoque.Name = "buttonEstoque";
@@ -202,7 +172,7 @@
             // panel4
             // 
             this.panel4.Controls.Add(this.buttonVenda);
-            this.panel4.Location = new System.Drawing.Point(3, 257);
+            this.panel4.Location = new System.Drawing.Point(3, 161);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(273, 73);
             this.panel4.TabIndex = 3;
@@ -212,7 +182,7 @@
             this.buttonVenda.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonVenda.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonVenda.ForeColor = System.Drawing.Color.White;
-            this.buttonVenda.Image = global::sistema_comercio.Properties.Resources.icons8_products_64;
+            this.buttonVenda.Image = ((System.Drawing.Image)(resources.GetObject("buttonVenda.Image")));
             this.buttonVenda.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonVenda.Location = new System.Drawing.Point(-8, -8);
             this.buttonVenda.Name = "buttonVenda";
@@ -228,7 +198,7 @@
             // 
             this.panel5.Controls.Add(this.panel7);
             this.panel5.Controls.Add(this.buttonCliente);
-            this.panel5.Location = new System.Drawing.Point(3, 336);
+            this.panel5.Location = new System.Drawing.Point(3, 240);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(273, 73);
             this.panel5.TabIndex = 4;
@@ -246,7 +216,7 @@
             this.buttonCliente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonCliente.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonCliente.ForeColor = System.Drawing.Color.White;
-            this.buttonCliente.Image = global::sistema_comercio.Properties.Resources.icons8_user_50;
+            this.buttonCliente.Image = ((System.Drawing.Image)(resources.GetObject("buttonCliente.Image")));
             this.buttonCliente.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonCliente.Location = new System.Drawing.Point(-6, -8);
             this.buttonCliente.Name = "buttonCliente";
@@ -261,7 +231,7 @@
             // 
             this.panel13.Controls.Add(this.buttonHistorico);
             this.panel13.Controls.Add(this.panel14);
-            this.panel13.Location = new System.Drawing.Point(3, 415);
+            this.panel13.Location = new System.Drawing.Point(3, 319);
             this.panel13.Name = "panel13";
             this.panel13.Size = new System.Drawing.Size(273, 73);
             this.panel13.TabIndex = 6;
@@ -271,7 +241,7 @@
             this.buttonHistorico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonHistorico.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonHistorico.ForeColor = System.Drawing.Color.White;
-            this.buttonHistorico.Image = global::sistema_comercio.Properties.Resources.icons8_receipt_dollar_50;
+            this.buttonHistorico.Image = ((System.Drawing.Image)(resources.GetObject("buttonHistorico.Image")));
             this.buttonHistorico.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonHistorico.Location = new System.Drawing.Point(-5, -6);
             this.buttonHistorico.Name = "buttonHistorico";
@@ -293,29 +263,29 @@
             // 
             // panel8
             // 
-            this.panel8.Controls.Add(this.button1);
+            this.panel8.Controls.Add(this.buttonSair);
             this.panel8.Controls.Add(this.panel9);
-            this.panel8.Location = new System.Drawing.Point(3, 494);
+            this.panel8.Location = new System.Drawing.Point(3, 398);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(273, 73);
             this.panel8.TabIndex = 7;
             // 
-            // button1
+            // buttonSair
             // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = global::sistema_comercio.Properties.Resources.icons8_export_50;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(-3, -14);
-            this.button1.Name = "button1";
-            this.button1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.button1.Size = new System.Drawing.Size(278, 100);
-            this.button1.TabIndex = 83;
-            this.button1.Text = "                 Sair";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSair.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSair.ForeColor = System.Drawing.Color.White;
+            this.buttonSair.Image = ((System.Drawing.Image)(resources.GetObject("buttonSair.Image")));
+            this.buttonSair.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonSair.Location = new System.Drawing.Point(-3, -14);
+            this.buttonSair.Name = "buttonSair";
+            this.buttonSair.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.buttonSair.Size = new System.Drawing.Size(278, 100);
+            this.buttonSair.TabIndex = 83;
+            this.buttonSair.Text = "                 Sair";
+            this.buttonSair.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonSair.UseVisualStyleBackColor = true;
+            this.buttonSair.Click += new System.EventHandler(this.buttonSair_Click);
             // 
             // panel9
             // 
@@ -331,7 +301,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Image = global::sistema_comercio.Properties.Resources.icons8_export_50;
+            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button2.Location = new System.Drawing.Point(-134, -5);
             this.button2.Name = "button2";
@@ -342,6 +312,18 @@
             this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // button_menu
+            // 
+            this.button_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button_menu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_menu.Image = ((System.Drawing.Image)(resources.GetObject("button_menu.Image")));
+            this.button_menu.Location = new System.Drawing.Point(12, 3);
+            this.button_menu.Name = "button_menu";
+            this.button_menu.Size = new System.Drawing.Size(52, 52);
+            this.button_menu.TabIndex = 0;
+            this.button_menu.TabStop = false;
+            this.button_menu.Click += new System.EventHandler(this.button_menu_Click);
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -349,29 +331,12 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.12287F));
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(83, 169);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 169);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1465, 80);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1548, 80);
             this.tableLayoutPanel1.TabIndex = 101;
-            // 
-            // btn_adicionar
-            // 
-            this.btn_adicionar.BackColor = System.Drawing.Color.LimeGreen;
-            this.btn_adicionar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_adicionar.FlatAppearance.BorderColor = System.Drawing.Color.Red;
-            this.btn_adicionar.FlatAppearance.BorderSize = 10;
-            this.btn_adicionar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_adicionar.ForeColor = System.Drawing.Color.White;
-            this.btn_adicionar.Location = new System.Drawing.Point(479, 4);
-            this.btn_adicionar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btn_adicionar.Name = "btn_adicionar";
-            this.btn_adicionar.Size = new System.Drawing.Size(162, 38);
-            this.btn_adicionar.TabIndex = 101;
-            this.btn_adicionar.Text = "+  Adicionar Cliente";
-            this.btn_adicionar.UseVisualStyleBackColor = false;
-            this.btn_adicionar.Click += new System.EventHandler(this.btn_adicionar_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -381,41 +346,61 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1459, 51);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1542, 51);
             this.flowLayoutPanel1.TabIndex = 100;
             // 
             // Buscar
             // 
-            this.Buscar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.Buscar.AutoSize = true;
             this.Buscar.BackColor = System.Drawing.Color.Transparent;
+            this.Buscar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Buscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Buscar.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Buscar.Location = new System.Drawing.Point(3, 0);
             this.Buscar.Name = "Buscar";
-            this.Buscar.Size = new System.Drawing.Size(76, 46);
+            this.Buscar.Size = new System.Drawing.Size(76, 48);
             this.Buscar.TabIndex = 94;
             this.Buscar.Text = "Busca";
+            this.Buscar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textBoxBuscar
             // 
-            this.textBoxBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxBuscar.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.textBoxBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.2F);
-            this.textBoxBuscar.Location = new System.Drawing.Point(85, 8);
+            this.textBoxBuscar.Location = new System.Drawing.Point(85, 4);
             this.textBoxBuscar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxBuscar.Multiline = true;
             this.textBoxBuscar.Name = "textBoxBuscar";
-            this.textBoxBuscar.Size = new System.Drawing.Size(388, 34);
+            this.textBoxBuscar.Size = new System.Drawing.Size(388, 40);
             this.textBoxBuscar.TabIndex = 93;
             this.textBoxBuscar.TextChanged += new System.EventHandler(this.textBoxBuscar_TextChanged);
+            // 
+            // btn_adicionar
+            // 
+            this.btn_adicionar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btn_adicionar.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_adicionar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_adicionar.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.btn_adicionar.FlatAppearance.BorderSize = 10;
+            this.flowLayoutPanel1.SetFlowBreak(this.btn_adicionar, true);
+            this.btn_adicionar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_adicionar.ForeColor = System.Drawing.Color.White;
+            this.btn_adicionar.Location = new System.Drawing.Point(479, 4);
+            this.btn_adicionar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btn_adicionar.Name = "btn_adicionar";
+            this.btn_adicionar.Size = new System.Drawing.Size(210, 40);
+            this.btn_adicionar.TabIndex = 101;
+            this.btn_adicionar.Text = "+  Adicionar Cliente";
+            this.btn_adicionar.UseVisualStyleBackColor = false;
+            this.btn_adicionar.Click += new System.EventHandler(this.btn_adicionar_Click);
             // 
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.panel6.Controls.Add(this.label3);
+            this.panel6.Controls.Add(this.button_menu);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Name = "panel6";
@@ -447,12 +432,12 @@
             this.tableLayoutPanel3.Controls.Add(this.lblTotalCliente, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.panelEstoqueBaixo, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(83, 61);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 61);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 126F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1465, 108);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1548, 108);
             this.tableLayoutPanel3.TabIndex = 118;
             // 
             // panelVendasHoje
@@ -461,7 +446,7 @@
             this.panelVendasHoje.BackColor = System.Drawing.Color.White;
             this.panelVendasHoje.Controls.Add(this.lblQtdDevedores);
             this.panelVendasHoje.Controls.Add(this.label2);
-            this.panelVendasHoje.Location = new System.Drawing.Point(501, 3);
+            this.panelVendasHoje.Location = new System.Drawing.Point(543, 3);
             this.panelVendasHoje.Name = "panelVendasHoje";
             this.panelVendasHoje.Size = new System.Drawing.Size(462, 102);
             this.panelVendasHoje.TabIndex = 99;
@@ -494,7 +479,7 @@
             this.lblTotalCliente.BackColor = System.Drawing.Color.White;
             this.lblTotalCliente.Controls.Add(this.lblTotalClientes);
             this.lblTotalCliente.Controls.Add(this.label10);
-            this.lblTotalCliente.Location = new System.Drawing.Point(986, 3);
+            this.lblTotalCliente.Location = new System.Drawing.Point(1056, 3);
             this.lblTotalCliente.Name = "lblTotalCliente";
             this.lblTotalCliente.Size = new System.Drawing.Size(468, 102);
             this.lblTotalCliente.TabIndex = 101;
@@ -527,7 +512,7 @@
             this.panelEstoqueBaixo.BackColor = System.Drawing.Color.White;
             this.panelEstoqueBaixo.Controls.Add(this.label1);
             this.panelEstoqueBaixo.Controls.Add(this.lblTotal);
-            this.panelEstoqueBaixo.Location = new System.Drawing.Point(11, 3);
+            this.panelEstoqueBaixo.Location = new System.Drawing.Point(25, 3);
             this.panelEstoqueBaixo.Name = "panelEstoqueBaixo";
             this.panelEstoqueBaixo.Size = new System.Drawing.Size(465, 102);
             this.panelEstoqueBaixo.TabIndex = 100;
@@ -560,11 +545,11 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.dataGridView1, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(83, 249);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 249);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1465, 595);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1548, 595);
             this.tableLayoutPanel2.TabIndex = 119;
             // 
             // dataGridView1
@@ -610,6 +595,7 @@
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.DarkViolet;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -622,9 +608,49 @@
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1459, 587);
+            this.dataGridView1.Size = new System.Drawing.Size(1542, 587);
             this.dataGridView1.TabIndex = 79;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting_1);
+            // 
+            // menuOpcoes
+            // 
+            this.menuOpcoes.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuOpcoes.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ajustaSaldoToolStripMenuItem,
+            this.historicoToolStripMenuItem,
+            this.editarToolStripMenuItem,
+            this.excluirToolStripMenuItem});
+            this.menuOpcoes.Name = "menuOpcoes";
+            this.menuOpcoes.Size = new System.Drawing.Size(162, 100);
+            // 
+            // ajustaSaldoToolStripMenuItem
+            // 
+            this.ajustaSaldoToolStripMenuItem.Name = "ajustaSaldoToolStripMenuItem";
+            this.ajustaSaldoToolStripMenuItem.Size = new System.Drawing.Size(161, 24);
+            this.ajustaSaldoToolStripMenuItem.Text = "Ajusta Saldo";
+            this.ajustaSaldoToolStripMenuItem.Click += new System.EventHandler(this.itemAjustarSaldo_Click);
+            // 
+            // historicoToolStripMenuItem
+            // 
+            this.historicoToolStripMenuItem.Name = "historicoToolStripMenuItem";
+            this.historicoToolStripMenuItem.Size = new System.Drawing.Size(161, 24);
+            this.historicoToolStripMenuItem.Text = "Historico";
+            this.historicoToolStripMenuItem.Click += new System.EventHandler(this.itemHistorico_Click);
+            // 
+            // editarToolStripMenuItem
+            // 
+            this.editarToolStripMenuItem.Name = "editarToolStripMenuItem";
+            this.editarToolStripMenuItem.Size = new System.Drawing.Size(161, 24);
+            this.editarToolStripMenuItem.Text = "Editar";
+            this.editarToolStripMenuItem.Click += new System.EventHandler(this.itemEditar_Click);
+            // 
+            // excluirToolStripMenuItem
+            // 
+            this.excluirToolStripMenuItem.Name = "excluirToolStripMenuItem";
+            this.excluirToolStripMenuItem.Size = new System.Drawing.Size(161, 24);
+            this.excluirToolStripMenuItem.Text = "Excluir";
+            this.excluirToolStripMenuItem.Click += new System.EventHandler(this.itemExcluir_Click);
             // 
             // FormCliente
             // 
@@ -643,8 +669,6 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form_cliente_Load);
             this.sidebar.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -652,6 +676,7 @@
             this.panel13.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
@@ -666,6 +691,7 @@
             this.panelEstoqueBaixo.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.menuOpcoes.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -673,8 +699,6 @@
         #endregion
         private System.Windows.Forms.Timer sidebar_timer;
         private System.Windows.Forms.FlowLayoutPanel sidebar;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox button_menu;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button buttonHome;
@@ -689,7 +713,7 @@
         private System.Windows.Forms.Button buttonHistorico;
         private System.Windows.Forms.Panel panel14;
         private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonSair;
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
@@ -711,5 +735,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ContextMenuStrip menuOpcoes;
+        private System.Windows.Forms.ToolStripMenuItem historicoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem excluirToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ajustaSaldoToolStripMenuItem;
     }
 }

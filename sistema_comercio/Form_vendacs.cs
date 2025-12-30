@@ -21,11 +21,13 @@ namespace sistema_comercio
         public Form_venda()
         {
             InitializeComponent();
+           
 
             // 1. Configurações Visuais e de Dados
             ConfigurarGrid();
             CarregarComboBoxClientes();
             CarregarComboBoxProdutos();
+          
 
             // 2. RECONEXÃO DE EVENTOS (A "Cola" para fazer tudo voltar a funcionar)
             // Isso garante que seus botões funcionem mesmo se o Designer tiver perdido a referência
@@ -539,6 +541,7 @@ namespace sistema_comercio
                 MessageBox.Show("Carrinho vazio!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            int? idClienteParaVenda = null;
 
             // 2. Validações Específicas de Pagamento
             if (rbFiado.Checked)
@@ -548,6 +551,52 @@ namespace sistema_comercio
                     MessageBox.Show("Selecione um cliente para vender fiado!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     comboBoxCliente.Focus();
                     return;
+                }
+                string nomeCliente = comboBoxCliente.Text;
+
+                // Busca o ID
+                idClienteParaVenda = DALClientes.GetClienteIdPorNome(nomeCliente);
+                if (idClienteParaVenda == null)
+                {
+                    MessageBox.Show($"Cliente '{nomeCliente}' não encontrado no banco de dados!\nVerifique se o nome está correto.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Busca os dados completos (Saldo, Limite, Bloqueio)
+                Cliente_dtb dadosCliente = DALClientes.GetClientePorId(idClienteParaVenda.Value);
+
+                if (dadosCliente != null)
+                {
+                    // A. VERIFICAÇÃO DE BLOQUEIO
+                    if (dadosCliente.bloqueado)
+                    {
+                        MessageBox.Show($"VENDA BLOQUEADA!\n\nO cliente {nomeCliente} possui um bloqueio administrativo.",
+                                        "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        return; // Cancela a função aqui
+                    }
+
+                    // B. VERIFICAÇÃO DE LIMITE
+                    // Math.Abs garante que pegamos o valor da dívida positivo (ex: -100 vira 100)
+                    decimal dividaTotalPrevista = Math.Abs(dadosCliente.saldo) + totalVenda;
+
+                    if (dadosCliente.limite > 0) // Só verifica se o cliente tiver limite definido
+                    {
+                        // Math.Abs pega o "Tamanho" da dívida, ignorando o sinal de menos
+                        // Ex: Se deve -100, vira 100.
+                        decimal dividaTotalSeComprar = Math.Abs(dadosCliente.saldo) + totalVenda;
+
+                        // Se a dívida total for maior que o limite positivo, bloqueia.
+                        if (dividaTotalSeComprar > dadosCliente.limite)
+                        {
+                            MessageBox.Show($"LIMITE EXCEDIDO!\n\n" +
+                                            $"Limite de Crédito: {dadosCliente.limite:C2}\n" +
+                                            $"Dívida Atual: {Math.Abs(dadosCliente.saldo):C2}\n" +
+                                            $"Esta Compra: {totalVenda:C2}\n\n" +
+                                            $"Total ficaria: {dividaTotalSeComprar:C2}",
+                                            "Venda Negada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
                 }
             }
             else if (rbDinheiro.Checked)
@@ -686,12 +735,12 @@ namespace sistema_comercio
         {
             if (sidebarExpanded)
             {
-                if (sidebar.Width > sidebar.MinimumSize.Width) sidebar.Width -= 10;
+                if (sidebar.Width > sidebar.MinimumSize.Width) sidebar.Width -= 20;
                 else { sidebarExpanded = false; sidebar_timer.Stop(); }
             }
             else
             {
-                if (sidebar.Width < sidebar.MaximumSize.Width) sidebar.Width += 10;
+                if (sidebar.Width < sidebar.MaximumSize.Width) sidebar.Width += 60;
                 else { sidebarExpanded = true; sidebar_timer.Stop(); }
             }
         }
@@ -728,12 +777,18 @@ namespace sistema_comercio
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Deseja realmente fechar o sistema?", "Sair", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            var confirmResult = MessageBox.Show("Deseja realmente fechar o sistema?",
+                                     "Confirmar Saída",
+                                     MessageBoxButtons.YesNo,
+                                     MessageBoxIcon.Question);
+
+            if (confirmResult == DialogResult.Yes)
             {
                 Application.Exit();
             }
         }
 
+       
         // Eventos vazios gerados pelo designer (podem ser mantidos ou removidos)
         private void panelCarrinho_Paint(object sender, PaintEventArgs e) { }
         private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e) { }
