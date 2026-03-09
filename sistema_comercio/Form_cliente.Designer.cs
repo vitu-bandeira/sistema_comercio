@@ -365,15 +365,14 @@
             // 
             // textBoxBuscar
             // 
-            this.textBoxBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxBuscar.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.textBoxBuscar.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.2F);
-            this.textBoxBuscar.Location = new System.Drawing.Point(85, 4);
+            this.textBoxBuscar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxBuscar.Location = new System.Drawing.Point(85, 8);
             this.textBoxBuscar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxBuscar.Multiline = true;
             this.textBoxBuscar.Name = "textBoxBuscar";
-            this.textBoxBuscar.Size = new System.Drawing.Size(388, 40);
+            this.textBoxBuscar.Size = new System.Drawing.Size(388, 31);
             this.textBoxBuscar.TabIndex = 93;
             this.textBoxBuscar.TextChanged += new System.EventHandler(this.textBoxBuscar_TextChanged);
             // 

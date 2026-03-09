@@ -284,7 +284,6 @@
             this.textBox_codigo_barra.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.2F);
             this.textBox_codigo_barra.Location = new System.Drawing.Point(28, 41);
             this.textBox_codigo_barra.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_codigo_barra.Multiline = true;
             this.textBox_codigo_barra.Name = "textBox_codigo_barra";
             this.textBox_codigo_barra.Size = new System.Drawing.Size(289, 33);
             this.textBox_codigo_barra.TabIndex = 0;

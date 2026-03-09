@@ -160,5 +160,10 @@ namespace sistema_comercio
         private void Form_DetalheProduto_Load(object sender, EventArgs e)
         {
         }
+
+        private void textBox_codigo_barra_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

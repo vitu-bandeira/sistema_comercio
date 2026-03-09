@@ -35,7 +35,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.sidebar_timer = new System.Windows.Forms.Timer(this.components);
             this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
-            this.button_menu = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonHome = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -51,6 +50,7 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.button_menu = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.Buscar = new System.Windows.Forms.Label();
@@ -71,13 +71,13 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.sidebar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel13.SuspendLayout();
             this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -110,18 +110,6 @@
             this.sidebar.Name = "sidebar";
             this.sidebar.Size = new System.Drawing.Size(0, 740);
             this.sidebar.TabIndex = 101;
-            // 
-            // button_menu
-            // 
-            this.button_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button_menu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button_menu.Image = global::sistema_comercio.Properties.Resources.icons8_menu_50;
-            this.button_menu.Location = new System.Drawing.Point(12, 6);
-            this.button_menu.Name = "button_menu";
-            this.button_menu.Size = new System.Drawing.Size(52, 52);
-            this.button_menu.TabIndex = 0;
-            this.button_menu.TabStop = false;
-            this.button_menu.Click += new System.EventHandler(this.button_menu_Click_1);
             // 
             // panel2
             // 
@@ -299,6 +287,18 @@
             this.panel9.Size = new System.Drawing.Size(10, 90);
             this.panel9.TabIndex = 80;
             // 
+            // button_menu
+            // 
+            this.button_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button_menu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_menu.Image = global::sistema_comercio.Properties.Resources.icons8_menu_50;
+            this.button_menu.Location = new System.Drawing.Point(12, 6);
+            this.button_menu.Name = "button_menu";
+            this.button_menu.Size = new System.Drawing.Size(52, 52);
+            this.button_menu.TabIndex = 0;
+            this.button_menu.TabStop = false;
+            this.button_menu.Click += new System.EventHandler(this.button_menu_Click_1);
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
@@ -309,7 +309,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1528, 74);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1528, 68);
             this.tableLayoutPanel1.TabIndex = 102;
             // 
             // flowLayoutPanel1
@@ -322,7 +322,7 @@
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 15);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 20);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1522, 56);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1522, 50);
             this.flowLayoutPanel1.TabIndex = 102;
             // 
             // Buscar
@@ -349,7 +349,7 @@
             this.textBoxBuscar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxBuscar.Multiline = true;
             this.textBoxBuscar.Name = "textBoxBuscar";
-            this.textBoxBuscar.Size = new System.Drawing.Size(388, 40);
+            this.textBoxBuscar.Size = new System.Drawing.Size(388, 31);
             this.textBoxBuscar.TabIndex = 94;
             this.textBoxBuscar.TextChanged += new System.EventHandler(this.textBoxBuscar_TextChanged);
             // 
@@ -366,11 +366,9 @@
             this.btn_adicionar.Location = new System.Drawing.Point(479, 4);
             this.btn_adicionar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btn_adicionar.Name = "btn_adicionar";
-            this.btn_adicionar.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
             this.btn_adicionar.Size = new System.Drawing.Size(210, 40);
             this.btn_adicionar.TabIndex = 103;
             this.btn_adicionar.Text = "Adicionar Produto";
-            this.btn_adicionar.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btn_adicionar.UseVisualStyleBackColor = false;
             // 
             // panel6
@@ -522,11 +520,11 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.dataGridView1, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 243);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 237);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1528, 558);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1528, 564);
             this.tableLayoutPanel2.TabIndex = 118;
             // 
             // dataGridView1
@@ -583,7 +581,7 @@
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1514, 550);
+            this.dataGridView1.Size = new System.Drawing.Size(1514, 556);
             this.dataGridView1.TabIndex = 119;
             this.dataGridView1.TabStop = false;
             // 
@@ -607,13 +605,13 @@
             this.Text = "Produto";
             this.Load += new System.EventHandler(this.FormProduto_Load);
             this.sidebar.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel13.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.button_menu)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
