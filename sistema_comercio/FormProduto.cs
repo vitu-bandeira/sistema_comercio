@@ -1,52 +1,65 @@
-﻿using System;
-using System.Data;
+﻿using SistemaComercio.Aplication;
+using SistemaComercio.Dominio;
+using SistemaComercio.Infrastructure;
+using System;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
-using sistema_comercio.sistema_comercio; // Garante que ache o DAL
 
 namespace sistema_comercio
 {
     public partial class FormProduto : Form
     {
+        // 1. O Vendedor (Tela) contrata o Gerente!
+        private readonly IProdutoService _produtoService;
+        bool sidebarExpanded = true;
+
         public FormProduto()
         {
             InitializeComponent();
             ConfigurarGrid();
             this.WindowState = FormWindowState.Maximized;
 
-            // Associação de eventos manuais (se não estiverem no Designer)
-            // Se já estiverem ligados no raiozinho do Designer, essas linhas são opcionais
+            // Associação de eventos manuais
             this.btn_adicionar.Click += new EventHandler(this.btn_adicionar_Click);
             dataGridView1.CellClick += dataGridView1_CellClick;
+
+            // 2. INJEÇÃO DE DEPENDÊNCIA (Preparando a equipe)
+            string caminhoBanco = Directory.GetCurrentDirectory() + "\\banco.sqlite";
+            string connectionString = "Data Source=" + caminhoBanco;
+
+            // Instancia o Repositório (Estoquista) e injeta no Service (Gerente)
+            IProdutosRepository repositorio = new ProdutoRepository(connectionString);
+            _produtoService = new ProdutoService(repositorio);
         }
 
         private void FormProduto_Load(object sender, EventArgs e)
         {
             try
             {
-                DALProdutos.CriarBancoSQLite();
-                DALProdutos.CriarTabelaProdutos();
+                // A tela abre, pede os dados para o Gerente e carrega o visual
                 ExibirDados();
                 CarregarCards();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao carregar sistema: " + ex.Message);
+                MessageBox.Show("Erro ao carregar sistema: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // --- MÉTODOS DE DADOS ---
+        // --- MÉTODOS DE DADOS USANDO O GERENTE ---
 
         private void ExibirDados()
         {
             try
             {
-                DataTable dt = DALProdutos.GetProdutos();
-                dataGridView1.DataSource = dt;
+                var produtos = _produtoService.ObterTodosProdutos().ToList();
+                dataGridView1.DataSource = produtos;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao exibir os dados: " + ex.Message);
+                MessageBox.Show("Erro ao exibir os dados: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -54,14 +67,14 @@ namespace sistema_comercio
         {
             try
             {
-                lblValorTotal.Text = DALProdutos.GetValorTotalEstoque().ToString("C2");
+                lblValorTotal.Text = _produtoService.ObterValorTotalEstoque().ToString("C2");
                 lblValorTotal.ForeColor = Color.Green;
 
-                int baixo = DALProdutos.GetContagemEstoqueBaixo(10);
+                int baixo = _produtoService.ObterContagemEstoqueBaixo(10);
                 lblEstoqueBaixo.Text = baixo.ToString();
                 lblEstoqueBaixo.ForeColor = baixo > 0 ? Color.Red : Color.Gray;
 
-                lblQtdProdutos.Text = DALProdutos.GetTotalProdutosCadastrados().ToString();
+                lblQtdProdutos.Text = _produtoService.ObterTotalProdutosCadastrados().ToString();
             }
             catch { }
         }
@@ -71,12 +84,12 @@ namespace sistema_comercio
             try
             {
                 string busca = textBoxBuscar.Text.Trim();
-                DataTable dt = DALProdutos.GetProduto(busca);
-                dataGridView1.DataSource = dt;
+                var produtosFiltrados = _produtoService.BuscarProdutosPorNome(busca).ToList();
+                dataGridView1.DataSource = produtosFiltrados;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao buscar: " + ex.Message);
+                MessageBox.Show("Erro ao buscar: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -91,7 +104,7 @@ namespace sistema_comercio
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "id",
-                DataPropertyName = "id",
+                DataPropertyName = "Id", // Propriedade com "I" maiúsculo igual à classe Produto
                 HeaderText = "ID",
                 Visible = false
             });
@@ -100,16 +113,17 @@ namespace sistema_comercio
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "nome",
-                DataPropertyName = "nome",
+                DataPropertyName = "Nome",
                 HeaderText = "Produto",
-                Width = 300
+                Width = 300,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill // Deixa o nome esticar
             });
 
             // Código
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "codigoBarras",
-                DataPropertyName = "codigoBarras",
+                DataPropertyName = "CodigoBarras",
                 HeaderText = "Código",
                 Width = 200
             });
@@ -118,7 +132,7 @@ namespace sistema_comercio
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "preco",
-                DataPropertyName = "preco",
+                DataPropertyName = "Preco",
                 HeaderText = "Preço",
                 Width = 130,
                 DefaultCellStyle = { Format = "C2" }
@@ -128,7 +142,7 @@ namespace sistema_comercio
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "estoque",
-                DataPropertyName = "estoque",
+                DataPropertyName = "Estoque",
                 HeaderText = "Estoque",
                 Width = 120
             });
@@ -137,7 +151,7 @@ namespace sistema_comercio
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "validade",
-                DataPropertyName = "validade",
+                DataPropertyName = "Validade",
                 HeaderText = "Validade",
                 Width = 150
             });
@@ -180,32 +194,30 @@ namespace sistema_comercio
             }
             else if (colunaNome == "Editar")
             {
-                // Preenche o objeto com os dados da linha
-                Produto_dtb produto = new Produto_dtb();
+                Produto produto = new Produto();
                 produto.Id = Convert.ToInt32(row.Cells["id"].Value);
                 produto.Nome = row.Cells["nome"].Value.ToString();
-                produto.CodigoBarras = row.Cells["codigoBarras"].Value.ToString();
+                produto.CodigoBarras = row.Cells["codigoBarras"].Value != null ? row.Cells["codigoBarras"].Value.ToString() : null;
                 produto.Preco = Convert.ToDecimal(row.Cells["preco"].Value);
                 produto.Estoque = Convert.ToInt32(row.Cells["estoque"].Value);
 
-                if (row.Cells["validade"].Value != DBNull.Value)
+                if (row.Cells["validade"].Value != null)
                     produto.Validade = Convert.ToDateTime(row.Cells["validade"].Value);
 
-                // Abre o form de detalhes passando o produto
                 using (Form_DetalheProduto formEdit = new Form_DetalheProduto(produto))
                 {
                     if (formEdit.ShowDialog() == DialogResult.OK)
                     {
                         try
                         {
-                            DALProdutos.UpdateProduto(formEdit.Produto);
-                            MessageBox.Show("Produto atualizado!");
+                            _produtoService.AtualizarProduto(formEdit.Produto);
+                            MessageBox.Show("Produto atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             ExibirDados();
                             CarregarCards();
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Erro ao atualizar: " + ex.Message);
+                            MessageBox.Show("Erro ao atualizar: " + ex.Message, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -217,41 +229,39 @@ namespace sistema_comercio
             try
             {
                 int id = Convert.ToInt32(dataGridView1.Rows[rowIndex].Cells["id"].Value);
-                var confirm = MessageBox.Show("Deseja excluir este produto?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                var confirm = MessageBox.Show("Deseja realmente excluir este produto?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (confirm == DialogResult.Yes)
                 {
-                    DALProdutos.DeleteProduto(id);
-                    MessageBox.Show("Produto excluído!");
+                    _produtoService.ExcluirProduto(id);
+                    MessageBox.Show("Produto excluído!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ExibirDados();
                     CarregarCards();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao excluir: {ex.Message}");
+                MessageBox.Show($"Erro ao excluir: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // --- BOTÃO ADICIONAR (ESTAVA VAZIO) ---
+        // --- BOTÃO ADICIONAR ---
         private void btn_adicionar_Click(object sender, EventArgs e)
         {
-            // Abre o formulário passando NULL ou um Produto vazio para indicar "Novo Cadastro"
-            // Certifique-se que o construtor do Form_DetalheProduto aceita isso
             using (Form_DetalheProduto formAdd = new Form_DetalheProduto(null))
             {
                 if (formAdd.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
-                        DALProdutos.AddProduto(formAdd.Produto);
-                        MessageBox.Show("Produto adicionado com sucesso!");
-                        ExibirDados(); // Atualiza o grid
+                        _produtoService.AdicionarProduto(formAdd.Produto);
+                        MessageBox.Show("Produto adicionado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ExibirDados();
                         CarregarCards();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Erro ao salvar: " + ex.Message);
+                        MessageBox.Show("Erro ao salvar: " + ex.Message, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
@@ -259,7 +269,6 @@ namespace sistema_comercio
 
         // --- MENU E NAVEGAÇÃO ---
 
-        bool sidebarExpanded = true;
         private void sidebar_timer_Tick_1(object sender, EventArgs e)
         {
             if (sidebarExpanded)
@@ -294,12 +303,12 @@ namespace sistema_comercio
 
         private void buttonVenda_Click_1(object sender, EventArgs e)
         {
-            AbrirForm(new Form_venda());
+            AbrirForm(new Form_venda()); // Se esse form já tiver sido renomeado, ajuste aqui
         }
 
         private void buttonCliente_Click_1(object sender, EventArgs e)
         {
-            AbrirForm(new FormCliente());
+            AbrirForm(new FormCliente()); // Se esse form já tiver sido renomeado, ajuste aqui
         }
 
         private void buttonHistorico_Click(object sender, EventArgs e)
@@ -307,13 +316,11 @@ namespace sistema_comercio
             AbrirForm(new Form_historico());
         }
 
-        // Método auxiliar para não repetir código de fechar e abrir
         private void AbrirForm(Form form)
         {
             form.Show();
             this.Close();
         }
-
 
         private void button2_Click(object sender, EventArgs e)
         {

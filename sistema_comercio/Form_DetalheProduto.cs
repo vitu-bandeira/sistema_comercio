@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SistemaComercio.Dominio; // <-- Puxando a nossa classe limpa!
+using System;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -6,53 +7,53 @@ namespace sistema_comercio
 {
     public partial class Form_DetalheProduto : Form
     {
-        // Propriedade que guarda os dados do produto (para enviar ao Banco depois)
-        public Produto_dtb Produto { get; private set; }
+        // Propriedade usando a nova classe Produto
+        public Produto Produto { get; private set; }
 
-        // --- CONSTRUTOR INTELIGENTE (Um só para tudo) ---
-        public Form_DetalheProduto(Produto_dtb produtoParaEditar)
+        // --- CONSTRUTOR INTELIGENTE ---
+        public Form_DetalheProduto(Produto produtoParaEditar)
         {
             InitializeComponent();
 
-            // 1. CORREÇÃO DO ERRO DE REFERÊNCIA NULA
-            // Aqui verificamos: Veio vazio? Então é um cadastro NOVO.
             if (produtoParaEditar == null)
             {
                 this.Text = "Adicionar Novo Produto";
-                this.Produto = new Produto_dtb(); // <--- CRIA UM EM BRANCO (Salva o dia!)
+                this.Produto = new Produto(); // Cria uma caixa nova e em branco
             }
             else
             {
-                // Veio com dados? Então é EDIÇÃO.
                 this.Text = "Editar Produto";
-                this.Produto = produtoParaEditar;
+                this.Produto = produtoParaEditar; // Usa a caixa que veio preenchida
             }
 
             ConfigurarEventos();
-            CarregarDadosNaTela(); // Pega o que está no Produto e joga nos TextBoxes
+            CarregarDadosNaTela();
         }
 
-        // Método separado para preencher os campos visuais
         private void CarregarDadosNaTela()
         {
+            // Se for um produto novo, essas propriedades estarão vazias/zeradas e a tela fica limpa.
+            // Se for edição, a tela preenche com os dados.
             textBox_nome_p.Text = Produto.Nome;
             textBox_codigo_barra.Text = Produto.CodigoBarras;
-            textBox_preço_venda.Text = Produto.Preco.ToString("N2");
-            textBox_quantidade.Text = Produto.Estoque.ToString();
 
-            // Só preenche a data se ela for válida
+            // Só formata o preço se ele for maior que zero (para não ficar "0,00" num cadastro novo logo de cara, se preferir)
+            if (Produto.Preco > 0)
+                textBox_preço_venda.Text = Produto.Preco.ToString("N2");
+
+            if (Produto.Estoque > 0) // Se for edição de estoque zero, mostra o zero
+                textBox_quantidade.Text = Produto.Estoque.ToString();
+
             if (Produto.Validade.HasValue && Produto.Validade.Value >= dateTimePicker1.MinDate)
                 dateTimePicker1.Value = Produto.Validade.Value;
         }
 
         private void ConfigurarEventos()
         {
-            // Liga a validação de números nos campos
             this.textBox_quantidade.KeyPress += ApenasValorNumerico;
             this.textBox_preço_venda.KeyPress += ApenasValorNumerico;
 
-            // Se você tiver os campos de Custo e Porcentagem no Design, mantém isso.
-            // Se não tiver, o "if" abaixo evita que o programa quebre.
+            // Mantendo a sua lógica inteligente de cálculo de margem intacta
             if (textBoxPrecoBase != null && textBoxPorcentagem != null)
             {
                 this.textBoxPrecoBase.KeyPress += ApenasValorNumerico;
@@ -62,16 +63,14 @@ namespace sistema_comercio
             }
         }
 
-        // --- BOTÃO SALVAR (Corrigido) ---
+        // --- BOTÃO SALVAR ---
         private void button1_Click(object sender, EventArgs e)
         {
-            // 2. CORREÇÃO DA VALIDAÇÃO
-            // Verifica os campos ANTES de fechar a janela
-
+            // 1. Validações Visuais (UX)
             if (string.IsNullOrWhiteSpace(textBox_nome_p.Text))
             {
-                labelInsiraNome.Visible = true; // Mostra aviso
-                return; // PARA AQUI! Não fecha a janela.
+                labelInsiraNome.Visible = true;
+                return;
             }
 
             if (string.IsNullOrWhiteSpace(textBox_codigo_barra.Text))
@@ -82,26 +81,24 @@ namespace sistema_comercio
 
             if (string.IsNullOrWhiteSpace(textBox_preço_venda.Text))
             {
-                MessageBox.Show("Insira um Preço no Produto");
+                MessageBox.Show("Insira um Preço no Produto", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                // Passa o que foi digitado na TELA para o OBJETO Produto
+                // 2. Colocando as informações digitadas dentro da caixa (Objeto Produto)
                 Produto.Nome = textBox_nome_p.Text;
                 Produto.CodigoBarras = textBox_codigo_barra.Text;
 
-                // Converte o preço (aceita ponto ou vírgula)
+                // Lógica de conversão de preço impecável que você já tinha feito
                 string precoTexto = textBox_preço_venda.Text.Replace("R$", "").Trim();
-                // Tenta converter usando a cultura local (vírgula) ou internacional (ponto)
                 if (decimal.TryParse(precoTexto, NumberStyles.Any, CultureInfo.CurrentCulture, out decimal precoFinal))
                 {
                     Produto.Preco = precoFinal;
                 }
                 else
                 {
-                    // Tenta forçar ponto se falhar
                     decimal.TryParse(precoTexto.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out precoFinal);
                     Produto.Preco = precoFinal;
                 }
@@ -111,33 +108,30 @@ namespace sistema_comercio
 
                 Produto.Validade = dateTimePicker1.Value;
 
-                // TUDO CERTO! Agora sim dizemos que foi OK e fechamos.
+                // 3. Devolve para o FormProduto avisando que deu tudo certo!
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao processar dados: " + ex.Message);
+                MessageBox.Show("Erro ao processar dados da tela: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // --- BOTÃO CANCELAR ---
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
-        // --- EVENTOS AUXILIARES ---
+        // --- EVENTOS AUXILIARES (Intactos) ---
         private void ApenasValorNumerico(object sender, KeyPressEventArgs e)
         {
             TextBox txt = (TextBox)sender;
-            // Aceita números, Backspace e Virgula
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != ',')
             {
                 e.Handled = true;
             }
-            // Só aceita uma vírgula
             if (e.KeyChar == ',' && txt.Text.Contains(","))
             {
                 e.Handled = true;
@@ -146,7 +140,6 @@ namespace sistema_comercio
 
         private void CamposDeCalculo_TextChanged(object sender, EventArgs e)
         {
-            // Lógica de cálculo (Custo + Margem = Preço Venda)
             decimal.TryParse(textBoxPrecoBase.Text, out decimal custo);
             decimal.TryParse(textBoxPorcentagem.Text, out decimal margem);
 
@@ -157,13 +150,7 @@ namespace sistema_comercio
             }
         }
 
-        private void Form_DetalheProduto_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox_codigo_barra_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void Form_DetalheProduto_Load(object sender, EventArgs e) { }
+        private void textBox_codigo_barra_TextChanged(object sender, EventArgs e) { }
     }
 }
